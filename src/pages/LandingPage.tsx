@@ -13,7 +13,7 @@ export default function LandingPage() {
       {/* Hero Section */}
       <section className="container mx-auto px-4 py-16 text-center">
         <div className="max-w-4xl mx-auto">
-          <div className="w-20 h-20 bg-gradient-to-br from-purple-600 to-pink-600 rounded-2xl flex items-center justify-center mx-auto mb-8">
+          <div className="w-20 h-20 bg-gradient-to-br from-purple-600 to-pink-600 rounded-3xl flex items-center justify-center mx-auto mb-8">
             <Shield className="w-10 h-10 text-white" />
           </div>
           
@@ -22,38 +22,38 @@ export default function LandingPage() {
               Anonymous
             </span>
             <br />
-            <span className="text-gray-900">Communication</span>
+            <span className="text-gray-900 dark:text-gray-100">Communication</span>
           </h1>
           
-          <p className="text-xl text-gray-600 mb-12 max-w-2xl mx-auto leading-relaxed">
+          <p className="text-xl text-gray-600 dark:text-gray-300 mb-12 max-w-2xl mx-auto leading-relaxed">
             Bridge the gap between employees and management with privacy-first, 
             anonymous two-way communication. No accounts needed for employees.
           </p>
           
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-12">
             <Link to="/management/login">
-              <Button className="w-full h-16 text-lg bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700">
+              <Button className="w-full h-16 text-lg bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 rounded-xl">
                 Login as Management
                 <ArrowRight className="w-5 h-5 ml-2" />
               </Button>
             </Link>
             
             <Link to="/employee/subscribe">
-              <Button variant="outline" className="w-full h-16 text-lg border-2 hover:bg-purple-50">
+              <Button variant="outline" className="w-full h-16 text-lg border-2 hover:bg-purple-50 dark:hover:bg-purple-900/20 rounded-xl">
                 Subscribe to Company
                 <Users className="w-5 h-5 ml-2" />
               </Button>
             </Link>
             
             <Link to="/employee/send-message">
-              <Button variant="outline" className="w-full h-16 text-lg border-2 hover:bg-pink-50">
+              <Button variant="outline" className="w-full h-16 text-lg border-2 hover:bg-pink-50 dark:hover:bg-pink-900/20 rounded-xl">
                 Send Anonymous Message
                 <MessageSquare className="w-5 h-5 ml-2" />
               </Button>
             </Link>
             
             <Link to="/employee/unsubscribe">
-              <Button variant="ghost" className="w-full h-16 text-lg hover:bg-gray-100">
+              <Button variant="ghost" className="w-full h-16 text-lg hover:bg-gray-100 dark:hover:bg-gray-800 rounded-xl">
                 Unsubscribe
                 <Eye className="w-5 h-5 ml-2" />
               </Button>
@@ -65,42 +65,42 @@ export default function LandingPage() {
       {/* Features Section */}
       <section className="container mx-auto px-4 py-16">
         <div className="max-w-6xl mx-auto">
-          <h2 className="text-3xl font-bold text-center mb-12 text-gray-900">
+          <h2 className="text-3xl font-bold text-center mb-12 text-gray-900 dark:text-gray-100">
             How InvisiBox Protects Your Privacy
           </h2>
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
-            <Card className="bg-white/60 backdrop-blur-sm border-white/20 hover:shadow-lg transition-all duration-300">
+            <Card className="bg-white/60 dark:bg-gray-800/60 backdrop-blur-sm border-white/20 dark:border-gray-700/20 hover:shadow-lg transition-all duration-300 rounded-3xl">
               <CardContent className="p-8 text-center">
-                <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-purple-600 rounded-2xl flex items-center justify-center mx-auto mb-6">
+                <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-purple-600 rounded-3xl flex items-center justify-center mx-auto mb-6">
                   <Lock className="w-8 h-8 text-white" />
                 </div>
-                <h3 className="text-xl font-semibold mb-4">Anonymous Identity</h3>
-                <p className="text-gray-600">
+                <h3 className="text-xl font-semibold mb-4 text-gray-900 dark:text-gray-100">Anonymous Identity</h3>
+                <p className="text-gray-600 dark:text-gray-300">
                   Employees get a unique proxy email (emp9x83xxx@invisibox.com) that completely masks their real identity.
                 </p>
               </CardContent>
             </Card>
 
-            <Card className="bg-white/60 backdrop-blur-sm border-white/20 hover:shadow-lg transition-all duration-300">
+            <Card className="bg-white/60 dark:bg-gray-800/60 backdrop-blur-sm border-white/20 dark:border-gray-700/20 hover:shadow-lg transition-all duration-300 rounded-3xl">
               <CardContent className="p-8 text-center">
-                <div className="w-16 h-16 bg-gradient-to-br from-purple-500 to-pink-600 rounded-2xl flex items-center justify-center mx-auto mb-6">
+                <div className="w-16 h-16 bg-gradient-to-br from-purple-500 to-pink-600 rounded-3xl flex items-center justify-center mx-auto mb-6">
                   <Shield className="w-8 h-8 text-white" />
                 </div>
-                <h3 className="text-xl font-semibold mb-4">No Account Required</h3>
-                <p className="text-gray-600">
+                <h3 className="text-xl font-semibold mb-4 text-gray-900 dark:text-gray-100">No Account Required</h3>
+                <p className="text-gray-600 dark:text-gray-300">
                   Employees simply subscribe with their email. No password, no profile, no tracking across sessions.
                 </p>
               </CardContent>
             </Card>
 
-            <Card className="bg-white/60 backdrop-blur-sm border-white/20 hover:shadow-lg transition-all duration-300">
+            <Card className="bg-white/60 dark:bg-gray-800/60 backdrop-blur-sm border-white/20 dark:border-gray-700/20 hover:shadow-lg transition-all duration-300 rounded-3xl">
               <CardContent className="p-8 text-center">
-                <div className="w-16 h-16 bg-gradient-to-br from-pink-500 to-orange-600 rounded-2xl flex items-center justify-center mx-auto mb-6">
+                <div className="w-16 h-16 bg-gradient-to-br from-pink-500 to-orange-600 rounded-3xl flex items-center justify-center mx-auto mb-6">
                   <MessageSquare className="w-8 h-8 text-white" />
                 </div>
-                <h3 className="text-xl font-semibold mb-4">Two-Way Communication</h3>
-                <p className="text-gray-600">
+                <h3 className="text-xl font-semibold mb-4 text-gray-900 dark:text-gray-100">Two-Way Communication</h3>
+                <p className="text-gray-600 dark:text-gray-300">
                   Management can send messages and polls. Employees can reply and participate anonymously.
                 </p>
               </CardContent>
@@ -109,7 +109,7 @@ export default function LandingPage() {
 
           <div className="text-center">
             <Link to="/anonymity-guide">
-              <Button variant="outline" size="lg" className="text-lg px-8">
+              <Button variant="outline" size="lg" className="text-lg px-8 rounded-xl">
                 Learn More About Our Privacy Protection
                 <ArrowRight className="w-5 h-5 ml-2" />
               </Button>
