@@ -1,3 +1,4 @@
+
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
@@ -42,7 +43,7 @@ const App = () => {
           <AuthProvider>
             <EmployeeProvider>
               <BrowserRouter>
-                <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 dark:from-slate-900 dark:to-blue-900">
+                <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 dark:from-slate-900 dark:to-indigo-950">
                   <Routes>
                     <Route path="/" element={<LandingPage />} />
                     <Route path="/anonymity-guide" element={<AnonymityGuidePage />} />
