@@ -15,7 +15,7 @@ export default function Header() {
   };
 
   return (
-    <header className="bg-white/80 dark:bg-slate-800/90 backdrop-blur-sm border-b border-slate-200/50 dark:border-slate-700/50 sticky top-0 z-50">
+    <header className="bg-white/90 dark:bg-black/90 backdrop-blur-sm border-b border-slate-200/50 dark:border-slate-800/50 sticky top-0 z-50">
       <div className="container mx-auto px-4 py-4 flex items-center justify-between">
         <Link to="/" className="flex items-center space-x-2">
           <div className="w-8 h-8 bg-gradient-to-br from-purple-600 to-pink-600 rounded-lg flex items-center justify-center">
@@ -37,7 +37,7 @@ export default function Header() {
                 variant="outline"
                 size="sm"
                 onClick={handleLogout}
-                className="flex items-center space-x-2 border-slate-200 dark:border-slate-700 dark:bg-slate-800 dark:hover:bg-slate-700"
+                className="flex items-center space-x-2 border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 hover:bg-slate-100 dark:hover:bg-slate-800 text-gray-900 dark:text-gray-100"
               >
                 <LogOut className="w-4 h-4" />
                 <span>Logout</span>
