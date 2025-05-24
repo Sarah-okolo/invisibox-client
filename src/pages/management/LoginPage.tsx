@@ -1,77 +1,43 @@
-
 import React from 'react';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { useAuth } from '@/contexts/AuthContext';
-import { useNavigate, Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { useState } from 'react';
-import { useToast } from '@/hooks/use-toast';
 import { Shield } from 'lucide-react';
+import { useLoginMutation, useResetPasswordMutation } from '@/hooks/useAuthMutations';
 
 export default function LoginPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
   const [showForgotPassword, setShowForgotPassword] = useState(false);
   const [resetEmail, setResetEmail] = useState('');
-  const [isResetting, setIsResetting] = useState(false);
-  const { login } = useAuth();
-  const navigate = useNavigate();
-  const { toast } = useToast();
+  
+  const loginMutation = useLoginMutation();
+  const resetPasswordMutation = useResetPasswordMutation();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setIsLoading(true);
-    
-    try {
-      await login(email, password);
-      toast({
-        title: "Login successful",
-        description: "You've been logged in to your account.",
-      });
-      navigate('/management/dashboard');
-    } catch (error) {
-      toast({
-        title: "Login failed",
-        description: "Please check your credentials and try again.",
-        variant: "destructive",
-      });
-    } finally {
-      setIsLoading(false);
-    }
+    loginMutation.mutate({ email, password });
   };
 
   const handleForgotPassword = async (e: React.FormEvent) => {
     e.preventDefault();
-    setIsResetting(true);
-    
-    try {
-      // Simulate password reset API call
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      
-      toast({
-        title: "Password reset sent",
-        description: "Check your email for password reset instructions.",
-      });
-      
-      setShowForgotPassword(false);
-      setResetEmail('');
-    } catch (error) {
-      toast({
-        title: "Reset failed",
-        description: "There was an error sending the reset email. Please try again.",
-        variant: "destructive",
-      });
-    } finally {
-      setIsResetting(false);
-    }
+    resetPasswordMutation.mutate(
+      { email: resetEmail },
+      {
+        onSuccess: () => {
+          setShowForgotPassword(false);
+          setResetEmail('');
+        },
+      }
+    );
   };
 
   if (showForgotPassword) {
     return (
-      <div className="min-h-screen flex items-center justify-center p-4 bg-gradient-to-br from-slate-50 to-blue-50 dark:from-black dark:to-slate-900 overflow-x-hidden">
+      <div className="min-h-screen flex items-center justify-center p-4 py-12 bg-gradient-to-br from-slate-50 to-blue-50 dark:from-black dark:to-slate-900 overflow-x-hidden">
         <Card className="w-full max-w-md overflow-hidden">
           <CardHeader className="text-center p-4 sm:p-6">
             <div className="w-12 h-12 sm:w-16 sm:h-16 bg-gradient-to-br from-purple-600 to-pink-600 rounded-3xl flex items-center justify-center mx-auto mb-3 sm:mb-4">
@@ -98,8 +64,8 @@ export default function LoginPage() {
               </div>
             </CardContent>
             <CardFooter className="flex flex-col space-y-4 p-4 sm:p-6">
-              <Button className="w-full text-sm sm:text-base" type="submit" disabled={isResetting}>
-                {isResetting ? 'Sending...' : 'Send Reset Link'}
+              <Button className="w-full text-sm sm:text-base" type="submit" disabled={resetPasswordMutation.isPending}>
+                {resetPasswordMutation.isPending ? 'Sending...' : 'Send Reset Link'}
               </Button>
               <Button 
                 variant="ghost" 
@@ -117,7 +83,7 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-4 bg-gradient-to-br from-slate-50 to-blue-50 dark:from-black dark:to-slate-900 overflow-x-hidden">
+    <div className="min-h-screen flex items-center justify-center p-4 py-12 bg-gradient-to-br from-slate-50 to-blue-50 dark:from-black dark:to-slate-900 overflow-x-hidden">
       <Card className="w-full max-w-md overflow-hidden">
         <CardHeader className="text-center p-4 sm:p-6">
           <div className="w-12 h-12 sm:w-16 sm:h-16 bg-gradient-to-br from-purple-600 to-pink-600 rounded-3xl flex items-center justify-center mx-auto mb-3 sm:mb-4">
@@ -165,8 +131,8 @@ export default function LoginPage() {
             </div>
           </CardContent>
           <CardFooter className="flex flex-col space-y-4 p-4 sm:p-6">
-            <Button className="w-full text-sm sm:text-base" type="submit" disabled={isLoading}>
-              {isLoading ? 'Logging in...' : 'Login'}
+            <Button className="w-full text-sm sm:text-base" type="submit" disabled={loginMutation.isPending}>
+              {loginMutation.isPending ? 'Logging in...' : 'Login'}
             </Button>
             <div className="text-center text-xs sm:text-sm text-gray-600 dark:text-gray-300 break-words">
               Don't have an account?{' '}

@@ -5,13 +5,13 @@ interface User {
   id: string;
   email: string;
   companyName: string;
+  token?: string;
 }
 
 interface AuthContextType {
   user: User | null;
   isLoading: boolean;
-  login: (email: string, password: string) => Promise<void>;
-  signup: (companyName: string, email: string, password: string) => Promise<void>;
+  setUser: (user: User | null) => void;
   logout: () => void;
   isAuthenticated: boolean;
 }
@@ -48,50 +48,6 @@ export function AuthProvider({ children }: AuthProviderProps) {
     setIsLoading(false);
   }, []);
 
-  const login = async (email: string, password: string) => {
-    setIsLoading(true);
-    try {
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      
-      // Mock user data
-      const userData: User = {
-        id: '1',
-        email,
-        companyName: 'Demo Company'
-      };
-      
-      setUser(userData);
-      localStorage.setItem('invisibox_user', JSON.stringify(userData));
-    } catch (error) {
-      throw new Error('Login failed');
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  const signup = async (companyName: string, email: string, password: string) => {
-    setIsLoading(true);
-    try {
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      
-      // Mock user data
-      const userData: User = {
-        id: '1',
-        email,
-        companyName
-      };
-      
-      setUser(userData);
-      localStorage.setItem('invisibox_user', JSON.stringify(userData));
-    } catch (error) {
-      throw new Error('Signup failed');
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
   const logout = () => {
     setUser(null);
     localStorage.removeItem('invisibox_user');
@@ -100,8 +56,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
   const value: AuthContextType = {
     user,
     isLoading,
-    login,
-    signup,
+    setUser,
     logout,
     isAuthenticated: !!user
   };

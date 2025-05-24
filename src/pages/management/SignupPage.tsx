@@ -1,23 +1,20 @@
-
 import React, { useState } from 'react';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { useAuth } from '@/contexts/AuthContext';
-import { useNavigate, Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { useToast } from '@/hooks/use-toast';
 import { Shield } from 'lucide-react';
+import { useSignupMutation } from '@/hooks/useAuthMutations';
 
 export default function SignupPage() {
   const [companyName, setCompanyName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
-  const { signup } = useAuth();
-  const navigate = useNavigate();
   const { toast } = useToast();
+  const signupMutation = useSignupMutation();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -31,28 +28,15 @@ export default function SignupPage() {
       return;
     }
     
-    setIsLoading(true);
-    
-    try {
-      await signup(companyName, email, password);
-      toast({
-        title: "Account created",
-        description: "Your management account has been successfully created.",
-      });
-      navigate('/management/dashboard');
-    } catch (error) {
-      toast({
-        title: "Signup failed",
-        description: "There was an error creating your account. Please try again.",
-        variant: "destructive",
-      });
-    } finally {
-      setIsLoading(false);
-    }
+    signupMutation.mutate({
+      companyName,
+      email,
+      password,
+    });
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-4 bg-gradient-to-br from-slate-50 to-blue-50 dark:from-black dark:to-slate-900 overflow-x-hidden">
+    <div className="min-h-screen flex items-center justify-center p-4 py-12 bg-gradient-to-br from-slate-50 to-blue-50 dark:from-black dark:to-slate-900 overflow-x-hidden">
       <Card className="w-full max-w-md overflow-hidden">
         <CardHeader className="text-center p-4 sm:p-6">
           <div className="w-12 h-12 sm:w-16 sm:h-16 bg-gradient-to-br from-purple-600 to-pink-600 rounded-3xl flex items-center justify-center mx-auto mb-3 sm:mb-4">
@@ -113,8 +97,8 @@ export default function SignupPage() {
             </div>
           </CardContent>
           <CardFooter className="p-4 sm:p-6 space-y-4 flex flex-col">
-            <Button className="w-full text-sm sm:text-base" type="submit" disabled={isLoading}>
-              {isLoading ? 'Creating Account...' : 'Create Account'}
+            <Button className="w-full text-sm sm:text-base" type="submit" disabled={signupMutation.isPending}>
+              {signupMutation.isPending ? 'Creating Account...' : 'Create Account'}
             </Button>
             <div className="text-center text-xs sm:text-sm text-gray-600 dark:text-gray-300 break-words">
               Already have an account?{' '}
