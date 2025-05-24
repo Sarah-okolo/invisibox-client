@@ -1,7 +1,7 @@
 
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Shield, ArrowLeft, Eye, Lock, MessageSquare, Users } from 'lucide-react';
+import { Shield, ArrowLeft, AlertTriangle, Eye, Lock, MessageSquare, Brain, Lightbulb } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import Header from '@/components/Header';
 
@@ -22,162 +22,140 @@ export default function AnonymityGuidePage() {
 
           {/* Header */}
           <div className="text-center mb-12">
-            <div className="w-20 h-20 bg-gradient-to-br from-purple-600 to-pink-600 rounded-2xl flex items-center justify-center mx-auto mb-6">
+            <div className="w-20 h-20 bg-gradient-to-br from-purple-600 to-pink-600 rounded-3xl flex items-center justify-center mx-auto mb-6">
               <Shield className="w-10 h-10 text-white" />
             </div>
             <h1 className="text-4xl font-bold mb-4">
               <span className="bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
-                Anonymity Guide
+                Stay Anonymous
               </span>
             </h1>
-            <p className="text-xl text-gray-600">
-              Understanding how InvisiBox protects your privacy
+            <h2 className="text-2xl font-semibold mb-4 text-gray-900 dark:text-gray-100">
+              How to Protect Your Identity on InvisiBox
+            </h2>
+            <p className="text-lg text-gray-600 dark:text-gray-300">
+              At InvisiBox, we've designed the system to protect your anonymity, but full privacy also depends on how you use it. This guide will help you understand the simple steps to keep your messages truly anonymous.
             </p>
           </div>
 
           {/* Guide Content */}
           <div className="space-y-8">
-            <Card className="bg-white/60 backdrop-blur-sm border-white/20">
+            <Card className="bg-white/60 dark:bg-gray-800/60 backdrop-blur-sm border-white/20 dark:border-gray-700/20 rounded-3xl">
               <CardHeader>
                 <CardTitle className="flex items-center text-2xl">
-                  <Lock className="w-6 h-6 mr-3 text-purple-600" />
-                  How Anonymous Emails Work
+                  <AlertTriangle className="w-6 h-6 mr-3 text-red-600" />
+                  1. Avoid Personal Identifiers
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
-                <p className="text-gray-700 leading-relaxed">
-                  When you subscribe to a company channel, InvisiBox generates a unique proxy email 
-                  address (like <code className="bg-gray-100 px-2 py-1 rounded">emp9x83xxx@invisibox.com</code>) 
-                  that becomes your anonymous identity.
+                <p className="text-gray-700 dark:text-gray-300 leading-relaxed">
+                  Even if your name and email are hidden, certain information in your message can still give you away.
                 </p>
-                <ul className="list-disc list-inside space-y-2 text-gray-700">
-                  <li>Your real email is only used for the initial subscription</li>
-                  <li>All future communications use your proxy email</li>
-                  <li>Management never sees your real email address</li>
-                  <li>The proxy email is randomly generated and unique to you</li>
-                </ul>
-              </CardContent>
-            </Card>
-
-            <Card className="bg-white/60 backdrop-blur-sm border-white/20">
-              <CardHeader>
-                <CardTitle className="flex items-center text-2xl">
-                  <Eye className="w-6 h-6 mr-3 text-blue-600" />
-                  What Management Can See
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <p className="text-gray-700 leading-relaxed">
-                  Management has a limited view designed to protect your privacy:
-                </p>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div className="bg-green-50 p-4 rounded-lg">
-                    <h4 className="font-semibold text-green-800 mb-2">✅ What They See</h4>
-                    <ul className="text-sm text-green-700 space-y-1">
-                      <li>• Your proxy email (emp9x83xxx@invisibox.com)</li>
-                      <li>• Messages you send</li>
-                      <li>• Poll responses (aggregated)</li>
-                      <li>• Message timestamps</li>
-                    </ul>
-                  </div>
-                  <div className="bg-red-50 p-4 rounded-lg">
-                    <h4 className="font-semibold text-red-800 mb-2">❌ What They Don't See</h4>
-                    <ul className="text-sm text-red-700 space-y-1">
-                      <li>• Your real email address</li>
-                      <li>• Your real name</li>
-                      <li>• Your department/role</li>
-                      <li>• Any personal information</li>
-                    </ul>
-                  </div>
+                
+                <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-4">
+                  <h4 className="font-semibold text-red-800 dark:text-red-200 mb-3">❌ Do NOT include:</h4>
+                  <ul className="text-sm text-red-700 dark:text-red-300 space-y-1">
+                    <li>• Your full name or nickname</li>
+                    <li>• Email addresses or phone numbers</li>
+                    <li>• Employee ID numbers</li>
+                    <li>• Department names or team names</li>
+                    <li>• Your job title (e.g. "Team Lead, Marketing")</li>
+                    <li>• References to recent meetings or time-based events (e.g. "after the 3pm sync")</li>
+                    <li>• Specific office locations</li>
+                  </ul>
                 </div>
               </CardContent>
             </Card>
 
-            <Card className="bg-white/60 backdrop-blur-sm border-white/20">
+            <Card className="bg-white/60 dark:bg-gray-800/60 backdrop-blur-sm border-white/20 dark:border-gray-700/20 rounded-3xl">
               <CardHeader>
                 <CardTitle className="flex items-center text-2xl">
-                  <MessageSquare className="w-6 h-6 mr-3 text-pink-600" />
-                  Communication Flow
+                  <MessageSquare className="w-6 h-6 mr-3 text-blue-600" />
+                  2. Be Careful with How You Write
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
-                <div className="space-y-6">
-                  <div className="flex items-start space-x-4">
-                    <div className="w-8 h-8 bg-purple-100 rounded-full flex items-center justify-center">
-                      <span className="text-sm font-semibold text-purple-600">1</span>
-                    </div>
-                    <div>
-                      <h4 className="font-semibold mb-1">Initial Subscription</h4>
-                      <p className="text-gray-700">You provide your real email and company channel to subscribe. InvisiBox generates your anonymous identity.</p>
-                    </div>
-                  </div>
-                  
-                  <div className="flex items-start space-x-4">
-                    <div className="w-8 h-8 bg-purple-100 rounded-full flex items-center justify-center">
-                      <span className="text-sm font-semibold text-purple-600">2</span>
-                    </div>
-                    <div>
-                      <h4 className="font-semibold mb-1">Receiving Messages</h4>
-                      <p className="text-gray-700">Management sends messages/polls to all subscribers. You receive them via your real email with links to respond anonymously.</p>
-                    </div>
-                  </div>
-                  
-                  <div className="flex items-start space-x-4">
-                    <div className="w-8 h-8 bg-purple-100 rounded-full flex items-center justify-center">
-                      <span className="text-sm font-semibold text-purple-600">3</span>
-                    </div>
-                    <div>
-                      <h4 className="font-semibold mb-1">Anonymous Responses</h4>
-                      <p className="text-gray-700">When you reply or vote, your response is linked to your proxy email, keeping your identity completely private.</p>
-                    </div>
-                  </div>
+                <p className="text-gray-700 dark:text-gray-300 leading-relaxed">
+                  People can often be identified by how they write.
+                </p>
+                
+                <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-4">
+                  <h4 className="font-semibold text-blue-800 dark:text-blue-200 mb-3">To help stay anonymous:</h4>
+                  <ul className="text-sm text-blue-700 dark:text-blue-300 space-y-1">
+                    <li>• Avoid using slang, emojis, or inside jokes only your team knows</li>
+                    <li>• Don't mention personal experiences that only a few people could recognize</li>
+                    <li>• Don't use language you regularly use in company channels</li>
+                  </ul>
                 </div>
               </CardContent>
             </Card>
 
-            <Card className="bg-white/60 backdrop-blur-sm border-white/20">
+            <Card className="bg-white/60 dark:bg-gray-800/60 backdrop-blur-sm border-white/20 dark:border-gray-700/20 rounded-3xl">
               <CardHeader>
                 <CardTitle className="flex items-center text-2xl">
-                  <Users className="w-6 h-6 mr-3 text-orange-600" />
-                  Best Practices for Privacy
+                  <Eye className="w-6 h-6 mr-3 text-green-600" />
+                  3. All Tracking Is Disabled
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
-                <ul className="space-y-3 text-gray-700">
-                  <li className="flex items-start space-x-3">
-                    <span className="w-2 h-2 bg-orange-500 rounded-full mt-2"></span>
-                    <span><strong>Don't include identifying information</strong> in your messages (name, department, specific projects only you work on)</span>
-                  </li>
-                  <li className="flex items-start space-x-3">
-                    <span className="w-2 h-2 bg-orange-500 rounded-full mt-2"></span>
-                    <span><strong>Use your proxy email consistently</strong> for all communications with management</span>
-                  </li>
-                  <li className="flex items-start space-x-3">
-                    <span className="w-2 h-2 bg-orange-500 rounded-full mt-2"></span>
-                    <span><strong>Keep your proxy email private</strong> - don't share it with colleagues</span>
-                  </li>
-                  <li className="flex items-start space-x-3">
-                    <span className="w-2 h-2 bg-orange-500 rounded-full mt-2"></span>
-                    <span><strong>Unsubscribe when leaving</strong> the company to ensure your communications stop</span>
-                  </li>
-                </ul>
+                <div className="bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-lg p-4">
+                  <h4 className="font-semibold text-green-800 dark:text-green-200 mb-3">InvisiBox disables:</h4>
+                  <ul className="text-sm text-green-700 dark:text-green-300 space-y-1">
+                    <li>• Open tracking</li>
+                    <li>• Link tracking</li>
+                    <li>• Device metadata</li>
+                  </ul>
+                  <p className="text-sm text-green-700 dark:text-green-300 mt-3">
+                    This means no one — not even admins — can tell when or where your message was opened.
+                  </p>
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card className="bg-white/60 dark:bg-gray-800/60 backdrop-blur-sm border-white/20 dark:border-gray-700/20 rounded-3xl">
+              <CardHeader>
+                <CardTitle className="flex items-center text-2xl">
+                  <Brain className="w-6 h-6 mr-3 text-purple-600" />
+                  4. We Don't Log Your IP
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <p className="text-gray-700 dark:text-gray-300 leading-relaxed">
+                  Your IP address is never stored in our systems. We also recommend using a secure connection (like VPN) for additional peace of mind.
+                </p>
+              </CardContent>
+            </Card>
+
+            <Card className="bg-white/60 dark:bg-gray-800/60 backdrop-blur-sm border-white/20 dark:border-gray-700/20 rounded-3xl">
+              <CardHeader>
+                <CardTitle className="flex items-center text-2xl">
+                  <Lightbulb className="w-6 h-6 mr-3 text-orange-600" />
+                  Final Tip: If You're Not Sure, Rewrite It
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <p className="text-gray-700 dark:text-gray-300 leading-relaxed">
+                  If your message contains anything that might hint at who you are, rewrite it. It's better to speak generally than to risk being identified.
+                </p>
               </CardContent>
             </Card>
           </div>
 
-          {/* CTA Section */}
-          <div className="text-center mt-12 p-8 bg-gradient-to-r from-purple-100 to-pink-100 rounded-2xl">
-            <h3 className="text-2xl font-bold mb-4">Ready to communicate anonymously?</h3>
-            <p className="text-gray-700 mb-6">Join your company's channel or send an anonymous message</p>
+          {/* Final Message */}
+          <div className="text-center mt-12 p-8 bg-gradient-to-r from-purple-100 to-pink-100 dark:from-purple-900/20 dark:to-pink-900/20 rounded-3xl">
+            <h3 className="text-2xl font-bold mb-4 text-gray-900 dark:text-gray-100">💡 Your voice matters. Say it safely.</h3>
+            <p className="text-gray-700 dark:text-gray-300 mb-6">
+              We're committed to helping you speak freely, securely, and without fear of being exposed.
+            </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link to="/employee/subscribe">
-                <Button size="lg" className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700">
-                  Subscribe to Company Channel
+              <Link to="/employee/send-message">
+                <Button size="lg" className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 rounded-3xl">
+                  Send Anonymous Message
                 </Button>
               </Link>
-              <Link to="/employee/send-message">
-                <Button variant="outline" size="lg">
-                  Send Anonymous Message
+              <Link to="/">
+                <Button variant="outline" size="lg" className="rounded-3xl">
+                  Back to Home
                 </Button>
               </Link>
             </div>

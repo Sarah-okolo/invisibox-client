@@ -30,32 +30,18 @@ export default function LandingPage() {
             anonymous two-way communication. No accounts needed for employees.
           </p>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-12">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12 max-w-lg mx-auto">
             <Link to="/management/login">
-              <Button className="w-full h-16 text-lg bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 rounded-xl">
-                Login as Management
-                <ArrowRight className="w-5 h-5 ml-2" />
-              </Button>
-            </Link>
-            
-            <Link to="/employee/subscribe">
-              <Button variant="outline" className="w-full h-16 text-lg border-2 hover:bg-purple-50 dark:hover:bg-purple-900/20 rounded-xl">
-                Subscribe to Company
+              <Button className="w-full h-16 text-lg bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 rounded-3xl">
+                For Management
                 <Users className="w-5 h-5 ml-2" />
               </Button>
             </Link>
             
             <Link to="/employee/send-message">
-              <Button variant="outline" className="w-full h-16 text-lg border-2 hover:bg-pink-50 dark:hover:bg-pink-900/20 rounded-xl">
-                Send Anonymous Message
+              <Button variant="outline" className="w-full h-16 text-lg border-2 hover:bg-purple-50 dark:hover:bg-purple-900/20 rounded-3xl">
+                For Employees
                 <MessageSquare className="w-5 h-5 ml-2" />
-              </Button>
-            </Link>
-            
-            <Link to="/employee/unsubscribe">
-              <Button variant="ghost" className="w-full h-16 text-lg hover:bg-gray-100 dark:hover:bg-gray-800 rounded-xl">
-                Unsubscribe
-                <Eye className="w-5 h-5 ml-2" />
               </Button>
             </Link>
           </div>
@@ -109,7 +95,7 @@ export default function LandingPage() {
 
           <div className="text-center">
             <Link to="/anonymity-guide">
-              <Button variant="outline" size="lg" className="text-lg px-8 rounded-xl">
+              <Button variant="outline" size="lg" className="text-lg px-8 rounded-3xl">
                 Learn More About Our Privacy Protection
                 <ArrowRight className="w-5 h-5 ml-2" />
               </Button>
@@ -117,6 +103,102 @@ export default function LandingPage() {
           </div>
         </div>
       </section>
+
+      {/* Footer */}
+      <footer className="bg-white/90 dark:bg-gray-900/90 backdrop-blur-sm border-t border-slate-200/50 dark:border-slate-800/50 mt-16">
+        <div className="container mx-auto px-4 py-12">
+          <div className="max-w-6xl mx-auto">
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+              {/* Brand */}
+              <div className="space-y-4">
+                <div className="flex items-center space-x-2">
+                  <div className="w-8 h-8 bg-gradient-to-br from-purple-600 to-pink-600 rounded-lg flex items-center justify-center">
+                    <Shield className="w-5 h-5 text-white" />
+                  </div>
+                  <span className="text-xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
+                    InvisiBox
+                  </span>
+                </div>
+                <p className="text-gray-600 dark:text-gray-300 text-sm">
+                  Privacy-first anonymous communication for modern workplaces.
+                </p>
+              </div>
+
+              {/* For Employees */}
+              <div className="space-y-4">
+                <h4 className="font-semibold text-gray-900 dark:text-gray-100">For Employees</h4>
+                <ul className="space-y-2 text-sm text-gray-600 dark:text-gray-300">
+                  <li>
+                    <Link to="/employee/send-message" className="hover:text-purple-600 dark:hover:text-purple-400 transition-colors">
+                      Send Anonymous Message
+                    </Link>
+                  </li>
+                  <li>
+                    <Link to="/employee/subscribe" className="hover:text-purple-600 dark:hover:text-purple-400 transition-colors">
+                      Subscribe to Company
+                    </Link>
+                  </li>
+                  <li>
+                    <Link to="/employee/unsubscribe" className="hover:text-purple-600 dark:hover:text-purple-400 transition-colors">
+                      Unsubscribe
+                    </Link>
+                  </li>
+                </ul>
+              </div>
+
+              {/* For Management */}
+              <div className="space-y-4">
+                <h4 className="font-semibold text-gray-900 dark:text-gray-100">For Management</h4>
+                <ul className="space-y-2 text-sm text-gray-600 dark:text-gray-300">
+                  <li>
+                    <Link to="/management/login" className="hover:text-purple-600 dark:hover:text-purple-400 transition-colors">
+                      Login
+                    </Link>
+                  </li>
+                  <li>
+                    <Link to="/management/signup" className="hover:text-purple-600 dark:hover:text-purple-400 transition-colors">
+                      Sign Up
+                    </Link>
+                  </li>
+                  <li>
+                    <Link to="/management/dashboard" className="hover:text-purple-600 dark:hover:text-purple-400 transition-colors">
+                      Dashboard
+                    </Link>
+                  </li>
+                </ul>
+              </div>
+
+              {/* Privacy */}
+              <div className="space-y-4">
+                <h4 className="font-semibold text-gray-900 dark:text-gray-100">Privacy</h4>
+                <ul className="space-y-2 text-sm text-gray-600 dark:text-gray-300">
+                  <li>
+                    <Link to="/anonymity-guide" className="hover:text-purple-600 dark:hover:text-purple-400 transition-colors">
+                      Anonymity Guide
+                    </Link>
+                  </li>
+                  <li>
+                    <Link to="#" className="hover:text-purple-600 dark:hover:text-purple-400 transition-colors">
+                      Privacy Policy
+                    </Link>
+                  </li>
+                  <li>
+                    <Link to="#" className="hover:text-purple-600 dark:hover:text-purple-400 transition-colors">
+                      Terms of Service
+                    </Link>
+                  </li>
+                </ul>
+              </div>
+            </div>
+
+            <div className="border-t border-slate-200 dark:border-slate-800 mt-8 pt-8 text-center">
+              <p className="text-sm text-gray-600 dark:text-gray-300">
+                © 2024 InvisiBox. All rights reserved. Built for workplace transparency and trust.
+              </p>
+            </div>
+          </div>
+        </div>
+      </footer>
     </div>
   );
 }

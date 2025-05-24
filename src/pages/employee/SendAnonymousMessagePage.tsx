@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -95,10 +94,17 @@ export default function SendAnonymousMessagePage() {
           </p>
         </div>
         
-        <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 text-sm text-blue-800 flex items-start">
+        <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-4 text-sm text-blue-800 dark:text-blue-200 flex items-start">
           <Lock className="h-5 w-5 mr-2 flex-shrink-0" />
           <p>
-            Don't have an anonymous email yet? <Link to="/employee/subscribe" className="font-medium underline hover:text-blue-700">Subscribe to a company</Link> first to get one.
+            Don't have an anonymous email yet? <Link to="/employee/subscribe" className="font-medium underline hover:text-blue-700 dark:hover:text-blue-300">Subscribe to a company</Link> first to get one.
+          </p>
+        </div>
+        
+        <div className="bg-purple-50 dark:bg-purple-900/20 border border-purple-200 dark:border-purple-800 rounded-lg p-4 text-sm text-purple-800 dark:text-purple-200 flex items-start">
+          <Shield className="h-5 w-5 mr-2 flex-shrink-0" />
+          <p>
+            Need help staying anonymous? Check out our <Link to="/anonymity-guide" className="font-medium underline hover:text-purple-700 dark:hover:text-purple-300">Anonymity Guide</Link> for best practices.
           </p>
         </div>
       </CardContent>
@@ -157,7 +163,7 @@ export default function SendAnonymousMessagePage() {
           />
         </div>
         
-        <div className="bg-amber-50 border border-amber-200 rounded-lg p-4 text-sm text-amber-800 flex items-start">
+        <div className="bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-lg p-4 text-sm text-amber-800 dark:text-amber-200 flex items-start">
           <AlertCircle className="h-5 w-5 mr-2 flex-shrink-0" />
           <div>
             <p className="font-medium mb-1">Important:</p>
@@ -186,8 +192,8 @@ export default function SendAnonymousMessagePage() {
   const renderSuccess = () => (
     <>
       <CardContent className="space-y-6 text-center">
-        <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto">
-          <Shield className="w-8 h-8 text-green-600" />
+        <div className="w-16 h-16 bg-green-100 dark:bg-green-900/20 rounded-full flex items-center justify-center mx-auto">
+          <Shield className="w-8 h-8 text-green-600 dark:text-green-400" />
         </div>
         <div>
           <h3 className="text-lg font-medium mb-2">Message Sent Successfully!</h3>
@@ -196,7 +202,7 @@ export default function SendAnonymousMessagePage() {
           </p>
         </div>
         
-        <div className="bg-gray-50 border rounded-lg p-4 text-left">
+        <div className="bg-gray-50 dark:bg-gray-800/50 border rounded-lg p-4 text-left">
           <p className="text-sm font-medium mb-1">Subject:</p>
           <p className="mb-3">{subject}</p>
           <p className="text-sm font-medium mb-1">Message:</p>
@@ -215,10 +221,10 @@ export default function SendAnonymousMessagePage() {
   );
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-4 bg-gradient-to-br from-slate-50 to-blue-50">
+    <div className="min-h-screen flex items-center justify-center p-4 bg-gradient-to-br from-slate-50 to-blue-50 dark:from-black dark:to-slate-900">
       <Card className="w-full max-w-md">
         <CardHeader className="text-center">
-          <div className="w-16 h-16 bg-gradient-to-br from-purple-600 to-pink-600 rounded-2xl flex items-center justify-center mx-auto mb-4">
+          <div className="w-16 h-16 bg-gradient-to-br from-purple-600 to-pink-600 rounded-3xl flex items-center justify-center mx-auto mb-4">
             <Shield className="w-8 h-8 text-white" />
           </div>
           <CardTitle className="text-2xl font-bold">Send Anonymous Message</CardTitle>
