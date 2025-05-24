@@ -71,21 +71,21 @@ export default function LoginPage() {
 
   if (showForgotPassword) {
     return (
-      <div className="min-h-screen flex items-center justify-center p-4 bg-gradient-to-br from-slate-50 to-blue-50 dark:from-black dark:to-slate-900">
-        <Card className="w-full max-w-md">
-          <CardHeader className="text-center">
-            <div className="w-16 h-16 bg-gradient-to-br from-purple-600 to-pink-600 rounded-3xl flex items-center justify-center mx-auto mb-4">
-              <Shield className="w-8 h-8 text-white" />
+      <div className="min-h-screen flex items-center justify-center p-4 bg-gradient-to-br from-slate-50 to-blue-50 dark:from-black dark:to-slate-900 overflow-x-hidden">
+        <Card className="w-full max-w-md overflow-hidden">
+          <CardHeader className="text-center p-4 sm:p-6">
+            <div className="w-12 h-12 sm:w-16 sm:h-16 bg-gradient-to-br from-purple-600 to-pink-600 rounded-3xl flex items-center justify-center mx-auto mb-3 sm:mb-4">
+              <Shield className="w-6 h-6 sm:w-8 sm:h-8 text-white" />
             </div>
-            <CardTitle className="text-2xl font-bold">Reset Password</CardTitle>
-            <CardDescription>
+            <CardTitle className="text-xl sm:text-2xl font-bold break-words">Reset Password</CardTitle>
+            <CardDescription className="text-sm sm:text-base break-words">
               Enter your email address and we'll send you a link to reset your password.
             </CardDescription>
           </CardHeader>
           <form onSubmit={handleForgotPassword}>
-            <CardContent className="space-y-4">
+            <CardContent className="space-y-4 p-4 sm:p-6">
               <div className="space-y-2">
-                <Label htmlFor="reset-email">Email</Label>
+                <Label htmlFor="reset-email" className="text-sm sm:text-base">Email</Label>
                 <Input 
                   id="reset-email"
                   type="email" 
@@ -93,16 +93,17 @@ export default function LoginPage() {
                   value={resetEmail}
                   onChange={(e) => setResetEmail(e.target.value)}
                   required
+                  className="text-sm sm:text-base"
                 />
               </div>
             </CardContent>
-            <CardFooter className="flex flex-col space-y-4">
-              <Button className="w-full" type="submit" disabled={isResetting}>
+            <CardFooter className="flex flex-col space-y-4 p-4 sm:p-6">
+              <Button className="w-full text-sm sm:text-base" type="submit" disabled={isResetting}>
                 {isResetting ? 'Sending...' : 'Send Reset Link'}
               </Button>
               <Button 
                 variant="ghost" 
-                className="w-full" 
+                className="w-full text-sm sm:text-base" 
                 type="button"
                 onClick={() => setShowForgotPassword(false)}
               >
@@ -116,21 +117,21 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-4 bg-gradient-to-br from-slate-50 to-blue-50 dark:from-black dark:to-slate-900">
-      <Card className="w-full max-w-md">
-        <CardHeader className="text-center">
-          <div className="w-16 h-16 bg-gradient-to-br from-purple-600 to-pink-600 rounded-3xl flex items-center justify-center mx-auto mb-4">
-            <Shield className="w-8 h-8 text-white" />
+    <div className="min-h-screen flex items-center justify-center p-4 bg-gradient-to-br from-slate-50 to-blue-50 dark:from-black dark:to-slate-900 overflow-x-hidden">
+      <Card className="w-full max-w-md overflow-hidden">
+        <CardHeader className="text-center p-4 sm:p-6">
+          <div className="w-12 h-12 sm:w-16 sm:h-16 bg-gradient-to-br from-purple-600 to-pink-600 rounded-3xl flex items-center justify-center mx-auto mb-3 sm:mb-4">
+            <Shield className="w-6 h-6 sm:w-8 sm:h-8 text-white" />
           </div>
-          <CardTitle className="text-2xl font-bold">Management Login</CardTitle>
-          <CardDescription>
+          <CardTitle className="text-xl sm:text-2xl font-bold break-words">Management Login</CardTitle>
+          <CardDescription className="text-sm sm:text-base break-words">
             Enter your credentials to access your company dashboard
           </CardDescription>
         </CardHeader>
         <form onSubmit={handleSubmit}>
-          <CardContent className="space-y-4">
+          <CardContent className="space-y-4 p-4 sm:p-6">
             <div className="space-y-2">
-              <Label htmlFor="email">Email</Label>
+              <Label htmlFor="email" className="text-sm sm:text-base">Email</Label>
               <Input 
                 id="email"
                 type="email" 
@@ -138,18 +139,19 @@ export default function LoginPage() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
+                className="text-sm sm:text-base"
               />
             </div>
             <div className="space-y-2">
               <div className="flex items-center justify-between">
-                <Label htmlFor="password">Password</Label>
+                <Label htmlFor="password" className="text-sm sm:text-base">Password</Label>
                 <Button 
                   variant="link" 
-                  className="text-xs p-0 h-auto" 
+                  className="text-xs sm:text-xs p-0 h-auto" 
                   type="button"
                   onClick={() => setShowForgotPassword(true)}
                 >
-                  Forgot password?
+                  <span className="truncate">Forgot password?</span>
                 </Button>
               </div>
               <Input 
@@ -158,14 +160,15 @@ export default function LoginPage() {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
+                className="text-sm sm:text-base"
               />
             </div>
           </CardContent>
-          <CardFooter className="flex flex-col space-y-4">
-            <Button className="w-full" type="submit" disabled={isLoading}>
+          <CardFooter className="flex flex-col space-y-4 p-4 sm:p-6">
+            <Button className="w-full text-sm sm:text-base" type="submit" disabled={isLoading}>
               {isLoading ? 'Logging in...' : 'Login'}
             </Button>
-            <div className="text-center text-sm text-gray-600 dark:text-gray-300">
+            <div className="text-center text-xs sm:text-sm text-gray-600 dark:text-gray-300 break-words">
               Don't have an account?{' '}
               <Link to="/management/signup" className="text-purple-600 dark:text-purple-400 hover:underline font-medium">
                 Sign up here
