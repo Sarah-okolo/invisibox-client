@@ -1,7 +1,6 @@
 
 import React, { useState } from 'react';
 import { useToast } from '@/hooks/use-toast';
-import Header from '@/components/Header';
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -47,6 +46,16 @@ export default function SendMessagePage() {
     e.preventDefault();
     setIsLoading(true);
     
+    // Prepare data for backend
+    const messageData = {
+      title,
+      content: message,
+      tags,
+      attachment: file
+    };
+    
+    console.log('Message data ready for backend:', messageData);
+    
     // Simulate API call
     setTimeout(() => {
       toast({
@@ -62,11 +71,10 @@ export default function SendMessagePage() {
   };
 
   return (
-    <>
-      <Header />
-      <div className="container mx-auto p-4 py-8">
-        <h1 className="text-3xl font-bold mb-8">Send Message to Employees</h1>
-        
+    <div className="container mx-auto p-4 py-8">
+      <h1 className="text-3xl font-bold mb-8 text-center">Send Message to Employees</h1>
+      
+      <div className="max-w-2xl mx-auto">
         <Card>
           <form onSubmit={handleSubmit}>
             <CardHeader>
@@ -140,13 +148,13 @@ export default function SendMessagePage() {
               </div>
             </CardContent>
             <CardFooter>
-              <Button type="submit" disabled={isLoading || !title || !message}>
+              <Button type="submit" disabled={isLoading || !title || !message} className="w-full">
                 {isLoading ? 'Sending...' : 'Send to All Subscribers'}
               </Button>
             </CardFooter>
           </form>
         </Card>
       </div>
-    </>
+    </div>
   );
 }

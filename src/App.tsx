@@ -16,6 +16,9 @@ import SendMessagePage from "@/pages/management/SendMessagePage";
 import ViewMessagesPage from "@/pages/management/ViewMessagesPage";
 import CreatePollPage from "@/pages/management/CreatePollPage";
 import ViewPollsPage from "@/pages/management/ViewPollsPage";
+import SettingsPage from "@/pages/management/SettingsPage";
+import ManageSubscribersPage from "@/pages/management/ManageSubscribersPage";
+import AnalyticsPage from "@/pages/management/AnalyticsPage";
 import EmployeeSubscribePage from "@/pages/employee/EmployeeSubscribePage";
 import EmployeeUnsubscribePage from "@/pages/employee/EmployeeUnsubscribePage";
 import ReplyToMessagePage from "@/pages/employee/ReplyToMessagePage";
@@ -25,6 +28,7 @@ import NotFoundPage from "@/pages/NotFoundPage";
 
 // Components
 import ProtectedRoute from "@/components/ProtectedRoute";
+import DashboardLayout from "@/components/DashboardLayout";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -52,27 +56,58 @@ const App = () => {
               <Route path="/management/forgot-invisibox-email" element={<ForgotInvisiboxEmailPage />} />
               <Route path="/management/dashboard" element={
                 <ProtectedRoute>
-                  <Dashboard />
+                  <DashboardLayout>
+                    <Dashboard />
+                  </DashboardLayout>
                 </ProtectedRoute>
               } />
               <Route path="/management/send-message" element={
                 <ProtectedRoute>
-                  <SendMessagePage />
+                  <DashboardLayout>
+                    <SendMessagePage />
+                  </DashboardLayout>
                 </ProtectedRoute>
               } />
               <Route path="/management/messages" element={
                 <ProtectedRoute>
-                  <ViewMessagesPage />
+                  <DashboardLayout>
+                    <ViewMessagesPage />
+                  </DashboardLayout>
                 </ProtectedRoute>
               } />
               <Route path="/management/create-poll" element={
                 <ProtectedRoute>
-                  <CreatePollPage />
+                  <DashboardLayout>
+                    <CreatePollPage />
+                  </DashboardLayout>
                 </ProtectedRoute>
               } />
               <Route path="/management/polls" element={
                 <ProtectedRoute>
-                  <ViewPollsPage />
+                  <DashboardLayout>
+                    <ViewPollsPage />
+                  </DashboardLayout>
+                </ProtectedRoute>
+              } />
+              <Route path="/management/settings" element={
+                <ProtectedRoute>
+                  <DashboardLayout>
+                    <SettingsPage />
+                  </DashboardLayout>
+                </ProtectedRoute>
+              } />
+              <Route path="/management/subscribers" element={
+                <ProtectedRoute>
+                  <DashboardLayout>
+                    <ManageSubscribersPage />
+                  </DashboardLayout>
+                </ProtectedRoute>
+              } />
+              <Route path="/management/analytics" element={
+                <ProtectedRoute>
+                  <DashboardLayout>
+                    <AnalyticsPage />
+                  </DashboardLayout>
                 </ProtectedRoute>
               } />
               

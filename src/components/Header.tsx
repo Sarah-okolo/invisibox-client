@@ -2,13 +2,19 @@
 import { useAuth } from '@/hooks/useAuth';
 import { Button } from '@/components/ui/button';
 import { Shield, LogOut } from 'lucide-react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { ThemeToggle } from '@/components/ThemeToggle';
 import { useLogoutMutation } from '@/hooks/useAuthMutations';
 
 export default function Header() {
   const { user, isAuthenticated } = useAuth();
   const logoutMutation = useLogoutMutation();
+  const location = useLocation();
+
+  // Don't render header on management pages (they use sidebar layout)
+  if (location.pathname.startsWith('/management/') && isAuthenticated) {
+    return null;
+  }
 
   const handleLogout = () => {
     logoutMutation.mutate();

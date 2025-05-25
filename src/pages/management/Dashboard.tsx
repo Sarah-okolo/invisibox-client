@@ -1,7 +1,6 @@
 
 import { useAuth } from '@/hooks/useAuth';
 import { useAuthStore } from '@/stores/authStore';
-import Header from '@/components/Header';
 import WelcomeModal from '@/components/WelcomeModal';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -18,8 +17,6 @@ export default function Dashboard() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 dark:from-black dark:to-slate-900">
-      <Header />
-      
       {user && (
         <WelcomeModal
           isOpen={showWelcomeModal}
@@ -115,32 +112,6 @@ export default function Dashboard() {
             </CardContent>
           </Card>
         </div>
-
-        {user && (
-          <div className="mt-8">
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center space-x-2">
-                  <Settings className="w-5 h-5" />
-                  <span>Account Information</span>
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-2">
-                  <div>
-                    <span className="font-medium">Company:</span> {user.companyName}
-                  </div>
-                  <div>
-                    <span className="font-medium">InvisiBox Email:</span> {user.invisiboxEmail}
-                  </div>
-                  <div>
-                    <span className="font-medium">Original Email:</span> {user.email}
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          </div>
-        )}
       </div>
     </div>
   );
