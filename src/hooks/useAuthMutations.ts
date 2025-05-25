@@ -1,4 +1,3 @@
-
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
 import { useToast } from '@/hooks/use-toast';
@@ -25,6 +24,7 @@ export interface AuthResponse {
     id: string;
     email: string;
     companyName: string;
+    invisiboxEmail: string;
   };
   token: string;
 }
@@ -66,7 +66,7 @@ export const useLoginMutation = () => {
     onError: (error: any) => {
       toast({
         title: "Login failed",
-        description: error.response?.data?.message || "Please check your credentials and try again.",
+        description: error.response?.data?.message || "Please check your InvisiBox email and password.",
         variant: "destructive",
       });
     },
@@ -74,7 +74,7 @@ export const useLoginMutation = () => {
 };
 
 export const useSignupMutation = () => {
-  const { setUser } = useAuthStore();
+  const { setUser, setShowWelcomeModal } = useAuthStore();
   const { toast } = useToast();
   const navigate = useNavigate();
   const queryClient = useQueryClient();
@@ -84,10 +84,7 @@ export const useSignupMutation = () => {
     onSuccess: (response: AuthResponse) => {
       setUser(response.user, response.token);
       queryClient.clear(); // Clear any existing queries
-      toast({
-        title: "Account created",
-        description: "Your management account has been successfully created.",
-      });
+      setShowWelcomeModal(true);
       navigate('/management/dashboard');
     },
     onError: (error: any) => {

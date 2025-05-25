@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -45,17 +46,17 @@ export default function LoginPage() {
             </div>
             <CardTitle className="text-xl sm:text-2xl font-bold break-words">Reset Password</CardTitle>
             <CardDescription className="text-sm sm:text-base break-words">
-              Enter your email address and we'll send you a link to reset your password.
+              Enter your InvisiBox email address and we'll send you a link to reset your password.
             </CardDescription>
           </CardHeader>
           <form onSubmit={handleForgotPassword}>
             <CardContent className="space-y-4 p-4 sm:p-6">
               <div className="space-y-2">
-                <Label htmlFor="reset-email" className="text-sm sm:text-base">Email</Label>
+                <Label htmlFor="reset-email" className="text-sm sm:text-base">InvisiBox Email</Label>
                 <Input 
                   id="reset-email"
                   type="email" 
-                  placeholder="name@company.com" 
+                  placeholder="yourcompany@invisibox.com" 
                   value={resetEmail}
                   onChange={(e) => setResetEmail(e.target.value)}
                   required
@@ -91,17 +92,17 @@ export default function LoginPage() {
           </div>
           <CardTitle className="text-xl sm:text-2xl font-bold break-words">Management Login</CardTitle>
           <CardDescription className="text-sm sm:text-base break-words">
-            Enter your credentials to access your company dashboard
+            Enter your InvisiBox email and password to access your company dashboard
           </CardDescription>
         </CardHeader>
         <form onSubmit={handleSubmit}>
           <CardContent className="space-y-4 p-4 sm:p-6">
             <div className="space-y-2">
-              <Label htmlFor="email" className="text-sm sm:text-base">Email</Label>
+              <Label htmlFor="email" className="text-sm sm:text-base">InvisiBox Email</Label>
               <Input 
                 id="email"
                 type="email" 
-                placeholder="name@company.com" 
+                placeholder="yourcompany@invisibox.com" 
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
@@ -138,6 +139,10 @@ export default function LoginPage() {
               Don't have an account?{' '}
               <Link to="/management/signup" className="text-purple-600 dark:text-purple-400 hover:underline font-medium">
                 Sign up here
+              </Link>
+              <br />
+              <Link to="/management/forgot-invisibox-email" className="text-purple-600 dark:text-purple-400 hover:underline font-medium text-xs">
+                Forgot your InvisiBox email?
               </Link>
             </div>
           </CardFooter>

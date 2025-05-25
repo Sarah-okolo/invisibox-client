@@ -4,16 +4,14 @@ import { Button } from '@/components/ui/button';
 import { Shield, LogOut } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import { ThemeToggle } from '@/components/ThemeToggle';
-import { useAuthStore } from '@/stores/authStore';
+import { useLogoutMutation } from '@/hooks/useAuthMutations';
 
 export default function Header() {
   const { user, isAuthenticated } = useAuth();
-  const { logout } = useAuthStore();
-  const navigate = useNavigate();
+  const logoutMutation = useLogoutMutation();
 
   const handleLogout = () => {
-    logout();
-    navigate('/');
+    logoutMutation.mutate();
   };
 
   return (
@@ -39,10 +37,11 @@ export default function Header() {
                 variant="outline"
                 size="sm"
                 onClick={handleLogout}
+                disabled={logoutMutation.isPending}
                 className="flex items-center space-x-2 border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 hover:bg-slate-100 dark:hover:bg-slate-800 text-gray-900 dark:text-gray-100"
               >
                 <LogOut className="w-4 h-4" />
-                <span>Logout</span>
+                <span>{logoutMutation.isPending ? 'Logging out...' : 'Logout'}</span>
               </Button>
             </>
           )}

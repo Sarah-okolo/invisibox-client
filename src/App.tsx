@@ -10,6 +10,7 @@ import LandingPage from "@/pages/LandingPage";
 import AnonymityGuidePage from "@/pages/AnonymityGuidePage";
 import LoginPage from "@/pages/management/LoginPage";
 import SignupPage from "@/pages/management/SignupPage";
+import ForgotInvisiboxEmailPage from "@/pages/management/ForgotInvisiboxEmailPage";
 import Dashboard from "@/pages/management/Dashboard";
 import SendMessagePage from "@/pages/management/SendMessagePage";
 import ViewMessagesPage from "@/pages/management/ViewMessagesPage";
@@ -48,6 +49,7 @@ const App = () => {
               {/* Management Routes */}
               <Route path="/management/login" element={<LoginPage />} />
               <Route path="/management/signup" element={<SignupPage />} />
+              <Route path="/management/forgot-invisibox-email" element={<ForgotInvisiboxEmailPage />} />
               <Route path="/management/dashboard" element={
                 <ProtectedRoute>
                   <Dashboard />

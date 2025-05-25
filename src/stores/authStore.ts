@@ -7,16 +7,19 @@ export interface User {
   id: string;
   email: string;
   companyName: string;
+  invisiboxEmail: string;
 }
 
 interface AuthState {
   user: User | null;
   isAuthenticated: boolean;
   isLoading: boolean;
+  showWelcomeModal: boolean;
   setUser: (user: User, token: string) => void;
   logout: () => void;
   initializeAuth: () => void;
   setLoading: (loading: boolean) => void;
+  setShowWelcomeModal: (show: boolean) => void;
 }
 
 export const useAuthStore = create<AuthState>()(
@@ -25,6 +28,7 @@ export const useAuthStore = create<AuthState>()(
       user: null,
       isAuthenticated: false,
       isLoading: true,
+      showWelcomeModal: false,
 
       setUser: (user: User, token: string) => {
         setCookie('auth_token', token, 7, true);
@@ -35,7 +39,7 @@ export const useAuthStore = create<AuthState>()(
       logout: () => {
         deleteCookie('auth_token');
         deleteCookie('user_data');
-        set({ user: null, isAuthenticated: false });
+        set({ user: null, isAuthenticated: false, showWelcomeModal: false });
       },
 
       initializeAuth: () => {
@@ -59,6 +63,10 @@ export const useAuthStore = create<AuthState>()(
 
       setLoading: (loading: boolean) => {
         set({ isLoading: loading });
+      },
+
+      setShowWelcomeModal: (show: boolean) => {
+        set({ showWelcomeModal: show });
       },
     }),
     {
