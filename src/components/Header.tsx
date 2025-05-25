@@ -1,12 +1,14 @@
 
-import { useAuth } from '@/contexts/AuthContext';
+import { useAuth } from '@/hooks/useAuth';
 import { Button } from '@/components/ui/button';
 import { Shield, LogOut } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import { ThemeToggle } from '@/components/ThemeToggle';
+import { useAuthStore } from '@/stores/authStore';
 
 export default function Header() {
-  const { user, logout, isAuthenticated } = useAuth();
+  const { user, isAuthenticated } = useAuth();
+  const { logout } = useAuthStore();
   const navigate = useNavigate();
 
   const handleLogout = () => {
