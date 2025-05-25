@@ -1,10 +1,10 @@
+
 import React, { useState } from 'react';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useToast } from '@/hooks/use-toast';
-import { useEmployee } from '@/contexts/EmployeeContext';
 import { Textarea } from "@/components/ui/textarea";
 import { Shield, Send, Lock, AlertCircle } from 'lucide-react';
 import { Link } from 'react-router-dom';
@@ -17,8 +17,16 @@ export default function SendAnonymousMessagePage() {
   const [subject, setSubject] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
-  const { validateAnonymousEmail } = useEmployee();
   const { toast } = useToast();
+
+  const validateAnonymousEmail = async (email: string): Promise<boolean> => {
+    // Simulate API call to validate anonymous email
+    // This would typically validate against backend
+    const isValidFormat = email.includes('@invisibox.com') && email.startsWith('emp');
+    return new Promise((resolve) => {
+      setTimeout(() => resolve(isValidFormat), 1000);
+    });
+  };
 
   const handleVerify = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -56,6 +64,16 @@ export default function SendAnonymousMessagePage() {
     setIsSubmitting(true);
     
     try {
+      // Prepare data for backend
+      const messageData = {
+        from: anonymousEmail,
+        subject,
+        message,
+        timestamp: new Date().toISOString()
+      };
+      
+      console.log('Anonymous message data ready for backend:', messageData);
+      
       // Simulate API call
       await new Promise(resolve => setTimeout(resolve, 1000));
       
