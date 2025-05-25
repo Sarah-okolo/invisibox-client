@@ -1,7 +1,6 @@
-
 import CryptoJS from 'crypto-js';
 
-const SECRET_KEY = 'invisibox-secret-key-2024'; // In production, this should be from env
+const SECRET_KEY = import.meta.env.VITE_SECRET_KEY || 'fallback-secret-key-2024';
 
 export const setCookie = (name: string, value: string, days: number = 7, encrypt: boolean = true) => {
   const expires = new Date();
