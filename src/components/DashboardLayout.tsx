@@ -37,23 +37,6 @@ function DashboardHeader() {
 
         <div className="flex items-center space-x-4">
           <ThemeToggle />
-          {user && (
-            <>
-              <span className="text-sm text-gray-600 dark:text-gray-300">
-                {user.companyName}
-              </span>
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={handleLogout}
-                disabled={logoutMutation.isPending}
-                className="flex items-center space-x-2 border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 hover:bg-slate-100 dark:hover:bg-slate-800 text-gray-900 dark:text-gray-100"
-              >
-                <LogOut className="w-4 h-4" />
-                <span>{logoutMutation.isPending ? 'Logging out...' : 'Logout'}</span>
-              </Button>
-            </>
-          )}
         </div>
       </div>
     </header>

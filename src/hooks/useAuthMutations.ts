@@ -5,7 +5,7 @@ import { useAuthStore } from '@/stores/authStore';
 import axiosInstance from '@/lib/axiosInstance';
 
 export interface LoginRequest {
-  email: string;
+  invisiboxEmail: string;
   password: string;
 }
 
@@ -20,12 +20,9 @@ export interface ResetPasswordRequest {
 }
 
 export interface AuthResponse {
-  user: {
-    id: string;
-    email: string;
-    companyName: string;
-    invisiboxEmail: string;
-  };
+  email: string;
+  invisiboxEmail: string;
+  companyName: string;
   token: string;
 }
 
@@ -55,7 +52,9 @@ export const useLoginMutation = () => {
   return useMutation({
     mutationFn: (data: LoginRequest) => authAPI.login(data),
     onSuccess: (response: AuthResponse) => {
-      setUser(response.user, response.token);
+      const {token, ...user} = response;
+      setUser(user, token);
+      console.log("User logged in successfully:", response);
       queryClient.clear(); // Clear any existing queries
       toast({
         title: "Login successful",
@@ -82,7 +81,9 @@ export const useSignupMutation = () => {
   return useMutation({
     mutationFn: (data: SignupRequest) => authAPI.signup(data),
     onSuccess: (response: AuthResponse) => {
-      setUser(response.user, response.token);
+      const {token, ...user} = response;
+      setUser(user, token);
+      console.log("User signed up successfully:", response);
       queryClient.clear(); // Clear any existing queries
       setShowWelcomeModal(true);
       navigate('/management/dashboard');

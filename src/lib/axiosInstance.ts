@@ -36,7 +36,7 @@ axiosInstance.interceptors.response.use(
       // Handle unauthorized access
       deleteCookie('auth_token');
       deleteCookie('user_data');
-      window.location.href = '/management/login';
+      // window.location.href = '/management/login';
     }
     return Promise.reject(error);
   }

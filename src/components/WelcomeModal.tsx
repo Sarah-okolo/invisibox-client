@@ -72,9 +72,9 @@ export default function WelcomeModal({ isOpen, onClose, companyName, invisiboxEm
           </div>
           
           <div className="text-sm text-gray-600 dark:text-gray-400 space-y-2">
-            <p>• Use this email address to log in to your management dashboard</p>
-            <p>• You can find this email anytime in your account settings</p>
-            <p>• Keep this email secure as it's your unique identifier</p>
+            <p>• Use this email address to log in to your account</p>
+            <p className="text-orange-400">• Share this email address with your employees</p>
+            <p>• You can find it anytime in your account settings</p>
           </div>
           
           <Button onClick={onClose} className="w-full">

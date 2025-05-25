@@ -1,4 +1,3 @@
-
 import { useAuth } from '@/hooks/useAuth';
 import { useAuthStore } from '@/stores/authStore';
 import WelcomeModal from '@/components/WelcomeModal';
@@ -6,14 +5,47 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Button } from "@/components/ui/button";
 import { Mail, Users, BarChart3, Settings, MessageSquare, Vote } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { useQuery } from '@tanstack/react-query';
+import { useEffect } from 'react';
+import axiosInstance from '@/lib/axiosInstance';
+import { useToast } from '@/hooks/use-toast';
+
 
 export default function Dashboard() {
+  const { toast } = useToast();
   const { user } = useAuth();
   const { showWelcomeModal, setShowWelcomeModal } = useAuthStore();
 
   const handleCloseWelcomeModal = () => {
     setShowWelcomeModal(false);
   };
+
+  // Query to get dashboard details
+  const dashboardDetails = useQuery({
+    queryKey: ['dashboardDetails'],
+    queryFn: async () => {
+      if (!user) return null;
+      const response = await axiosInstance.get(`/dashboard`);
+      return response.data;
+    },
+    enabled: !!user, // Only run if user is available
+  });
+
+  useEffect(() => {
+    if (dashboardDetails.isSuccess) {
+      // Handle successful data fetch if needed
+      console.log('Dashboard details fetched:', dashboardDetails.data);
+    }
+    if (dashboardDetails.isError) {
+      // Handle error in fetching data
+      toast({
+        title: "Error fetching dashboard details",
+        description: dashboardDetails.error.message,
+        variant: "destructive",
+      });
+    }
+  }, [dashboardDetails.isSuccess, dashboardDetails.isError]);
+
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 dark:from-black dark:to-slate-900">
@@ -43,7 +75,7 @@ export default function Dashboard() {
               <MessageSquare className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">42</div>
+              <div className="text-2xl font-bold">{dashboardDetails?.data?.messagesCount}</div>
               <p className="text-xs text-muted-foreground">+2 from last week</p>
             </CardContent>
           </Card>
@@ -54,7 +86,7 @@ export default function Dashboard() {
               <Vote className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">3</div>
+              <div className="text-2xl font-bold">{dashboardDetails?.data?.pollsCount}</div>
               <p className="text-xs text-muted-foreground">2 closing soon</p>
             </CardContent>
           </Card>
@@ -65,7 +97,7 @@ export default function Dashboard() {
               <Users className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">156</div>
+              <div className="text-2xl font-bold">{dashboardDetails?.data?.employeesCount}</div>
               <p className="text-xs text-muted-foreground">+12 this month</p>
             </CardContent>
           </Card>

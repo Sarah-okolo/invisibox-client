@@ -20,7 +20,7 @@ export default function LoginPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    loginMutation.mutate({ email, password });
+    loginMutation.mutate({ invisiboxEmail:email, password });
   };
 
   const handleForgotPassword = async (e: React.FormEvent) => {

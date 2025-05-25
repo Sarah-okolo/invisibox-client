@@ -1,29 +1,10 @@
 
-import {
-  Sidebar,
-  SidebarContent,
-  SidebarGroup,
-  SidebarGroupContent,
-  SidebarGroupLabel,
-  SidebarMenu,
-  SidebarMenuButton,
-  SidebarMenuItem,
-  SidebarHeader,
-  SidebarFooter,
-} from "@/components/ui/sidebar";
+import { Sidebar, SidebarContent, SidebarGroup, SidebarGroupContent, SidebarGroupLabel, SidebarMenu, SidebarMenuButton, SidebarMenuItem, SidebarHeader, SidebarFooter, } from "@/components/ui/sidebar";
 import { useAuth } from '@/hooks/useAuth';
 import { Link, useLocation } from 'react-router-dom';
-import { 
-  LayoutDashboard, 
-  MessageSquare, 
-  Vote, 
-  Users, 
-  Settings, 
-  Send,
-  Eye,
-  PlusCircle,
-  BarChart3
-} from 'lucide-react';
+import { LayoutDashboard, LogOut, MessageSquare, Vote, Users, Settings, Send, Eye, PlusCircle, BarChart3 } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { useLogoutMutation } from '@/hooks/useAuthMutations';
 
 const menuItems = [
   {
@@ -71,6 +52,11 @@ const menuItems = [
 export function AppSidebar() {
   const { user } = useAuth();
   const location = useLocation();
+  const logoutMutation = useLogoutMutation();
+
+   const handleLogout = () => {
+    logoutMutation.mutate();
+  };
 
   return (
     <Sidebar>
@@ -94,10 +80,11 @@ export function AppSidebar() {
           <SidebarGroupContent>
             <SidebarMenu>
               {menuItems.map((item) => (
-                <SidebarMenuItem key={item.title}>
+                <SidebarMenuItem key={item.title} className="my-1">
                   <SidebarMenuButton 
                     asChild
                     isActive={location.pathname === item.url}
+                    className={`${location.pathname === item.url ? '!bg-purple-600 !text-white/80' : 'text-muted-foreground'}`}
                   >
                     <Link to={item.url}>
                       <item.icon />
@@ -112,8 +99,17 @@ export function AppSidebar() {
       </SidebarContent>
       
       <SidebarFooter className="border-t p-4">
-        <div className="text-xs text-muted-foreground">
-          <p className="truncate">{user?.invisiboxEmail}</p>
+        <div className="flex flex-col items-center gap-2">
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={handleLogout}
+            disabled={logoutMutation.isPending}
+            className="flex w-max items-center space-x-1 border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 hover:bg-slate-100 dark:hover:bg-slate-800 text-gray-900 dark:text-gray-100"
+          >
+            <LogOut className="w-4 h-4" />
+            <span>{logoutMutation.isPending ? 'Logging out...' : 'Logout'}</span>
+          </Button>
         </div>
       </SidebarFooter>
     </Sidebar>

@@ -4,7 +4,7 @@ import { persist } from 'zustand/middleware';
 import { setCookie, getCookie, deleteCookie } from '@/lib/cookieUtils';
 
 export interface User {
-  id: string;
+  // id: string;
   email: string;
   companyName: string;
   invisiboxEmail: string;

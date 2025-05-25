@@ -137,7 +137,7 @@ export default function SettingsPage() {
               <span>Change Password</span>
             </CardTitle>
             <CardDescription>
-              Update your password for enhanced security
+              Here you can change your account password. Make sure to use a strong password.
             </CardDescription>
           </CardHeader>
           <form onSubmit={handlePasswordChange}>
