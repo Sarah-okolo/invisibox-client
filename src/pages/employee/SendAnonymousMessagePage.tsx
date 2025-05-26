@@ -239,12 +239,14 @@ export default function SendAnonymousMessagePage() {
   );
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-4 bg-gradient-to-br from-slate-50 to-blue-50 dark:from-black dark:to-slate-900">
+    <div className="min-h-screen flex items-center justify-center p-4 py-16 bg-gradient-to-br from-slate-50 to-blue-50 dark:from-black dark:to-slate-900">
       <Card className="w-full max-w-md">
         <CardHeader className="text-center">
-          <div className="w-16 h-16 bg-gradient-to-br from-purple-600 to-pink-600 rounded-3xl flex items-center justify-center mx-auto mb-4">
-            <Shield className="w-8 h-8 text-white" />
-          </div>
+          <Link to="/" className="flex justify-center mb-4">
+            <div className="w-16 h-16 bg-gradient-to-br from-purple-600 to-pink-600 rounded-3xl flex items-center justify-center">
+              <Shield className="w-8 h-8 text-white" />
+            </div>
+          </Link>
           <CardTitle className="text-2xl font-bold">Send Anonymous Message</CardTitle>
           <CardDescription>
             Communicate with your company management while keeping your identity private.

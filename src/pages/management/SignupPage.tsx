@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -36,12 +37,14 @@ export default function SignupPage() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-4 py-12 bg-gradient-to-br from-slate-50 to-blue-50 dark:from-black dark:to-slate-900 overflow-x-hidden">
+    <div className="min-h-screen flex items-center justify-center p-4 py-16 bg-gradient-to-br from-slate-50 to-blue-50 dark:from-black dark:to-slate-900 overflow-x-hidden">
       <Card className="w-full max-w-md overflow-hidden">
         <CardHeader className="text-center p-4 sm:p-6">
-          <div className="w-12 h-12 sm:w-16 sm:h-16 bg-gradient-to-br from-purple-600 to-pink-600 rounded-3xl flex items-center justify-center mx-auto mb-3 sm:mb-4">
-            <Shield className="w-6 h-6 sm:w-8 sm:h-8 text-white" />
-          </div>
+          <Link to="/" className="flex justify-center mb-3 sm:mb-4">
+            <div className="w-12 h-12 sm:w-16 sm:h-16 bg-gradient-to-br from-purple-600 to-pink-600 rounded-3xl flex items-center justify-center">
+              <Shield className="w-6 h-6 sm:w-8 sm:h-8 text-white" />
+            </div>
+          </Link>
           <CardTitle className="text-xl sm:text-2xl font-bold break-words">Create Management Account</CardTitle>
           <CardDescription className="text-sm sm:text-base break-words">
             Sign up for a company management account on InvisiBox
