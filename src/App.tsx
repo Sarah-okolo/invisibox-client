@@ -18,7 +18,6 @@ import CreatePollPage from "@/pages/management/CreatePollPage";
 import ViewPollsPage from "@/pages/management/ViewPollsPage";
 import SettingsPage from "@/pages/management/SettingsPage";
 import ManageSubscribersPage from "@/pages/management/ManageSubscribersPage";
-import AnalyticsPage from "@/pages/management/AnalyticsPage";
 import EmployeeSubscribePage from "@/pages/employee/EmployeeSubscribePage";
 import EmployeeUnsubscribePage from "@/pages/employee/EmployeeUnsubscribePage";
 import ReplyToMessagePage from "@/pages/employee/ReplyToMessagePage";
@@ -100,13 +99,6 @@ const App = () => {
                 <ProtectedRoute>
                   <DashboardLayout>
                     <ManageSubscribersPage />
-                  </DashboardLayout>
-                </ProtectedRoute>
-              } />
-              <Route path="/management/analytics" element={
-                <ProtectedRoute>
-                  <DashboardLayout>
-                    <AnalyticsPage />
                   </DashboardLayout>
                 </ProtectedRoute>
               } />

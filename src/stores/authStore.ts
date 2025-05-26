@@ -39,6 +39,7 @@ export const useAuthStore = create<AuthState>()(
       logout: () => {
         deleteCookie('auth_token');
         deleteCookie('user_data');
+        // Don't clear theme from localStorage on logout
         set({ user: null, isAuthenticated: false, showWelcomeModal: false });
       },
 
