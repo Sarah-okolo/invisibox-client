@@ -72,7 +72,7 @@ export default function EmployeeSubscribePage() {
         </CardHeader>
         <form onSubmit={handleSubmit}>
           <CardContent className="space-y-4">
-            <div className="space-y-2">
+            <div className="space-y-1">
               <Label htmlFor="email">Your Email Address</Label>
               <Input
                 id="email"
@@ -83,6 +83,9 @@ export default function EmployeeSubscribePage() {
                 required
               />
             </div>
+            <p className="text-xs text-orange-500">
+              • Note: Your email address will never be shared with your company.
+            </p>
             <div className="space-y-2">
               <Label htmlFor="companyEmail">Company InvisiBox Email</Label>
               <Input
@@ -101,7 +104,7 @@ export default function EmployeeSubscribePage() {
               {isLoading ? 'Subscribing...' : 'Subscribe'}
             </Button>
             <div className="text-center text-sm text-muted-foreground">
-              <Link to="/anonymity-guide" className="text-purple-600 hover:underline">
+              <Link to="/anonymity-guide" className="text-purple-400 hover:underline">
                 Learn about our anonymity features
               </Link>
             </div>

@@ -1,7 +1,7 @@
 
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
-import { Shield, MessageSquare, Users, Eye, Lock, ArrowRight } from 'lucide-react';
+import { Shield, MessageSquare, Users, CircleOff, Lock, ArrowRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import Header from '@/components/Header';
 
@@ -58,24 +58,24 @@ export default function LandingPage() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8 mb-8 sm:mb-12">
             <Card className="bg-white/60 dark:bg-gray-800/60 backdrop-blur-sm border-white/20 dark:border-gray-700/20 hover:shadow-lg transition-all duration-300 rounded-3xl overflow-hidden">
               <CardContent className="p-6 sm:p-8 text-center">
-                <div className="w-12 h-12 sm:w-16 sm:h-16 bg-gradient-to-br from-blue-500 to-purple-600 rounded-3xl flex items-center justify-center mx-auto mb-4 sm:mb-6">
-                  <Lock className="w-6 h-6 sm:w-8 sm:h-8 text-white" />
+                <div className="w-12 h-12 sm:w-16 sm:h-16 bg-gradient-to-br from-purple-500 to-pink-600 rounded-3xl flex items-center justify-center mx-auto mb-4 sm:mb-6">
+                  <CircleOff className="w-6 h-6 sm:w-8 sm:h-8 text-white" />
                 </div>
-                <h3 className="text-lg sm:text-xl font-semibold mb-3 sm:mb-4 text-gray-900 dark:text-gray-100 break-words">Anonymous Identity</h3>
+                <h3 className="text-lg sm:text-xl font-semibold mb-3 sm:mb-4 text-gray-900 dark:text-gray-100 break-words">No Account Required</h3>
                 <p className="text-sm sm:text-base text-gray-600 dark:text-gray-300 leading-relaxed break-words">
-                  Employees get a unique proxy email (emp9x83xxx@invisibox.com) that completely masks their real identity.
+                  Employees simply subscribe with their email. No password, no profile, no tracking across sessions.
                 </p>
               </CardContent>
             </Card>
 
             <Card className="bg-white/60 dark:bg-gray-800/60 backdrop-blur-sm border-white/20 dark:border-gray-700/20 hover:shadow-lg transition-all duration-300 rounded-3xl overflow-hidden">
               <CardContent className="p-6 sm:p-8 text-center">
-                <div className="w-12 h-12 sm:w-16 sm:h-16 bg-gradient-to-br from-purple-500 to-pink-600 rounded-3xl flex items-center justify-center mx-auto mb-4 sm:mb-6">
-                  <Shield className="w-6 h-6 sm:w-8 sm:h-8 text-white" />
+                <div className="w-12 h-12 sm:w-16 sm:h-16 bg-gradient-to-br from-blue-500 to-purple-600 rounded-3xl flex items-center justify-center mx-auto mb-4 sm:mb-6">
+                  <Lock className="w-6 h-6 sm:w-8 sm:h-8 text-white" />
                 </div>
-                <h3 className="text-lg sm:text-xl font-semibold mb-3 sm:mb-4 text-gray-900 dark:text-gray-100 break-words">No Account Required</h3>
+                <h3 className="text-lg sm:text-xl font-semibold mb-3 sm:mb-4 text-gray-900 dark:text-gray-100 break-words">Anonymous Identity</h3>
                 <p className="text-sm sm:text-base text-gray-600 dark:text-gray-300 leading-relaxed break-words">
-                  Employees simply subscribe with their email. No password, no profile, no tracking across sessions.
+                  Employees get a unique proxy email (emp9x83xxx@invisibox.com) that completely masks their real identity.
                 </p>
               </CardContent>
             </Card>
