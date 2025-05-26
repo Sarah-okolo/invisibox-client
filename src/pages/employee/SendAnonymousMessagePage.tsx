@@ -6,7 +6,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Shield, Send, Lock, AlertCircle } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import { useVerifyAnonymousEmailMutation } from '@/hooks/useEmployeeMutations';
+import { useVerifyAnonymousEmailMutation, useSendAnonymousMessageMutation } from '@/hooks/useEmployeeMutations';
 import { useToast } from '@/hooks/use-toast';
 
 export default function SendAnonymousMessagePage() {
@@ -14,15 +14,24 @@ export default function SendAnonymousMessagePage() {
   const [anonymousEmail, setAnonymousEmail] = useState('');
   const [message, setMessage] = useState('');
   const [subject, setSubject] = useState('');
-  const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const { toast } = useToast();
   
   const verifyEmailMutation = useVerifyAnonymousEmailMutation();
+  const sendMessageMutation = useSendAnonymousMessageMutation();
 
   const handleVerify = async (e: React.FormEvent) => {
     e.preventDefault();
     
+    if (!anonymousEmail) {
+      toast({
+        title: "Email required",
+        description: "Please enter your anonymous email address.",
+        variant: "destructive",
+      });
+      return;
+    }
+
     verifyEmailMutation.mutate({
       anonymousEmail
     }, {
@@ -36,37 +45,25 @@ export default function SendAnonymousMessagePage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setIsSubmitting(true);
     
-    try {
-      // Prepare data for backend
-      const messageData = {
-        from: anonymousEmail,
-        subject,
-        message,
-        timestamp: new Date().toISOString()
-      };
-      
-      console.log('Anonymous message data ready for backend:', messageData);
-      
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      
+    if (!subject || !message) {
       toast({
-        title: "Message sent",
-        description: "Your anonymous message has been delivered to the company.",
-      });
-      
-      setSubmitted(true);
-    } catch (error) {
-      toast({
-        title: "Failed to send message",
-        description: "There was an error sending your message. Please try again.",
+        title: "Fields required",
+        description: "Please fill in both subject and message.",
         variant: "destructive",
       });
-    } finally {
-      setIsSubmitting(false);
+      return;
     }
+
+    sendMessageMutation.mutate({
+      from: anonymousEmail,
+      subject,
+      message,
+    }, {
+      onSuccess: () => {
+        setSubmitted(true);
+      }
+    });
   };
 
   const renderStep1 = () => (
@@ -169,9 +166,9 @@ export default function SendAnonymousMessagePage() {
       </CardContent>
       
       <CardFooter className="flex flex-col space-y-4">
-        <Button className="w-full" type="submit" disabled={isSubmitting}>
+        <Button className="w-full" type="submit" disabled={sendMessageMutation.isPending}>
           <Send className="h-4 w-4 mr-2" />
-          {isSubmitting ? 'Sending...' : 'Send Anonymous Message'}
+          {sendMessageMutation.isPending ? 'Sending...' : 'Send Anonymous Message'}
         </Button>
         <Link to="/" className="w-full">
           <Button variant="ghost" className="w-full">
