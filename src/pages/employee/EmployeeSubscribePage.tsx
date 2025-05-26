@@ -4,60 +4,39 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { useToast } from '@/hooks/use-toast';
-import { Shield, Mail } from 'lucide-react';
+import { Shield } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { useSubscribeMutation } from '@/hooks/useEmployeeMutations';
 
 export default function EmployeeSubscribePage() {
   const [email, setEmail] = useState('');
   const [companyEmail, setCompanyEmail] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
-  const { toast } = useToast();
+  const subscribeMutation = useSubscribeMutation();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
     if (!email || !companyEmail) {
-      toast({
-        title: "Missing information",
-        description: "Please fill in all fields.",
-        variant: "destructive",
-      });
       return;
     }
 
     if (!email.includes('@') || !companyEmail.includes('@invisibox.com')) {
-      toast({
-        title: "Invalid email format",
-        description: "Please enter valid email addresses.",
-        variant: "destructive",
-      });
       return;
     }
 
-    setIsLoading(true);
-    
-    const subscriptionData = {
+    subscribeMutation.mutate({
       employeeEmail: email,
       companyInvisiboxEmail: companyEmail,
-    };
-    
-    console.log('Subscription data ready for backend:', subscriptionData);
-    
-    // Simulate API call
-    setTimeout(() => {
-      setIsLoading(false);
-      toast({
-        title: "Subscription successful!",
-        description: "You have been subscribed to anonymous communications.",
-      });
-      setEmail('');
-      setCompanyEmail('');
-    }, 1000);
+    }, {
+      onSuccess: () => {
+        setEmail('');
+        setCompanyEmail('');
+      }
+    });
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 dark:from-black dark:to-slate-900 flex items-center justify-center p-4 py-16">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 dark:from-black dark:to-slate-900 flex items-center justify-center p-4 py-32">
       <Card className="w-full max-w-md">
         <CardHeader className="text-center">
           <Link to="/" className="flex justify-center mb-4">
@@ -100,12 +79,12 @@ export default function EmployeeSubscribePage() {
                 Ask your HR or management for this email address
               </p>
             </div>
-            <Button type="submit" className="w-full" disabled={isLoading}>
-              {isLoading ? 'Subscribing...' : 'Subscribe'}
+            <Button type="submit" className="w-full" disabled={subscribeMutation.isPending}>
+              {subscribeMutation.isPending ? 'Subscribing...' : 'Subscribe'}
             </Button>
             <div className="text-center text-sm text-muted-foreground">
-              <Link to="/anonymity-guide" className="text-purple-400 hover:underline">
-                Learn about our anonymity features
+              <Link to="/privacy-protection" className="text-purple-400 hover:underline">
+                Learn about our privacy protection
               </Link>
             </div>
           </CardContent>

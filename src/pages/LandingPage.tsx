@@ -94,7 +94,7 @@ export default function LandingPage() {
           </div>
 
           <div className="text-center px-2">
-            <Link to="/anonymity-guide">
+            <Link to="/privacy-protection">
               <Button variant="outline" size="lg" className="text-base sm:text-lg px-6 sm:px-8 rounded-3xl">
                 <span className="hidden sm:inline">Learn More About Our Privacy Protection</span>
                 <span className="sm:hidden">Privacy Guide</span>
@@ -173,6 +173,11 @@ export default function LandingPage() {
               <div className="space-y-4">
                 <h4 className="font-semibold text-gray-900 dark:text-gray-100 text-sm sm:text-base">Privacy</h4>
                 <ul className="space-y-2 text-xs sm:text-sm text-gray-600 dark:text-gray-300">
+                  <li>
+                    <Link to="/privacy-protection" className="hover:text-purple-600 dark:hover:text-purple-400 transition-colors break-words">
+                      Privacy Protection
+                    </Link>
+                  </li>
                   <li>
                     <Link to="/anonymity-guide" className="hover:text-purple-600 dark:hover:text-purple-400 transition-colors break-words">
                       Anonymity Guide

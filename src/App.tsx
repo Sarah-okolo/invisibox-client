@@ -8,6 +8,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 // Pages
 import LandingPage from "@/pages/LandingPage";
 import AnonymityGuidePage from "@/pages/AnonymityGuidePage";
+import PrivacyProtectionPage from "@/pages/PrivacyProtectionPage";
 import LoginPage from "@/pages/management/LoginPage";
 import SignupPage from "@/pages/management/SignupPage";
 import ForgotInvisiboxEmailPage from "@/pages/management/ForgotInvisiboxEmailPage";
@@ -48,6 +49,7 @@ const App = () => {
             <Routes>
               <Route path="/" element={<LandingPage />} />
               <Route path="/anonymity-guide" element={<AnonymityGuidePage />} />
+              <Route path="/privacy-protection" element={<PrivacyProtectionPage />} />
               
               {/* Management Routes */}
               <Route path="/management/login" element={<LoginPage />} />

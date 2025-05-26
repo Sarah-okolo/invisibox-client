@@ -1,62 +1,37 @@
-
 import React, { useState } from 'react';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { useToast } from '@/hooks/use-toast';
 import { Textarea } from "@/components/ui/textarea";
 import { Shield, Send, Lock, AlertCircle } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { useVerifyAnonymousEmailMutation } from '@/hooks/useEmployeeMutations';
+import { useToast } from '@/hooks/use-toast';
 
 export default function SendAnonymousMessagePage() {
   const [step, setStep] = useState(1);
   const [anonymousEmail, setAnonymousEmail] = useState('');
-  const [isVerifying, setIsVerifying] = useState(false);
   const [message, setMessage] = useState('');
   const [subject, setSubject] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const { toast } = useToast();
-
-  const validateAnonymousEmail = async (email: string): Promise<boolean> => {
-    // Simulate API call to validate anonymous email
-    // This would typically validate against backend
-    const isValidFormat = email.includes('@invisibox.com') && email.startsWith('emp');
-    return new Promise((resolve) => {
-      setTimeout(() => resolve(isValidFormat), 1000);
-    });
-  };
+  
+  const verifyEmailMutation = useVerifyAnonymousEmailMutation();
 
   const handleVerify = async (e: React.FormEvent) => {
     e.preventDefault();
-    setIsVerifying(true);
     
-    try {
-      const isValid = await validateAnonymousEmail(anonymousEmail);
-      
-      if (isValid) {
-        toast({
-          title: "Email verified",
-          description: "You can now send an anonymous message.",
-        });
-        setStep(2);
-      } else {
-        toast({
-          title: "Invalid email",
-          description: "This doesn't appear to be a valid InvisiBox anonymous email.",
-          variant: "destructive",
-        });
+    verifyEmailMutation.mutate({
+      anonymousEmail
+    }, {
+      onSuccess: (response) => {
+        if (response.isValid) {
+          setStep(2);
+        }
       }
-    } catch (error) {
-      toast({
-        title: "Verification failed",
-        description: "There was an error verifying your anonymous email.",
-        variant: "destructive",
-      });
-    } finally {
-      setIsVerifying(false);
-    }
+    });
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -122,14 +97,14 @@ export default function SendAnonymousMessagePage() {
         <div className="bg-purple-50 dark:bg-purple-900/20 border border-purple-200 dark:border-purple-800 rounded-lg p-4 text-sm text-purple-800 dark:text-purple-200 flex items-start">
           <Shield className="h-5 w-5 mr-2 flex-shrink-0" />
           <p>
-            Need help staying anonymous? Check out our <Link to="/anonymity-guide" className="font-medium underline hover:text-purple-700 dark:hover:text-purple-300">Anonymity Guide</Link> for best practices.
+            Need help staying anonymous? Check out our <Link to="/privacy-protection" className="font-medium underline hover:text-purple-700 dark:hover:text-purple-300">Privacy Protection Guide</Link> for best practices.
           </p>
         </div>
       </CardContent>
       
       <CardFooter className="flex flex-col space-y-4">
-        <Button className="w-full" type="submit" disabled={isVerifying}>
-          {isVerifying ? 'Verifying...' : 'Verify Anonymous Email'}
+        <Button className="w-full" type="submit" disabled={verifyEmailMutation.isPending}>
+          {verifyEmailMutation.isPending ? 'Verifying...' : 'Verify Anonymous Email'}
         </Button>
         <Link to="/" className="w-full">
           <Button variant="ghost" className="w-full">
@@ -239,7 +214,7 @@ export default function SendAnonymousMessagePage() {
   );
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-4 py-16 bg-gradient-to-br from-slate-50 to-blue-50 dark:from-black dark:to-slate-900">
+    <div className="min-h-screen flex items-center justify-center p-4 py-32 bg-gradient-to-br from-slate-50 to-blue-50 dark:from-black dark:to-slate-900">
       <Card className="w-full max-w-md">
         <CardHeader className="text-center">
           <Link to="/" className="flex justify-center mb-4">
