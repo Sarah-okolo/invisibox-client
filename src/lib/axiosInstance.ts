@@ -32,11 +32,11 @@ axiosInstance.interceptors.request.use(
 axiosInstance.interceptors.response.use(
   (response) => response,
   (error) => {
-    if (error.response?.status === 401) {
-      // Handle unauthorized access
+    if (error.response?.status === 401 || error.response.status === 403) {
+      // Handle unauthorized or forbidden access
       deleteCookie('auth_token');
       deleteCookie('user_data');
-      // window.location.href = '/management/login';
+      window.location.href = '/management/login';
     }
     return Promise.reject(error);
   }
