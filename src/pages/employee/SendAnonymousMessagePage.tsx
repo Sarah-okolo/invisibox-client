@@ -94,10 +94,10 @@ export default function SendAnonymousMessagePage() {
           </p>
         </div>
         
-        <div className="bg-purple-50 dark:bg-purple-900/20 border border-purple-200 dark:border-purple-800 rounded-lg p-4 text-sm text-purple-800 dark:text-purple-200 flex items-start">
+        <div className="pt-4 p-2 text-sm text-purple-800 dark:text-purple-200 flex items-center justify-center">
           <Shield className="h-5 w-5 mr-2 flex-shrink-0" />
           <p>
-            Need help staying anonymous? Check out our <Link to="/privacy-protection" className="font-medium underline hover:text-purple-700 dark:hover:text-purple-300">Privacy Protection Guide</Link> for best practices.
+           <Link to="/privacy-protection" className="font-medium underline hover:text-purple-700 dark:hover:text-purple-300"> How we keep you protected</Link>
           </p>
         </div>
       </CardContent>
@@ -161,8 +161,7 @@ export default function SendAnonymousMessagePage() {
           <div>
             <p className="font-medium mb-1">Important:</p>
             <p>
-              While your identity is protected, please ensure your message follows company 
-              communication guidelines. Avoid including personally identifying details in your message.
+              While your identity is protected, check out our <Link to="/anonymity-guide" className="font-medium underline hover:text-purple-700 dark:hover:text-purple-300">Anonymity Guide</Link> for best practices.
             </p>
           </div>
         </div>
