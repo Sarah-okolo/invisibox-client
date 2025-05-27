@@ -7,20 +7,41 @@ import { Label } from '@/components/ui/label';
 import { Shield } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useSubscribeMutation } from '@/hooks/useEmployeeMutations';
+import { useToast } from '@/hooks/use-toast';
 
 export default function EmployeeSubscribePage() {
   const [email, setEmail] = useState('');
   const [companyEmail, setCompanyEmail] = useState('');
   const subscribeMutation = useSubscribeMutation();
+  const { toast } = useToast();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
     if (!email || !companyEmail) {
+      toast({
+        title: "Fields required",
+        description: "Please fill in both email fields.",
+        variant: "destructive",
+      });
       return;
     }
 
-    if (!email.includes('@') || !companyEmail.includes('@invisibox.com')) {
+    if (!email.includes('@')) {
+      toast({
+        title: "Invalid email",
+        description: "Please enter a valid email address.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    if (!companyEmail.includes('@invisibox.com')) {
+      toast({
+        title: "Invalid company email",
+        description: "Company email must be an @invisibox.com address.",
+        variant: "destructive",
+      });
       return;
     }
 
