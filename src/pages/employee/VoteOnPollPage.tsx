@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -64,7 +63,7 @@ export default function VoteOnPollPage() {
 
   if (hasVoted) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 dark:from-black dark:to-slate-900 flex items-center justify-center p-4">
+      <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 dark:from-black dark:to-slate-900 flex items-center justify-center p-4 py-16">
         <Card className="w-full max-w-md text-center">
           <CardContent className="pt-6">
             <CheckCircle className="w-16 h-16 text-green-500 mx-auto mb-4" />
@@ -82,8 +81,8 @@ export default function VoteOnPollPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 dark:from-black dark:to-slate-900 p-4">
-      <div className="container mx-auto max-w-2xl py-8">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 dark:from-black dark:to-slate-900 p-4 py-16">
+      <div className="container mx-auto max-w-2xl">
         <Link to="/" className="flex items-center mb-8">
           <div className="w-8 h-8 bg-gradient-to-br from-purple-600 to-pink-600 rounded-lg flex items-center justify-center mr-3">
             <Shield className="w-5 h-5 text-white" />
@@ -96,7 +95,7 @@ export default function VoteOnPollPage() {
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
-              <Vote className="w-5 h-5" />
+              <Vote className="w-5 w-5" />
               {poll.title}
             </CardTitle>
             <CardDescription>
