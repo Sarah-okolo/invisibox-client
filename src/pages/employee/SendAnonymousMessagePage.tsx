@@ -33,7 +33,7 @@ export default function SendAnonymousMessagePage() {
     }
 
     verifyEmailMutation.mutate({
-      anonymousEmail
+      invisiboxEmail: anonymousEmail
     }, {
       onSuccess: (response) => {
         if (response.isValid) {
@@ -74,7 +74,7 @@ export default function SendAnonymousMessagePage() {
           <Input 
             id="anonymous-email"
             type="email" 
-            placeholder="empXXXXXX@invisibox.com" 
+            placeholder="empXXXXXX@invisibox.email" 
             value={anonymousEmail}
             onChange={(e) => setAnonymousEmail(e.target.value)}
             required

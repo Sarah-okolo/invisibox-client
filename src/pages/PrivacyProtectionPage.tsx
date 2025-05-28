@@ -60,7 +60,7 @@ export default function PrivacyProtectionPage() {
                 </div>
                 <h3 className="text-xl font-semibold mb-4 text-gray-900 dark:text-gray-100">Anonymous Identity</h3>
                 <p className="text-gray-600 dark:text-gray-300 leading-relaxed">
-                  Each employee gets a unique proxy email (emp9x83xxx@invisibox.com) that completely 
+                  Each employee gets a unique proxy email (emp9x83xxx@invisibox.email) that completely 
                   masks their real identity from management.
                 </p>
               </CardContent>
@@ -143,7 +143,7 @@ export default function PrivacyProtectionPage() {
                     This email is cryptographically generated and cannot be reverse-engineered to reveal your real email address.
                   </p>
                   <ul className="text-sm text-gray-500 dark:text-gray-400 space-y-1">
-                    <li>• Format: emp[random-string]@invisibox.com</li>
+                    <li>• Format: emp[random-string]@invisibox.email</li>
                     <li>• One-way mapping (cannot be reversed)</li>
                     <li>• Unique per company subscription</li>
                   </ul>

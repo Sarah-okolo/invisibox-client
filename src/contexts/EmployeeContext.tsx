@@ -35,7 +35,7 @@ export function EmployeeProvider({ children }: EmployeeProviderProps) {
   const validateAnonymousEmail = async (email: string): Promise<boolean> => {
     // Simulate API call to validate anonymous email
     await new Promise(resolve => setTimeout(resolve, 500));
-    return email.includes('@invisibox.com') && email.startsWith('emp');
+    return email.includes('@invisibox.email') && email.startsWith('emp');
   };
 
   const subscribe = async (realEmail: string, companyChannel: string): Promise<string> => {
@@ -44,7 +44,7 @@ export function EmployeeProvider({ children }: EmployeeProviderProps) {
     
     // Generate mock anonymous email
     const randomId = Math.random().toString(36).substring(2, 9);
-    const anonymousEmail = `emp${randomId}@invisibox.com`;
+    const anonymousEmail = `emp${randomId}@invisibox.email`;
     
     return anonymousEmail;
   };

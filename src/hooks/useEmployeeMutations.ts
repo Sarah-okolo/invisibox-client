@@ -4,12 +4,12 @@ import { useToast } from '@/hooks/use-toast';
 import axiosInstance from '@/lib/axiosInstance';
 
 export interface VerifyAnonymousEmailRequest {
-  anonymousEmail: string;
+  invisiboxEmail: string;
 }
 
 export interface SubscribeRequest {
-  employeeEmail: string;
-  companyInvisiboxEmail: string;
+  email: string;
+  invisiboxEmail: string;
 }
 
 export interface SendAnonymousMessageRequest {
@@ -94,7 +94,7 @@ export const useSubscribeMutation = () => {
       console.log('Subscription response:', response);
       toast({
         title: "Subscription successful!",
-        description: `You have been subscribed. Your anonymous email is: ${response.anonymousEmail}`,
+        description: `You have been subscribed. `,
       });
     },
     onError: (error: any) => {

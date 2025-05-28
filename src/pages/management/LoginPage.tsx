@@ -58,7 +58,7 @@ export default function LoginPage() {
                 <Input 
                   id="reset-email"
                   type="email" 
-                  placeholder="yourcompany@invisibox.com" 
+                  placeholder="yourcompany@invisibox.email" 
                   value={resetEmail}
                   onChange={(e) => setResetEmail(e.target.value)}
                   required
@@ -106,7 +106,7 @@ export default function LoginPage() {
               <Input 
                 id="email"
                 type="email" 
-                placeholder="yourcompany@invisibox.com" 
+                placeholder="yourcompany@invisibox.email" 
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required

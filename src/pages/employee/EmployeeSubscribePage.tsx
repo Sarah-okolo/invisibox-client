@@ -36,18 +36,18 @@ export default function EmployeeSubscribePage() {
       return;
     }
 
-    if (!companyEmail.includes('@invisibox.com')) {
+    if (!companyEmail.includes('@invisibox.email')) {
       toast({
         title: "Invalid company email",
-        description: "Company email must be an @invisibox.com address.",
+        description: "Company email must be an @invisibox.email address.",
         variant: "destructive",
       });
       return;
     }
 
     subscribeMutation.mutate({
-      employeeEmail: email,
-      companyInvisiboxEmail: companyEmail,
+      email,
+      invisiboxEmail: companyEmail,
     }, {
       onSuccess: () => {
         setEmail('');
@@ -91,7 +91,7 @@ export default function EmployeeSubscribePage() {
               <Input
                 id="companyEmail"
                 type="email"
-                placeholder="yourcompany@invisibox.com"
+                placeholder="yourcompany@invisibox.email"
                 value={companyEmail}
                 onChange={(e) => setCompanyEmail(e.target.value)}
                 required

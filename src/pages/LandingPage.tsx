@@ -75,7 +75,7 @@ export default function LandingPage() {
                 </div>
                 <h3 className="text-lg sm:text-xl font-semibold mb-3 sm:mb-4 text-gray-900 dark:text-gray-100 break-words">Anonymous Identity</h3>
                 <p className="text-sm sm:text-base text-gray-600 dark:text-gray-300 leading-relaxed break-words">
-                  Employees get a unique proxy email (emp9x83xxx@invisibox.com) that completely masks their real identity.
+                  Employees get a unique proxy email (emp9x83xxx@invisibox.email) that completely masks their real identity.
                 </p>
               </CardContent>
             </Card>
