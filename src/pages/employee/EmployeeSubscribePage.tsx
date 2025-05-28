@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -69,7 +68,7 @@ export default function EmployeeSubscribePage() {
 
   if (subscriptionSuccess) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 dark:from-black dark:to-slate-900 flex items-center justify-center p-4 py-32">
+      <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 dark:from-black dark:to-slate-900 flex items-center justify-center p-4 py-16">
         <Card className="w-full max-w-md">
           <CardHeader className="text-center">
             <Link to="/" className="flex justify-center mb-4">
@@ -131,7 +130,7 @@ export default function EmployeeSubscribePage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 dark:from-black dark:to-slate-900 flex items-center justify-center p-4 py-32">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 dark:from-black dark:to-slate-900 flex items-center justify-center p-4 py-16">
       <Card className="w-full max-w-md">
         <CardHeader className="text-center">
           <Link to="/" className="flex justify-center mb-4">
