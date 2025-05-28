@@ -4,7 +4,7 @@ import { useToast } from '@/hooks/use-toast';
 import axiosInstance from '@/lib/axiosInstance';
 
 export interface VerifyAnonymousEmailRequest {
-  invisiboxEmail: string;
+  employeeInvisiboxEmail: string;
 }
 
 export interface SubscribeRequest {
@@ -21,10 +21,13 @@ export interface SendAnonymousMessageRequest {
 export interface VerifyAnonymousEmailResponse {
   isValid: boolean;
   message: string;
+  companyInvisiboxEmail: string;
+  companyName?: string;
 }
 
 export interface SubscribeResponse {
-  anonymousEmail: string;
+  companyName: string;
+  employeeInvisiboxEmail: string;
   message: string;
 }
 

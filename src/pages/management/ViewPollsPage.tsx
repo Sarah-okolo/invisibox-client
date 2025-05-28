@@ -1,6 +1,5 @@
 
 import React, { useState } from 'react';
-import Header from '@/components/Header';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Switch } from '@/components/ui/switch';
@@ -140,7 +139,6 @@ export default function ViewPollsPage() {
   
   return (
     <>
-      <Header />
       <div className="container mx-auto p-4 py-8">
         <h1 className="text-3xl font-bold mb-8">Polls & Results</h1>
         

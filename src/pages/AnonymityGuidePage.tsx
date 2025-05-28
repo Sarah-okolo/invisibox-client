@@ -3,13 +3,10 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Shield, ArrowLeft, AlertTriangle, Eye, Lock, MessageSquare, Brain, Lightbulb } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import Header from '@/components/Header';
 
 export default function AnonymityGuidePage() {
   return (
     <div className="min-h-screen overflow-x-hidden">
-      <Header />
-      
       <div className="container mx-auto px-4 py-6 sm:py-8">
         <div className="max-w-4xl mx-auto">
           {/* Back Button */}

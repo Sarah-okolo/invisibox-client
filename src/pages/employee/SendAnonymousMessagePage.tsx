@@ -15,6 +15,7 @@ export default function SendAnonymousMessagePage() {
   const [message, setMessage] = useState('');
   const [subject, setSubject] = useState('');
   const [submitted, setSubmitted] = useState(false);
+  const [verifyResponseData, setVerifyResponseData] = useState(null);
   const { toast } = useToast();
   
   const verifyEmailMutation = useVerifyAnonymousEmailMutation();
@@ -32,11 +33,12 @@ export default function SendAnonymousMessagePage() {
       return;
     }
 
-    verifyEmailMutation.mutate({
-      invisiboxEmail: anonymousEmail
+  await verifyEmailMutation.mutateAsync({
+      employeeInvisiboxEmail: anonymousEmail
     }, {
       onSuccess: (response) => {
         if (response.isValid) {
+          setVerifyResponseData(response);
           setStep(2);
         }
       }
@@ -114,11 +116,15 @@ export default function SendAnonymousMessagePage() {
 
   const renderStep2 = () => (
     <form onSubmit={handleSubmit}>
+      <div className="text-sm ml-6">
+        <span className="text-muted-foreground font-bold">To: </span>
+        <span className="font-medium rounded-full mb-1 px-3 bg-orange-200 text-gray-800">{verifyResponseData?.companyInvisiboxEmail}</span>
+      </div>
       <CardContent className="space-y-4">
         <div className="flex items-center justify-between">
           <div className="text-sm">
-            <span className="text-muted-foreground">From: </span>
-            <span className="font-medium">{anonymousEmail}</span>
+            <span className="text-muted-foreground font-bold">From: </span>
+            <span className="font-medium rounded-full px-3 bg-purple-200 text-gray-800">{anonymousEmail}</span>
           </div>
           <Button 
             variant="ghost" 

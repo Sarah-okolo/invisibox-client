@@ -3,13 +3,10 @@ import React from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Shield, Lock, MessageSquare, CircleOff, Eye, Server, Database, Mail } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import Header from '@/components/Header';
 
 export default function PrivacyProtectionPage() {
   return (
     <div className="min-h-screen overflow-x-hidden">
-      <Header />
-      
       {/* Hero Section */}
       <section className="container mx-auto px-4 py-16 text-center">
         <div className="max-w-4xl mx-auto">

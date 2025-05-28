@@ -29,6 +29,7 @@ import NotFoundPage from "@/pages/NotFoundPage";
 // Components
 import ProtectedRoute from "@/components/ProtectedRoute";
 import DashboardLayout from "@/components/DashboardLayout";
+import Header from "@/components/Header";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -46,6 +47,15 @@ const App = () => {
       <TooltipProvider>
         <BrowserRouter>
           <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 dark:from-black dark:to-slate-900">
+            {
+              /* Header is conditionally rendered based on the current route */
+              window.location.pathname !== '/management/login' &&
+              window.location.pathname !== '/management/signup' &&
+              window.location.pathname !== '/management/forgot-invisibox-email' &&
+              !window.location.pathname.includes('dashboard')
+                ? <Header />
+                : null
+            }
             <Routes>
               <Route path="/" element={<LandingPage />} />
               <Route path="/anonymity-guide" element={<AnonymityGuidePage />} />
@@ -112,8 +122,7 @@ const App = () => {
               <Route path="/employee/vote/:pollId" element={<VoteOnPollPage />} />
               <Route path="/employee/send-message" element={<SendAnonymousMessagePage />} />
               
-              <Route path="/404" element={<NotFoundPage />} />
-              <Route path="*" element={<Navigate to="/404" replace />} />
+              <Route path="*" element={<NotFoundPage />} />
             </Routes>
           </div>
           <Toaster />
