@@ -25,7 +25,6 @@ import ReplyToMessagePage from "@/pages/employee/ReplyToMessagePage";
 import VoteOnPollPage from "@/pages/employee/VoteOnPollPage";
 import SendAnonymousMessagePage from "@/pages/employee/SendAnonymousMessagePage";
 import NotFoundPage from "@/pages/NotFoundPage";
-
 // Components
 import ProtectedRoute from "@/components/ProtectedRoute";
 import DashboardLayout from "@/components/DashboardLayout";
@@ -41,7 +40,9 @@ const queryClient = new QueryClient({
   },
 });
 
+
 const App = () => {
+
   return (
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>

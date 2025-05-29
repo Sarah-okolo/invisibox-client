@@ -2,10 +2,17 @@ import { useAuth } from '@/hooks/useAuth';
 import { Shield } from 'lucide-react';
 import { Link, useLocation } from 'react-router-dom';
 import { ThemeToggle } from '@/components/ThemeToggle';
+import { useEffect } from 'react';
 
 export default function Header() {
   const { isAuthenticated } = useAuth();
   const location = useLocation();
+
+  // Reset scroll position on route change
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [location.pathname]);
+
 
   // Don't render header on management pages (they use sidebar layout)
   if (location.pathname.startsWith('/management/') && isAuthenticated) {

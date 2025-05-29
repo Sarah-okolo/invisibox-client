@@ -5,51 +5,61 @@ import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Search, Trash2 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
-
-// Mock data for subscribers
-const mockSubscribers = [
-  {
-    id: '1',
-    email: 'employee1@company.com',
-  },
-  {
-    id: '2',
-    email: 'employee2@company.com',
-  },
-  {
-    id: '3',
-    email: 'employee3@company.com',
-  },
-  {
-    id: '4',
-    email: 'employee4@company.com',
-  },
-];
+import { useQuery } from '@tanstack/react-query';
+import axiosInstance from '@/lib/axiosInstance';
+import { useAuth } from '@/hooks/useAuth';
+import { useEffect } from 'react';
 
 export default function ManageSubscribersPage() {
-  const [subscribers, setSubscribers] = useState(mockSubscribers);
   const [searchTerm, setSearchTerm] = useState('');
   const { toast } = useToast();
+  const { user } = useAuth();
+  const [filteredSubscribers, setFilteredSubscribers] = useState([]);
 
-  const filteredSubscribers = subscribers.filter(subscriber =>
-    subscriber.email.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  // Query to get company subscribers 
+  const subscribers = useQuery({
+    queryKey: ['subscribers'],
+    queryFn: async () => {
+      if (!user) return null;
+      const response = await axiosInstance.get(`/subscribers`);
+      return response.data;
+    },
+    enabled: !!user, // Only run if user is available
+  });
 
-  const removeSubscriber = (subscriberId: string) => {
-    setSubscribers(prev => prev.filter(subscriber => subscriber.id !== subscriberId));
+  useEffect(() => {
+    if (subscribers.isSuccess) {
+      // Handle successful data fetch if needed
+      console.log('company subscribers fetched:', subscribers?.data);
+      setFilteredSubscribers(subscribers?.data?.subscribers?.filter(subscriber =>
+      subscriber.employeeInvisiboxEmail.toLowerCase().includes(searchTerm.toLowerCase())));
+    }
+    if (subscribers.isError) {
+      // Handle error in fetching data
+      toast({
+        title: "Error fetching company subscribers",
+        description: subscribers.error.message,
+        variant: "destructive",
+      });
+    }
+  }, [subscribers.isSuccess, subscribers.isError]);
+
+
+  // const removeSubscriber = (subscriberId: string) => {
+  //   setSubscribers(prev => prev.filter(subscriber => subscriber.id !== subscriberId));
     
-    const removeData = {
-      subscriberId,
-      action: 'remove',
-      timestamp: new Date().toISOString(),
-    };
-    console.log('Remove subscriber data ready for backend:', removeData);
+  //   const removeData = {
+  //     subscriberId,
+  //     action: 'remove',
+  //     timestamp: new Date().toISOString(),
+  //   };
+  //   console.log('Remove subscriber data ready for backend:', removeData);
     
-    toast({
-      title: "Subscriber removed",
-      description: "The subscriber has been removed from the platform.",
-    });
-  };
+  //   toast({
+  //     title: "Subscriber removed",
+  //     description: "The subscriber has been removed from the platform.",
+  //   });
+  // };
 
   return (
     <div className="container mx-auto p-4 py-8">
@@ -69,17 +79,17 @@ export default function ManageSubscribersPage() {
 
       <Card>
         <CardHeader>
-          <CardTitle>Subscribers ({filteredSubscribers.length})</CardTitle>
+          <CardTitle>Subscribers ({filteredSubscribers?.length})</CardTitle>
         </CardHeader>
         <CardContent>
           <div className="space-y-2">
-            {filteredSubscribers.map((subscriber) => (
-              <div key={subscriber.id} className="flex items-center justify-between p-3 border rounded-lg hover:bg-muted/50">
-                <span className="font-medium">{subscriber.email}</span>
+            {filteredSubscribers?.map((subscriber) => (
+              <div key={subscriber._id} className="flex items-center justify-between p-3 border rounded-lg hover:bg-muted/50">
+                <span className="font-medium">{subscriber?.employeeInvisiboxEmail}</span>
                 <Button
                   variant="destructive"
                   size="sm"
-                  onClick={() => removeSubscriber(subscriber.id)}
+                  // onClick={() => removeSubscriber(subscriber.id)}
                   className="flex items-center space-x-1"
                 >
                   <Trash2 className="w-4 h-4" />
@@ -89,7 +99,7 @@ export default function ManageSubscribersPage() {
             ))}
           </div>
           
-          {filteredSubscribers.length === 0 && (
+          {filteredSubscribers?.length === 0 && (
             <div className="text-center py-8">
               <p className="text-muted-foreground">No subscribers found matching your search.</p>
             </div>

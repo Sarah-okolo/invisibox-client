@@ -76,7 +76,7 @@ export default function Dashboard() {
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold">{dashboardDetails?.data?.messagesCount}</div>
-              <p className="text-xs text-muted-foreground">+2 from last week</p>
+              {/* <p className="text-xs text-muted-foreground">+2 from last week</p> */}
             </CardContent>
           </Card>
 
@@ -87,7 +87,7 @@ export default function Dashboard() {
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold">{dashboardDetails?.data?.pollsCount}</div>
-              <p className="text-xs text-muted-foreground">2 closing soon</p>
+              {/* <p className="text-xs text-muted-foreground">2 closing soon</p> */}
             </CardContent>
           </Card>
 
@@ -98,7 +98,7 @@ export default function Dashboard() {
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold">{dashboardDetails?.data?.employeesCount}</div>
-              <p className="text-xs text-muted-foreground">+12 this month</p>
+              {/* <p className="text-xs text-muted-foreground">+12 this month</p> */}
             </CardContent>
           </Card>
         </div>

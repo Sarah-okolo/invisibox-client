@@ -7,6 +7,8 @@ import { Shield, LogOut } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { ThemeToggle } from '@/components/ThemeToggle';
 import { useLogoutMutation } from '@/hooks/useAuthMutations';
+import { useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 
 interface DashboardLayoutProps {
   children: React.ReactNode;
@@ -15,10 +17,17 @@ interface DashboardLayoutProps {
 function DashboardHeader() {
   const { user } = useAuth();
   const logoutMutation = useLogoutMutation();
+  const location = useLocation();
+  
+  // Reset scroll position on route change
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [location.pathname]);
 
   const handleLogout = () => {
     logoutMutation.mutate();
   };
+  
 
   return (
     <header className="bg-white/90 dark:bg-black/90 backdrop-blur-sm border-b border-slate-200/50 dark:border-slate-800/50 sticky top-0 z-50">
