@@ -90,6 +90,7 @@ export default function SendAnonymousMessagePage() {
     }, {
       onSuccess: (response) => {
         setSubmitted(true);
+        console.log('Message sent response data:', response);
         setSendMessageResponseData(response);
       }
     });
@@ -222,7 +223,7 @@ export default function SendAnonymousMessagePage() {
         <div>
           <h3 className="text-lg font-medium mb-2">Message Sent Successfully!</h3>
           <p className="text-muted-foreground mb-4">
-            Your anonymous message has been delivered to {verifyResponseData.companyName || sendMessageResponseData.companyName}'s' management.
+            Your anonymous message has been delivered to {sendMessageResponseData?.companyName}'s' management.
           </p>
         </div>
         
