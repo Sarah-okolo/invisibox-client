@@ -9,8 +9,8 @@ import { Link } from 'react-router-dom';
 import { useVerifyAnonymousEmailMutation, useSendAnonymousMessageMutation } from '@/hooks/useEmployeeMutations';
 import { useToast } from '@/hooks/use-toast';
 // url search params
-import { useSearchParams } from 'react-router-dom';
-import { useEffect } from 'react';
+// import { useSearchParams } from 'react-router-dom';
+// import { useEffect } from 'react';
 
 export default function SendAnonymousMessagePage() {
   const [step, setStep] = useState(1);
@@ -21,31 +21,31 @@ export default function SendAnonymousMessagePage() {
   const [verifyResponseData, setVerifyResponseData] = useState(null);
   const [sendMessageResponseData, setSendMessageResponseData] = useState(null);
   const { toast } = useToast();
-  const [searchParams] = useSearchParams();
-  const [paramDetails, setParamDetails] = useState({
-    to: '',
-    subject: ''
-  });
+  // const [searchParams] = useSearchParams();
+  // const [paramDetails, setParamDetails] = useState({
+  //   to: '',
+  //   subject: ''
+  // });
   
   const verifyEmailMutation = useVerifyAnonymousEmailMutation();
   const sendMessageMutation = useSendAnonymousMessageMutation();
 
   // Check if from, to, and subject are provided in URL search params (if the request is initiated from the link in the email)
-  useEffect(() => {
-    const senderFromParams = searchParams.get('from');
-    const receiverFromParams = searchParams.get('to');
-    const subjectFromParams = searchParams.get('subject');
+  // useEffect(() => {
+  //   const senderFromParams = searchParams.get('from');
+  //   const receiverFromParams = searchParams.get('to');
+  //   const subjectFromParams = searchParams.get('subject');
 
-    if (senderFromParams && receiverFromParams && subjectFromParams) {
-      setStep(2); // Skip to step 2 if provided
-      setParamDetails({ // Set the parameters from URL
-        to: senderFromParams,
-        subject: subjectFromParams
-      });
-      setAnonymousEmail(receiverFromParams); // Pre-fill the anonymous email field
-      setSubject(subjectFromParams); // pre-fill subject field
-    }
-  }, [searchParams]);
+  //   if (senderFromParams && receiverFromParams && subjectFromParams) {
+  //     setStep(2); // Skip to step 2 if provided
+  //     setParamDetails({ // Set the parameters from URL
+  //       to: senderFromParams,
+  //       subject: subjectFromParams
+  //     });
+  //     setAnonymousEmail(receiverFromParams); // Pre-fill the anonymous email field
+  //     setSubject(subjectFromParams); // pre-fill subject field
+  //   }
+  // }, [searchParams]);
 
   const handleVerify = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -146,7 +146,7 @@ export default function SendAnonymousMessagePage() {
     <form onSubmit={handleSubmit}>
       <div className="text-sm ml-6">
         <span className="text-muted-foreground font-bold">To: </span>
-        <span className="font-medium rounded-full mb-1 px-3 bg-orange-200 text-gray-800">{verifyResponseData?.companyInvisiboxEmail || paramDetails.to}</span>
+        <span className="font-medium rounded-full mb-1 px-3 bg-orange-200 text-gray-800">{verifyResponseData?.companyInvisiboxEmail}</span>
       </div>
       <CardContent className="space-y-4">
         <div className="flex items-center justify-between">
@@ -171,7 +171,6 @@ export default function SendAnonymousMessagePage() {
             placeholder="Message subject"
             className='py-6'
             value={subject}
-            readOnly={!!paramDetails.subject} // set field to readOnly if subject is provided in URL
             onChange={(e) => setSubject(e.target.value)}
             required
           />
