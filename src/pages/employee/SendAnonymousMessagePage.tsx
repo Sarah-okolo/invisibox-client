@@ -36,17 +36,13 @@ export default function SendAnonymousMessagePage() {
     const subjectFromParams = searchParams.get('subject');
 
     if (senderFromParams && receiverFromParams && subjectFromParams) {
-      console.log('Received params from URL:', {
-        from: senderFromParams,
-        to: receiverFromParams,
-        subject: subjectFromParams
-      });
       setStep(2); // Skip to step 2 if provided
       setParamDetails({ // Set the parameters from URL
-        to: receiverFromParams,
+        to: senderFromParams,
         subject: subjectFromParams
       });
-      setAnonymousEmail(senderFromParams); // Pre-fill the anonymous email field
+      setAnonymousEmail(receiverFromParams); // Pre-fill the anonymous email field
+      setSubject(subjectFromParams); // pre-fill subject field
     }
   }, [searchParams]);
 
@@ -172,6 +168,7 @@ export default function SendAnonymousMessagePage() {
             placeholder="Message subject"
             className='py-6'
             value={subject}
+            readOnly={!!paramDetails.subject} // set field to readOnly if subject is provided in URL
             onChange={(e) => setSubject(e.target.value)}
             required
           />
