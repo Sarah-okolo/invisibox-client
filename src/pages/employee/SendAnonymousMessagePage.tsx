@@ -4,10 +4,13 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { Shield, Send, Lock, AlertCircle } from 'lucide-react';
+import { Shield, Send, Lock, AlertCircle, CheckCircle } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useVerifyAnonymousEmailMutation, useSendAnonymousMessageMutation } from '@/hooks/useEmployeeMutations';
 import { useToast } from '@/hooks/use-toast';
+// url search params
+import { useSearchParams } from 'react-router-dom';
+import { useEffect } from 'react';
 
 export default function SendAnonymousMessagePage() {
   const [step, setStep] = useState(1);
@@ -17,9 +20,35 @@ export default function SendAnonymousMessagePage() {
   const [submitted, setSubmitted] = useState(false);
   const [verifyResponseData, setVerifyResponseData] = useState(null);
   const { toast } = useToast();
+  const [searchParams] = useSearchParams();
+  const [paramDetails, setParamDetails] = useState({
+    to: '',
+    subject: ''
+  });
   
   const verifyEmailMutation = useVerifyAnonymousEmailMutation();
   const sendMessageMutation = useSendAnonymousMessageMutation();
+
+  // Check if from, to, and subject are provided in URL search params (if the request is initiated from the link in the email)
+  useEffect(() => {
+    const senderFromParams = searchParams.get('from');
+    const receiverFromParams = searchParams.get('to');
+    const subjectFromParams = searchParams.get('subject');
+
+    if (senderFromParams && receiverFromParams && subjectFromParams) {
+      console.log('Received params from URL:', {
+        from: senderFromParams,
+        to: receiverFromParams,
+        subject: subjectFromParams
+      });
+      setStep(2); // Skip to step 2 if provided
+      setParamDetails({ // Set the parameters from URL
+        to: receiverFromParams,
+        subject: subjectFromParams
+      });
+      setAnonymousEmail(senderFromParams); // Pre-fill the anonymous email field
+    }
+  }, [searchParams]);
 
   const handleVerify = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -82,13 +111,13 @@ export default function SendAnonymousMessagePage() {
             required
           />
           <p className="text-xs text-muted-foreground">
-            Enter the anonymous email you received when subscribing to your company's channel.
+            Enter the anonymous email address you received after subscribing to your company's channel.
           </p>
         </div>
         
         <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-4 text-sm text-blue-800 dark:text-blue-200 flex items-start">
           <Lock className="h-5 w-5 mr-2 flex-shrink-0" />
-          <p>
+          <p className='text-pretty'>
             Don't have an anonymous email yet? <Link to="/employee/subscribe" className="font-medium underline hover:text-blue-700 dark:hover:text-blue-300">Subscribe to a company</Link> first to get one.
           </p>
         </div>
@@ -118,7 +147,7 @@ export default function SendAnonymousMessagePage() {
     <form onSubmit={handleSubmit}>
       <div className="text-sm ml-6">
         <span className="text-muted-foreground font-bold">To: </span>
-        <span className="font-medium rounded-full mb-1 px-3 bg-orange-200 text-gray-800">{verifyResponseData?.companyInvisiboxEmail}</span>
+        <span className="font-medium rounded-full mb-1 px-3 bg-orange-200 text-gray-800">{verifyResponseData?.companyInvisiboxEmail || paramDetails.to}</span>
       </div>
       <CardContent className="space-y-4">
         <div className="flex items-center justify-between">
@@ -140,7 +169,8 @@ export default function SendAnonymousMessagePage() {
           <Label htmlFor="subject">Subject</Label>
           <Input 
             id="subject"
-            placeholder="Message subject" 
+            placeholder="Message subject"
+            className='py-6'
             value={subject}
             onChange={(e) => setSubject(e.target.value)}
             required
@@ -154,17 +184,17 @@ export default function SendAnonymousMessagePage() {
             placeholder="Write your anonymous message here..." 
             value={message}
             onChange={(e) => setMessage(e.target.value)}
-            className="min-h-[200px]"
+            className="min-h-[200px] py-4 resize-none"
             required
           />
         </div>
         
-        <div className="bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-lg p-4 text-sm text-amber-800 dark:text-amber-200 flex items-start">
+        <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-4 text-sm text-blue-800 dark:text-blue-200 flex items-start">
           <AlertCircle className="h-5 w-5 mr-2 flex-shrink-0" />
           <div>
             <p className="font-medium mb-1">Important:</p>
             <p>
-              While your identity is protected, check out our <Link to="/anonymity-guide" className="font-medium underline hover:text-purple-700 dark:hover:text-purple-300">Anonymity Guide</Link> for best practices.
+              While your identity is protected, check out our <Link to="/anonymity-guide" className="font-medium hover:underline text-purple-700 dark:text-purple-300">Anonymity Guide</Link> for best practices.
             </p>
           </div>
         </div>
@@ -186,22 +216,27 @@ export default function SendAnonymousMessagePage() {
 
   const renderSuccess = () => (
     <>
-      <CardContent className="space-y-6 text-center">
+      <CardContent className="space-y-6 text-center mt-6 mb-3">
         <div className="w-16 h-16 bg-green-100 dark:bg-green-900/20 rounded-full flex items-center justify-center mx-auto">
-          <Shield className="w-8 h-8 text-green-600 dark:text-green-400" />
+          <CheckCircle className="w-16 h-16 text-green-500" />
         </div>
         <div>
           <h3 className="text-lg font-medium mb-2">Message Sent Successfully!</h3>
           <p className="text-muted-foreground mb-4">
-            Your anonymous message has been delivered to the company management.
+            Your anonymous message has been delivered to {verifyResponseData.companyName}'s' management.
           </p>
         </div>
         
         <div className="bg-gray-50 dark:bg-gray-800/50 border rounded-lg p-4 text-left">
-          <p className="text-sm font-medium mb-1">Subject:</p>
-          <p className="mb-3">{subject}</p>
-          <p className="text-sm font-medium mb-1">Message:</p>
-          <p className="whitespace-pre-line">{message}</p>
+          <p className="text-base font-medium mb-1">Subject:</p>
+          <p className="mb-3 text-muted-foreground text-sm">{subject}</p>
+          <p className="text-base font-medium mb-1">Message:</p>
+          <p className="whitespace-pre-line text-muted-foreground text-sm">{message}</p>
+        </div>
+
+        <div className="bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-lg p-4 text-sm text-green-800 dark:text-green-200 flex items-start font-medium">
+          <AlertCircle className="h-5 w-5 flex-shrink-0" />
+          <p>Replies are sent to your subscribed email inbox once the management responds to your message.</p>
         </div>
       </CardContent>
       
@@ -211,24 +246,35 @@ export default function SendAnonymousMessagePage() {
             Back to Home
           </Button>
         </Link>
+        <Button variant="outline" className='ml-4 rounded-lg py-5 border-purple-400' onClick={() => {
+          setSubmitted(false); 
+          setStep(2)
+          setSubject('');
+          setMessage('');
+        }}>
+          Send Another Message
+        </Button>
       </CardFooter>
     </>
   );
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-4 py-16 bg-gradient-to-br from-slate-50 to-blue-50 dark:from-black dark:to-slate-900">
-      <Card className="w-full max-w-md">
-        <CardHeader className="text-center">
-          <Link to="/" className="flex justify-center mb-4">
-            <div className="w-16 h-16 bg-gradient-to-br from-purple-600 to-pink-600 rounded-3xl flex items-center justify-center">
-              <Shield className="w-8 h-8 text-white" />
-            </div>
-          </Link>
-          <CardTitle className="text-2xl font-bold">Send Anonymous Message</CardTitle>
-          <CardDescription>
-            Communicate with your company management while keeping your identity private.
-          </CardDescription>
-        </CardHeader>
+    <div className="min-h-screen flex items-center justify-center px-4 pt-9 pb-12 bg-gradient-to-br from-slate-50 to-blue-50 dark:from-black dark:to-slate-900">
+      <Card className="w-full max-w-xl">
+        {!submitted && (
+          <CardHeader className="text-center">
+            <Link to="/" className="flex justify-center mb-4">
+              <div className="w-16 h-16 bg-gradient-to-br from-purple-600 to-pink-600 rounded-3xl flex items-center justify-center">
+                <Shield className="w-8 h-8 text-white" />
+              </div>
+            </Link>
+            <CardTitle className="text-2xl font-bold">Send Anonymous Message</CardTitle>
+            <CardDescription>
+              Communicate with your company management while keeping your identity private.
+            </CardDescription>
+          </CardHeader>
+        )}
+        
         
         {submitted ? renderSuccess() : (step === 1 ? renderStep1() : renderStep2())}
       </Card>

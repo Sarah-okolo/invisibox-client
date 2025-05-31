@@ -59,8 +59,8 @@ export default function EmployeeSubscribePage() {
 
   if (subscriptionSuccess) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 dark:from-black dark:to-slate-900 flex items-center justify-center p-4 py-16">
-        <Card className="w-full max-w-md">
+      <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 dark:from-black dark:to-slate-900 flex items-center justify-center px-4 pt-5 pb-12">
+        <Card className="w-full max-w-xl">
           <CardHeader className="text-center">
             {/* <Link to="/" className="flex justify-center mb-4">
               <div className="w-16 h-16 bg-gradient-to-br from-purple-600 to-pink-600 rounded-3xl flex items-center justify-center">
@@ -94,7 +94,9 @@ export default function EmployeeSubscribePage() {
               <div className="text-sm">
                 <p className="font-medium text-orange-700 dark:text-orange-300 mb-1">Check Your Email</p>
                 <p className="text-orange-600 dark:text-orange-400">
-                  Your unique InvisiBox email has been sent to your registered email address. 
+                  Your unique InvisiBox email has been sent to your registered email address.
+                  <br />
+                  <span className='inline-block font-semibold text-xs text-orange-600 mt-2 dark:text-orange-200'>Did not receive it? Check your spam folder</span> 
                 </p>
               </div>
             </div>
@@ -115,8 +117,8 @@ export default function EmployeeSubscribePage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 dark:from-black dark:to-slate-900 flex items-center justify-center p-4 py-16">
-      <Card className="w-full max-w-md">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 dark:from-black dark:to-slate-900 flex items-center justify-center px-4 pt-5 pb-12">
+      <Card className="w-full max-w-xl">
         <CardHeader className="text-center">
           <Link to="/" className="flex justify-center mb-4">
             <div className="w-16 h-16 bg-gradient-to-br from-purple-600 to-pink-600 rounded-3xl flex items-center justify-center">
@@ -149,7 +151,7 @@ export default function EmployeeSubscribePage() {
               <Input
                 id="companyEmail"
                 type="email"
-                placeholder="yourcompany@invisibox.email"
+                placeholder="yourcompany123@invisibox.email"
                 value={companyEmail}
                 onChange={(e) => setCompanyEmail(e.target.value)}
                 required
