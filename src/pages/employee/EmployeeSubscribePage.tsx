@@ -72,7 +72,7 @@ export default function EmployeeSubscribePage() {
             </div>
             <CardTitle className="text-2xl font-bold text-green-600">Subscription Successful!</CardTitle>
             <CardDescription>
-              You've successfully joined the anonymous communication platform
+              You've successfully subscribed to the anonymous communication platform
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-6">

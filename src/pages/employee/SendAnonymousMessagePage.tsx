@@ -19,6 +19,7 @@ export default function SendAnonymousMessagePage() {
   const [subject, setSubject] = useState('');
   const [submitted, setSubmitted] = useState(false);
   const [verifyResponseData, setVerifyResponseData] = useState(null);
+  const [sendMessageResponseData, setSendMessageResponseData] = useState(null);
   const { toast } = useToast();
   const [searchParams] = useSearchParams();
   const [paramDetails, setParamDetails] = useState({
@@ -82,13 +83,14 @@ export default function SendAnonymousMessagePage() {
       return;
     }
 
-    sendMessageMutation.mutate({
+    sendMessageMutation.mutateAsync({
       from: anonymousEmail,
       subject,
       message,
     }, {
-      onSuccess: () => {
+      onSuccess: (response) => {
         setSubmitted(true);
+        setSendMessageResponseData(response);
       }
     });
   };
@@ -220,7 +222,7 @@ export default function SendAnonymousMessagePage() {
         <div>
           <h3 className="text-lg font-medium mb-2">Message Sent Successfully!</h3>
           <p className="text-muted-foreground mb-4">
-            Your anonymous message has been delivered to {verifyResponseData.companyName}'s' management.
+            Your anonymous message has been delivered to {verifyResponseData.companyName || sendMessageResponseData.companyName}'s' management.
           </p>
         </div>
         

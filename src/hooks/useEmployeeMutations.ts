@@ -32,7 +32,7 @@ export interface SubscribeResponse {
 }
 
 export interface SendAnonymousMessageResponse {
-  success: boolean;
+  companyName: string;
   message: string;
 }
 
