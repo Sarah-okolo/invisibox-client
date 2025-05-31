@@ -127,7 +127,7 @@ export default function EmployeeSubscribePage() {
           </Link>
           <CardTitle className="text-2xl font-bold">Subscribe to InvisiBox</CardTitle>
           <CardDescription>
-            Join your company's anonymous communication platform
+            Join your company's anonymous communication channel
           </CardDescription>
         </CardHeader>
         <form onSubmit={handleSubmit}>

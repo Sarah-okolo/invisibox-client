@@ -103,13 +103,13 @@ export default function LandingPage() {
       </section>
 
       {/* Footer */}
-      <footer className="bg-white/90 dark:bg-gray-900/90 backdrop-blur-sm border-t border-slate-200/50 dark:border-slate-800/50 mt-8 sm:mt-16 overflow-hidden">
+      <footer className="bg-white/90 dark:bg-gray-900/90 backdrop-blur-sm border-t border-slate-200/50 dark:border-slate-800/50 mt-8 sm:mt-16 overflow-hidden text-center">
         <div className="container mx-auto px-4 py-8 sm:py-12">
           <div className="max-w-6xl mx-auto">
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 sm:gap-8">
               {/* Brand */}
               <div className="space-y-4 col-span-1 sm:col-span-2 lg:col-span-1">
-                <div className="flex items-center space-x-2">
+                <div className="flex items-center justify-center space-x-2">
                   <div className="w-8 h-8 bg-gradient-to-br from-purple-600 to-pink-600 rounded-lg flex items-center justify-center flex-shrink-0">
                     <Shield className="w-5 h-5 text-white" />
                   </div>
@@ -122,53 +122,10 @@ export default function LandingPage() {
                 </p>
               </div>
 
-              {/* For Employees */}
-              <div className="space-y-4">
-                <h4 className="font-semibold text-gray-900 dark:text-gray-100 text-sm sm:text-base">For Employees</h4>
-                <ul className="space-y-2 text-xs sm:text-sm text-gray-600 dark:text-gray-300">
-                  <li>
-                    <Link to="/employee/send-message" className="hover:text-purple-600 dark:hover:text-purple-400 transition-colors break-words">
-                      Send Anonymous Message
-                    </Link>
-                  </li>
-                  <li>
-                    <Link to="/employee/subscribe" className="hover:text-purple-600 dark:hover:text-purple-400 transition-colors break-words">
-                      Subscribe to Company
-                    </Link>
-                  </li>
-                  <li>
-                    <Link to="/employee/unsubscribe" className="hover:text-purple-600 dark:hover:text-purple-400 transition-colors break-words">
-                      Unsubscribe
-                    </Link>
-                  </li>
-                </ul>
-              </div>
 
-              {/* For Management */}
+              {/* Guides */}
               <div className="space-y-4">
-                <h4 className="font-semibold text-gray-900 dark:text-gray-100 text-sm sm:text-base">For Management</h4>
-                <ul className="space-y-2 text-xs sm:text-sm text-gray-600 dark:text-gray-300">
-                  <li>
-                    <Link to="/management/login" className="hover:text-purple-600 dark:hover:text-purple-400 transition-colors break-words">
-                      Login
-                    </Link>
-                  </li>
-                  <li>
-                    <Link to="/management/signup" className="hover:text-purple-600 dark:hover:text-purple-400 transition-colors break-words">
-                      Sign Up
-                    </Link>
-                  </li>
-                  <li>
-                    <Link to="/management/dashboard" className="hover:text-purple-600 dark:hover:text-purple-400 transition-colors break-words">
-                      Dashboard
-                    </Link>
-                  </li>
-                </ul>
-              </div>
-
-              {/* Privacy */}
-              <div className="space-y-4">
-                <h4 className="font-semibold text-gray-900 dark:text-gray-100 text-sm sm:text-base">Privacy</h4>
+                <h4 className="font-semibold text-gray-900 dark:text-gray-100 text-sm sm:text-base">Our guides</h4>
                 <ul className="space-y-2 text-xs sm:text-sm text-gray-600 dark:text-gray-300">
                   <li>
                     <Link to="/privacy-protection" className="hover:text-purple-600 dark:hover:text-purple-400 transition-colors break-words">
@@ -180,6 +137,13 @@ export default function LandingPage() {
                       Anonymity Guide
                     </Link>
                   </li>
+                </ul>
+              </div>
+
+              {/* Privacy */}
+              <div className="space-y-4">
+                <h4 className="font-semibold text-gray-900 dark:text-gray-100 text-sm sm:text-base">Legal</h4>
+                <ul className="space-y-2 text-xs sm:text-sm text-gray-600 dark:text-gray-300">
                   <li>
                     <Link to="#" className="hover:text-purple-600 dark:hover:text-purple-400 transition-colors break-words">
                       Privacy Policy
@@ -194,9 +158,9 @@ export default function LandingPage() {
               </div>
             </div>
 
-            <div className="border-t border-slate-200 dark:border-slate-800 mt-6 sm:mt-8 pt-6 sm:pt-8 text-center">
+            <div className="border-t border-slate-200 dark:border-slate-800 mt-10 pt-6 sm:pt-8 text-center">
               <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-300 break-words px-2">
-                © 2024 InvisiBox. All rights reserved. Built for workplace transparency and trust.
+                © 2024 InvisiBox. All rights reserved.
               </p>
             </div>
           </div>

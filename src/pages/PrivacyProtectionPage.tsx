@@ -22,7 +22,7 @@ export default function PrivacyProtectionPage() {
             <span className="text-gray-900 dark:text-gray-100">at Its Core</span>
           </h1>
           
-          <p className="text-lg md:text-xl text-gray-600 dark:text-gray-300 mb-12 max-w-3xl mx-auto leading-relaxed">
+          <p className="text-lg md:text-xl text-gray-600 dark:text-gray-300 mb-8 max-w-3xl mx-auto leading-relaxed">
             InvisiBox is built from the ground up with privacy as the foundation. 
             Every feature, every process, and every interaction is designed to protect your anonymity completely.
           </p>
@@ -30,13 +30,13 @@ export default function PrivacyProtectionPage() {
       </section>
 
       {/* Core Protection Features */}
-      <section className="container mx-auto px-4 py-16">
+      <section className="container mx-auto px-4">
         <div className="max-w-6xl mx-auto">
           <h2 className="text-3xl font-bold text-center mb-12 text-gray-900 dark:text-gray-100">
             How We Keep You Protected
           </h2>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-16">
             <Card className="bg-white/60 dark:bg-gray-800/60 backdrop-blur-sm border-white/20 dark:border-gray-700/20 hover:shadow-lg transition-all duration-300 rounded-3xl">
               <CardContent className="p-8 text-center">
                 <div className="w-16 h-16 bg-gradient-to-br from-purple-500 to-pink-600 rounded-3xl flex items-center justify-center mx-auto mb-6">
@@ -63,7 +63,7 @@ export default function PrivacyProtectionPage() {
               </CardContent>
             </Card>
 
-            <Card className="bg-white/60 dark:bg-gray-800/60 backdrop-blur-sm border-white/20 dark:border-gray-700/20 hover:shadow-lg transition-all duration-300 rounded-3xl">
+            {/* <Card className="bg-white/60 dark:bg-gray-800/60 backdrop-blur-sm border-white/20 dark:border-gray-700/20 hover:shadow-lg transition-all duration-300 rounded-3xl">
               <CardContent className="p-8 text-center">
                 <div className="w-16 h-16 bg-gradient-to-br from-pink-500 to-orange-600 rounded-3xl flex items-center justify-center mx-auto mb-6">
                   <MessageSquare className="w-8 h-8 text-white" />
@@ -74,9 +74,9 @@ export default function PrivacyProtectionPage() {
                   by enterprise-grade security measures.
                 </p>
               </CardContent>
-            </Card>
+            </Card> */}
 
-            <Card className="bg-white/60 dark:bg-gray-800/60 backdrop-blur-sm border-white/20 dark:border-gray-700/20 hover:shadow-lg transition-all duration-300 rounded-3xl">
+            {/* <Card className="bg-white/60 dark:bg-gray-800/60 backdrop-blur-sm border-white/20 dark:border-gray-700/20 hover:shadow-lg transition-all duration-300 rounded-3xl">
               <CardContent className="p-8 text-center">
                 <div className="w-16 h-16 bg-gradient-to-br from-green-500 to-blue-600 rounded-3xl flex items-center justify-center mx-auto mb-6">
                   <Eye className="w-8 h-8 text-white" />
@@ -87,7 +87,7 @@ export default function PrivacyProtectionPage() {
                   to real employee identities.
                 </p>
               </CardContent>
-            </Card>
+            </Card> */}
 
             <Card className="bg-white/60 dark:bg-gray-800/60 backdrop-blur-sm border-white/20 dark:border-gray-700/20 hover:shadow-lg transition-all duration-300 rounded-3xl">
               <CardContent className="p-8 text-center">
@@ -148,7 +148,7 @@ export default function PrivacyProtectionPage() {
               </div>
             </div>
 
-            <div className="bg-white dark:bg-gray-800 rounded-2xl p-8 shadow-sm">
+            {/* <div className="bg-white dark:bg-gray-800 rounded-2xl p-8 shadow-sm">
               <div className="flex items-start space-x-4">
                 <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl flex items-center justify-center flex-shrink-0">
                   <Lock className="w-6 h-6 text-white" />
@@ -168,7 +168,7 @@ export default function PrivacyProtectionPage() {
                   </ul>
                 </div>
               </div>
-            </div>
+            </div> */}
 
             <div className="bg-white dark:bg-gray-800 rounded-2xl p-8 shadow-sm">
               <div className="flex items-start space-x-4">
