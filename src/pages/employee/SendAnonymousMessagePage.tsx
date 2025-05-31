@@ -235,7 +235,7 @@ export default function SendAnonymousMessagePage() {
 
         <div className="bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-lg p-4 text-sm text-green-800 dark:text-green-200 flex items-start font-medium">
           <AlertCircle className="h-5 w-5 flex-shrink-0" />
-          <p>Replies are sent to your subscribed email inbox once the management responds to your message.</p>
+          <p>Keep an eye on your email inbox for replies.</p>
         </div>
       </CardContent>
       
