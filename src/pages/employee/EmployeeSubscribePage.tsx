@@ -62,11 +62,6 @@ export default function EmployeeSubscribePage() {
       <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 dark:from-black dark:to-slate-900 flex items-center justify-center px-4 pt-5 pb-12">
         <Card className="w-full max-w-xl">
           <CardHeader className="text-center">
-            {/* <Link to="/" className="flex justify-center mb-4">
-              <div className="w-16 h-16 bg-gradient-to-br from-purple-600 to-pink-600 rounded-3xl flex items-center justify-center">
-                <Shield className="w-8 h-8 text-white" />
-              </div>
-            </Link> */}
             <div className="flex justify-center mb-4">
               <CheckCircle className="w-16 h-16 text-green-500" />
             </div>
@@ -166,6 +161,12 @@ export default function EmployeeSubscribePage() {
             <div className="text-center text-sm text-muted-foreground">
               <Link to="/privacy-protection" className="text-purple-400 hover:underline">
                 Learn about our privacy protection
+              </Link>
+            </div>
+
+            <div className="text-center text-sm text-muted-foreground">
+              <Link to="/employee/unsubscribe" className="text-green-700 dark:text-green-200 hover:underline">
+                Want to unsubscribe from company channel instead?
               </Link>
             </div>
           </CardContent>
