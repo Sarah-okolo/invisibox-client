@@ -2,7 +2,7 @@
 import axios from 'axios';
 import { getCookie, deleteCookie } from '@/lib/cookieUtils';
 
-const baseURL = import.meta.env.VITE_BASE_URL || 'https://invisibox-server-production.up.railway.app/';
+const baseURL = import.meta.env.VITE_BASE_URL;
 
 // Create axios instance with base configuration
 const axiosInstance = axios.create({
