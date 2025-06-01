@@ -13,9 +13,9 @@ import {
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
-import { useBanSubscriberMutation } from '@/hooks/useManagementMutations';
+import { useWarnSubscriberMutation } from '@/hooks/useManagementMutations';
 
-interface BanSubscriberDialogProps {
+interface WarnSubscriberDialogProps {
   isOpen: boolean;
   onClose: () => void;
   subscriber: {
@@ -24,15 +24,15 @@ interface BanSubscriberDialogProps {
   } | null;
 }
 
-export function BanSubscriberDialog({ isOpen, onClose, subscriber }: BanSubscriberDialogProps) {
+export function WarnSubscriberDialog({ isOpen, onClose, subscriber }: WarnSubscriberDialogProps) {
   const [reason, setReason] = useState('');
   const [details, setDetails] = useState('');
-  const banMutation = useBanSubscriberMutation();
+  const warnMutation = useWarnSubscriberMutation();
 
-  const handleBan = () => {
+  const handleWarn = () => {
     if (!subscriber || !reason.trim()) return;
 
-    banMutation.mutate(
+    warnMutation.mutate(
       {
         subscriberId: subscriber._id,
         reason: reason.trim(),
@@ -58,22 +58,22 @@ export function BanSubscriberDialog({ isOpen, onClose, subscriber }: BanSubscrib
     <AlertDialog open={isOpen} onOpenChange={handleClose}>
       <AlertDialogContent className="sm:max-w-md">
         <AlertDialogHeader>
-          <AlertDialogTitle>Ban Subscriber</AlertDialogTitle>
+          <AlertDialogTitle>Warn Subscriber</AlertDialogTitle>
           <AlertDialogDescription>
-            You are about to ban <strong>{subscriber?.employeeInvisiboxEmail}</strong>. 
-            This subscriber will no longer be able to send or receive messages to and from your company.
+            You are about to warn <strong>{subscriber?.employeeInvisiboxEmail}</strong>. 
+            This will send a warning notification to the subscriber.
           </AlertDialogDescription>
         </AlertDialogHeader>
         
         <div className="space-y-4">
           <div className="space-y-2">
-            <Label htmlFor="reason">Reason for banning *</Label>
+            <Label htmlFor="reason">Reason for warning *</Label>
             <Input
               id="reason"
-              placeholder="Enter reason for banning this subscriber..."
+              placeholder="Enter reason for warning this subscriber..."
               value={reason}
               onChange={(e) => setReason(e.target.value)}
-              disabled={banMutation.isPending}
+              disabled={warnMutation.isPending}
             />
           </div>
           
@@ -81,25 +81,25 @@ export function BanSubscriberDialog({ isOpen, onClose, subscriber }: BanSubscrib
             <Label htmlFor="details">Details (optional)</Label>
             <Textarea
               id="details"
-              placeholder="Enter additional details about the ban..."
+              placeholder="Enter additional details about the warning..."
               value={details}
               onChange={(e) => setDetails(e.target.value)}
-              disabled={banMutation.isPending}
+              disabled={warnMutation.isPending}
               className="min-h-[80px]"
             />
           </div>
         </div>
 
         <AlertDialogFooter>
-          <AlertDialogCancel onClick={handleClose} disabled={banMutation.isPending}>
+          <AlertDialogCancel onClick={handleClose} disabled={warnMutation.isPending}>
             Cancel
           </AlertDialogCancel>
           <AlertDialogAction
-            onClick={handleBan}
-            disabled={!reason.trim() || banMutation.isPending}
-            className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+            onClick={handleWarn}
+            disabled={!reason.trim() || warnMutation.isPending}
+            className="bg-yellow-600 text-white hover:bg-yellow-700"
           >
-            {banMutation.isPending ? 'Banning...' : 'Ban Subscriber'}
+            {warnMutation.isPending ? 'Warning...' : 'Warn Subscriber'}
           </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>

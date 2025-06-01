@@ -3,13 +3,14 @@ import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-import { Search, Ban } from 'lucide-react';
+import { Search, Ban, AlertTriangle } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { useQuery } from '@tanstack/react-query';
 import axiosInstance from '@/lib/axiosInstance';
 import { useAuth } from '@/hooks/useAuth';
 import { useEffect } from 'react';
 import { BanSubscriberDialog } from '@/components/BanSubscriberDialog';
+import { WarnSubscriberDialog } from '@/components/WarnSubscriberDialog';
 
 export default function ManageSubscribersPage() {
   const [searchTerm, setSearchTerm] = useState('');
@@ -17,6 +18,7 @@ export default function ManageSubscribersPage() {
   const { user } = useAuth();
   const [filteredSubscribers, setFilteredSubscribers] = useState([]);
   const [banDialogOpen, setBanDialogOpen] = useState(false);
+  const [warnDialogOpen, setWarnDialogOpen] = useState(false);
   const [selectedSubscriber, setSelectedSubscriber] = useState(null);
 
   // Query to get company subscribers 
@@ -46,6 +48,11 @@ export default function ManageSubscribersPage() {
       });
     }
   }, [subscribers.isSuccess, subscribers.isError, searchTerm, subscribers?.data]);
+
+  const handleWarnClick = (subscriber) => {
+    setSelectedSubscriber(subscriber);
+    setWarnDialogOpen(true);
+  };
 
   const handleBanClick = (subscriber) => {
     setSelectedSubscriber(subscriber);
@@ -79,20 +86,31 @@ export default function ManageSubscribersPage() {
             {filteredSubscribers?.map((subscriber) => (
               <div 
                 key={subscriber._id} 
-                className="flex flex-col sm:flex-row sm:items-center justify-between p-3 border rounded-lg hover:bg-muted/50 gap-2 sm:gap-0"
+                className="flex flex-col sm:flex-row sm:items-center justify-between p-3 border rounded-lg hover:bg-muted/50 gap-2 sm:gap-4"
               >
                 <span className="font-medium text-sm sm:text-base break-all sm:break-normal">
                   {subscriber?.employeeInvisiboxEmail}
                 </span>
-                <Button
-                  variant="destructive"
-                  size="sm"
-                  onClick={() => handleBanClick(subscriber)}
-                  className="flex items-center space-x-1 w-full sm:w-auto justify-center sm:justify-start"
-                >
-                  <Ban className="w-4 h-4" />
-                  <span>Ban</span>
-                </Button>
+                <div className="flex flex-col sm:flex-row gap-2 sm:gap-2">
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => handleWarnClick(subscriber)}
+                    className="flex items-center space-x-1 w-full sm:w-auto justify-center sm:justify-start border-yellow-600 text-yellow-600 hover:bg-yellow-50 dark:hover:bg-yellow-950"
+                  >
+                    <AlertTriangle className="w-4 h-4" />
+                    <span>Warn</span>
+                  </Button>
+                  <Button
+                    variant="destructive"
+                    size="sm"
+                    onClick={() => handleBanClick(subscriber)}
+                    className="flex items-center space-x-1 w-full sm:w-auto justify-center sm:justify-start"
+                  >
+                    <Ban className="w-4 h-4" />
+                    <span>Ban</span>
+                  </Button>
+                </div>
               </div>
             ))}
           </div>
@@ -104,6 +122,12 @@ export default function ManageSubscribersPage() {
           )}
         </CardContent>
       </Card>
+
+      <WarnSubscriberDialog
+        isOpen={warnDialogOpen}
+        onClose={() => setWarnDialogOpen(false)}
+        subscriber={selectedSubscriber}
+      />
 
       <BanSubscriberDialog
         isOpen={banDialogOpen}
