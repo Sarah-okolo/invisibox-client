@@ -122,8 +122,8 @@ export default function SettingsPage() {
                   )}
                 </Button>
               </div>
-              <p className="text-sm text-muted-foreground">
-                Use this email to log in to your management dashboard
+              <p className="text-sm text-orange-700 sm:text-orange-400">
+                Use this email to log in to your management dashboard and share to your employees.
               </p>
             </div>
           </CardContent>
