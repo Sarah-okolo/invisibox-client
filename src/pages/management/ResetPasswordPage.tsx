@@ -58,7 +58,7 @@ export default function ResetPasswordPage() {
           <CardContent className="p-4 sm:p-6 space-y-4">
             <div className="bg-slate-50 dark:bg-slate-800 p-4 rounded-lg text-center">
               <p className="text-sm text-gray-600 dark:text-gray-300 mb-2">
-                Your management InvisiBox email remains:
+                Your management InvisiBox email address remains:
               </p>
               <p className="font-medium text-gray-900 dark:text-gray-100 break-all">
                 {resetData.invisiboxEmail}
