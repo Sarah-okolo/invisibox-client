@@ -144,10 +144,6 @@ export default function LoginPage() {
               <Link to="/management/signup" className="text-purple-600 dark:text-purple-400 hover:underline font-medium">
                 Sign up here
               </Link>
-              <br />
-              <Link to="/management/forgot-invisibox-email" className="text-purple-600 dark:text-purple-400 hover:underline font-medium text-xs">
-                Forgot your InvisiBox email?
-              </Link>
             </div>
           </CardFooter>
         </form>
