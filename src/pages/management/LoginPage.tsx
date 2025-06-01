@@ -58,13 +58,12 @@ export default function LoginPage() {
                 {resetEmail}
               </p>
             </div>
-            <div className="text-xs text-gray-500 dark:text-gray-400 text-center">
-              If you don't see the email, check your spam folder. The link will expire in 24 hours.
+            <div className="text-preety text-sm px-3 sm:px-8 text-orange-500 dark:text-orange-400 text-center">
+              If you don't see the email, check your spam folder. The link will expire in <span className='font-bold text-purple-700 dark:text-purple-400'>15</span> minutes.
             </div>
           </CardContent>
           <CardFooter className="flex flex-col space-y-4 p-4 sm:p-6">
             <Button 
-              variant="ghost" 
               className="w-full text-sm sm:text-base" 
               type="button"
               onClick={() => {

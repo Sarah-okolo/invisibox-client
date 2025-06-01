@@ -11,7 +11,6 @@ import AnonymityGuidePage from "@/pages/AnonymityGuidePage";
 import PrivacyProtectionPage from "@/pages/PrivacyProtectionPage";
 import LoginPage from "@/pages/management/LoginPage";
 import SignupPage from "@/pages/management/SignupPage";
-import ForgotInvisiboxEmailPage from "@/pages/management/ForgotInvisiboxEmailPage";
 import ResetPasswordPage from "@/pages/management/ResetPasswordPage";
 import Dashboard from "@/pages/management/Dashboard";
 import SendMessagePage from "@/pages/management/SendMessagePage";
@@ -66,7 +65,6 @@ const App = () => {
               {/* Management Routes */}
               <Route path="/management/login" element={<LoginPage />} />
               <Route path="/management/signup" element={<SignupPage />} />
-              <Route path="/management/forgot-invisibox-email" element={<ForgotInvisiboxEmailPage />} />
               <Route path="/management/reset-password" element={<ResetPasswordPage />} />
               <Route path="/management/dashboard" element={
                 <ProtectedRoute>

@@ -29,6 +29,8 @@ export default function ResetPasswordPage() {
       return; // No token - could add error handling here
     }
 
+    console.log('Resetting password with token:', token, 'and new password:', newPassword);
+
     resetPasswordConfirmMutation.mutate(
       { token, newPassword },
       {

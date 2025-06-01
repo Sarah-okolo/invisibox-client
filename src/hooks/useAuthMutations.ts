@@ -50,11 +50,11 @@ export const authAPI = {
   },
 
   resetPassword: async (data: ResetPasswordRequest): Promise<void> => {
-    await axiosInstance.post('/auth/reset-password', data);
+    await axiosInstance.post('/auth/send-reset-link', data);
   },
 
   resetPasswordConfirm: async (data: ResetPasswordConfirmRequest): Promise<ResetPasswordConfirmResponse> => {
-    const response = await axiosInstance.post('/auth/reset-password-confirm', data);
+    const response = await axiosInstance.post('/auth/reset-password', data);
     return response.data;
   },
 };
@@ -128,7 +128,7 @@ export const useResetPasswordMutation = () => {
     onError: (error: any) => {
       toast({
         title: "Reset failed",
-        description: error.response?.data?.message || "There was an error sending the reset email. Please try again.",
+        description: error.response?.data?.message || "There was an error sending the reset link. Please try again.",
         variant: "destructive",
       });
     },
