@@ -56,7 +56,7 @@ export function WarnSubscriberDialog({ isOpen, onClose, subscriber }: WarnSubscr
 
   return (
     <AlertDialog open={isOpen} onOpenChange={handleClose}>
-      <AlertDialogContent className="sm:max-w-md">
+      <AlertDialogContent className="w-full sm:max-w-xl">
         <AlertDialogHeader>
           <AlertDialogTitle>Warn Subscriber</AlertDialogTitle>
           <AlertDialogDescription>

@@ -56,12 +56,12 @@ export function BanSubscriberDialog({ isOpen, onClose, subscriber }: BanSubscrib
 
   return (
     <AlertDialog open={isOpen} onOpenChange={handleClose}>
-      <AlertDialogContent className="sm:max-w-md">
+      <AlertDialogContent className="w-full sm:max-w-xl">
         <AlertDialogHeader>
           <AlertDialogTitle>Ban Subscriber</AlertDialogTitle>
           <AlertDialogDescription>
             You are about to ban <strong>{subscriber?.employeeInvisiboxEmail}</strong>. 
-            This subscriber will no longer be able to send or receive messages to and from your company.
+            This subscriber will be removed from this company's channel, and would also prevent future subscription attempts from them.
           </AlertDialogDescription>
         </AlertDialogHeader>
         
