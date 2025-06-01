@@ -1,4 +1,3 @@
-
 import { Sidebar, SidebarContent, SidebarGroup, SidebarGroupContent, SidebarGroupLabel, SidebarMenu, SidebarMenuButton, SidebarMenuItem, SidebarHeader, SidebarFooter, } from "@/components/ui/sidebar";
 import { useAuth } from '@/hooks/useAuth';
 import { Link, useLocation } from 'react-router-dom';
@@ -8,7 +7,7 @@ import { useLogoutMutation } from '@/hooks/useAuthMutations';
 import { LogoutConfirmDialog } from '@/components/LogoutConfirmDialog';
 import { useState } from 'react';
 import { useSidebar } from '@/components/ui/sidebar';
-import { useMobile } from '@/hooks/use-mobile';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 const menuItems = [
   {
@@ -54,7 +53,7 @@ export function AppSidebar() {
   const logoutMutation = useLogoutMutation();
   const [showLogoutConfirm, setShowLogoutConfirm] = useState(false);
   const { setOpenMobile } = useSidebar();
-  const isMobile = useMobile();
+  const isMobile = useIsMobile();
 
   const handleLogoutClick = () => {
     setShowLogoutConfirm(true);
