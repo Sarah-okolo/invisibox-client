@@ -130,7 +130,7 @@ export default function SettingsPage() {
         </Card>
 
         {/* Change Password */}
-        <Card>
+        {/* <Card>
           <CardHeader>
             <CardTitle className="flex items-center space-x-2">
               <Key className="w-5 h-5" />
@@ -185,7 +185,7 @@ export default function SettingsPage() {
               </Button>
             </CardFooter>
           </form>
-        </Card>
+        </Card> */}
       </div>
     </div>
   );
