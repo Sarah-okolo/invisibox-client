@@ -91,8 +91,8 @@ export default function LoginPage() {
               </div>
             </Link>
             <CardTitle className="text-xl sm:text-2xl font-bold break-words">Reset Password</CardTitle>
-            <CardDescription className="text-sm sm:text-base break-words">
-              Enter your email address and we'll send you a link to reset your password.
+            <CardDescription className="px-4 sm:px-8 text-sm sm:text-base break-words">
+              Enter the email address you registered with and we'll send you a link to reset your password.
             </CardDescription>
           </CardHeader>
           <form onSubmit={handleForgotPassword}>
