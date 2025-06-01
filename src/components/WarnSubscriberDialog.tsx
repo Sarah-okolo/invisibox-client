@@ -30,7 +30,7 @@ export function WarnSubscriberDialog({ isOpen, onClose, subscriber }: WarnSubscr
   const warnMutation = useWarnSubscriberMutation();
 
   const handleWarn = () => {
-    if (!subscriber || !reason.trim()) return;
+    if (!subscriber || !reason.trim() || !details.trim()) return;
 
     warnMutation.mutate(
       {
@@ -78,7 +78,7 @@ export function WarnSubscriberDialog({ isOpen, onClose, subscriber }: WarnSubscr
           </div>
           
           <div className="space-y-2">
-            <Label htmlFor="details">Details (optional)</Label>
+            <Label htmlFor="details">Details *</Label>
             <Textarea
               id="details"
               placeholder="Enter additional details about the warning..."
@@ -96,7 +96,7 @@ export function WarnSubscriberDialog({ isOpen, onClose, subscriber }: WarnSubscr
           </AlertDialogCancel>
           <AlertDialogAction
             onClick={handleWarn}
-            disabled={!reason.trim() || warnMutation.isPending}
+            disabled={!reason.trim() || !details.trim() || warnMutation.isPending}
             className="bg-yellow-600 text-white hover:bg-yellow-700"
           >
             {warnMutation.isPending ? 'Warning...' : 'Warn Subscriber'}
