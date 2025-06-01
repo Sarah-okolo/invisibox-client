@@ -3,18 +3,21 @@ import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-import { Search, Trash2 } from 'lucide-react';
+import { Search, Ban } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { useQuery } from '@tanstack/react-query';
 import axiosInstance from '@/lib/axiosInstance';
 import { useAuth } from '@/hooks/useAuth';
 import { useEffect } from 'react';
+import { BanSubscriberDialog } from '@/components/BanSubscriberDialog';
 
 export default function ManageSubscribersPage() {
   const [searchTerm, setSearchTerm] = useState('');
   const { toast } = useToast();
   const { user } = useAuth();
   const [filteredSubscribers, setFilteredSubscribers] = useState([]);
+  const [banDialogOpen, setBanDialogOpen] = useState(false);
+  const [selectedSubscriber, setSelectedSubscriber] = useState(null);
 
   // Query to get company subscribers 
   const subscribers = useQuery({
@@ -42,31 +45,19 @@ export default function ManageSubscribersPage() {
         variant: "destructive",
       });
     }
-  }, [subscribers.isSuccess, subscribers.isError]);
+  }, [subscribers.isSuccess, subscribers.isError, searchTerm, subscribers?.data]);
 
-
-  // const removeSubscriber = (subscriberId: string) => {
-  //   setSubscribers(prev => prev.filter(subscriber => subscriber.id !== subscriberId));
-    
-  //   const removeData = {
-  //     subscriberId,
-  //     action: 'remove',
-  //     timestamp: new Date().toISOString(),
-  //   };
-  //   console.log('Remove subscriber data ready for backend:', removeData);
-    
-  //   toast({
-  //     title: "Subscriber removed",
-  //     description: "The subscriber has been removed from the platform.",
-  //   });
-  // };
+  const handleBanClick = (subscriber) => {
+    setSelectedSubscriber(subscriber);
+    setBanDialogOpen(true);
+  };
 
   return (
-    <div className="container mx-auto p-4 py-8">
-      <h1 className="text-3xl font-bold mb-8">Manage Subscribers</h1>
+    <div className="container mx-auto p-2 sm:p-4 py-4 sm:py-8">
+      <h1 className="text-2xl sm:text-3xl font-bold mb-6 sm:mb-8">Manage Subscribers</h1>
       
-      <div className="mb-6">
-        <div className="relative max-w-md">
+      <div className="mb-4 sm:mb-6">
+        <div className="relative w-full sm:max-w-md">
           <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
           <Input
             placeholder="Search subscribers by email..."
@@ -78,22 +69,29 @@ export default function ManageSubscribersPage() {
       </div>
 
       <Card>
-        <CardHeader>
-          <CardTitle>Subscribers ({filteredSubscribers?.length})</CardTitle>
+        <CardHeader className="pb-3 sm:pb-6">
+          <CardTitle className="text-lg sm:text-xl">
+            Subscribers ({filteredSubscribers?.length || 0})
+          </CardTitle>
         </CardHeader>
         <CardContent>
           <div className="space-y-2">
             {filteredSubscribers?.map((subscriber) => (
-              <div key={subscriber._id} className="flex items-center justify-between p-3 border rounded-lg hover:bg-muted/50">
-                <span className="font-medium">{subscriber?.employeeInvisiboxEmail}</span>
+              <div 
+                key={subscriber._id} 
+                className="flex flex-col sm:flex-row sm:items-center justify-between p-3 border rounded-lg hover:bg-muted/50 gap-2 sm:gap-0"
+              >
+                <span className="font-medium text-sm sm:text-base break-all sm:break-normal">
+                  {subscriber?.employeeInvisiboxEmail}
+                </span>
                 <Button
                   variant="destructive"
                   size="sm"
-                  // onClick={() => removeSubscriber(subscriber.id)}
-                  className="flex items-center space-x-1"
+                  onClick={() => handleBanClick(subscriber)}
+                  className="flex items-center space-x-1 w-full sm:w-auto justify-center sm:justify-start"
                 >
-                  <Trash2 className="w-4 h-4" />
-                  <span>Remove</span>
+                  <Ban className="w-4 h-4" />
+                  <span>Ban</span>
                 </Button>
               </div>
             ))}
@@ -106,6 +104,12 @@ export default function ManageSubscribersPage() {
           )}
         </CardContent>
       </Card>
+
+      <BanSubscriberDialog
+        isOpen={banDialogOpen}
+        onClose={() => setBanDialogOpen(false)}
+        subscriber={selectedSubscriber}
+      />
     </div>
   );
 }

@@ -7,6 +7,8 @@ import { Button } from '@/components/ui/button';
 import { useLogoutMutation } from '@/hooks/useAuthMutations';
 import { LogoutConfirmDialog } from '@/components/LogoutConfirmDialog';
 import { useState } from 'react';
+import { useSidebar } from '@/components/ui/sidebar';
+import { useMobile } from '@/hooks/use-mobile';
 
 const menuItems = [
   {
@@ -51,6 +53,8 @@ export function AppSidebar() {
   const location = useLocation();
   const logoutMutation = useLogoutMutation();
   const [showLogoutConfirm, setShowLogoutConfirm] = useState(false);
+  const { setOpenMobile } = useSidebar();
+  const isMobile = useMobile();
 
   const handleLogoutClick = () => {
     setShowLogoutConfirm(true);
@@ -63,6 +67,12 @@ export function AppSidebar() {
 
   const handleLogoutCancel = () => {
     setShowLogoutConfirm(false);
+  };
+
+  const handleLinkClick = () => {
+    if (isMobile) {
+      setOpenMobile(false);
+    }
   };
 
   return (
@@ -94,7 +104,7 @@ export function AppSidebar() {
                       isActive={location.pathname === item.url}
                       className={`${location.pathname === item.url ? '!bg-purple-600 !text-white/80' : 'text-muted-foreground'}`}
                     >
-                      <Link to={item.url}>
+                      <Link to={item.url} onClick={handleLinkClick}>
                         <item.icon />
                         <span>{item.title}</span>
                       </Link>

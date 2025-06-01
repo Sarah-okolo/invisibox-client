@@ -7,9 +7,9 @@ import { Button } from "@/components/ui/button"
 export function ThemeToggle() {
   const [theme, setTheme] = React.useState<"light" | "dark">(() => {
     if (typeof window !== "undefined") {
-      return localStorage.getItem("invisibox-theme") as "light" | "dark" || "light"
+      return localStorage.getItem("invisibox-theme") as "light" | "dark" || "dark"
     }
-    return "light"
+    return "dark"
   })
 
   React.useEffect(() => {
