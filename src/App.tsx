@@ -12,6 +12,7 @@ import PrivacyProtectionPage from "@/pages/PrivacyProtectionPage";
 import LoginPage from "@/pages/management/LoginPage";
 import SignupPage from "@/pages/management/SignupPage";
 import ForgotInvisiboxEmailPage from "@/pages/management/ForgotInvisiboxEmailPage";
+import ResetPasswordPage from "@/pages/management/ResetPasswordPage";
 import Dashboard from "@/pages/management/Dashboard";
 import SendMessagePage from "@/pages/management/SendMessagePage";
 import ViewMessagesPage from "@/pages/management/ViewMessagesPage";
@@ -52,6 +53,7 @@ const App = () => {
               window.location.pathname !== '/management/login' &&
               window.location.pathname !== '/management/signup' &&
               window.location.pathname !== '/management/forgot-invisibox-email' &&
+              window.location.pathname !== '/management/reset-password' &&
               !window.location.pathname.includes('dashboard')
                 ? <Header />
                 : null
@@ -65,6 +67,7 @@ const App = () => {
               <Route path="/management/login" element={<LoginPage />} />
               <Route path="/management/signup" element={<SignupPage />} />
               <Route path="/management/forgot-invisibox-email" element={<ForgotInvisiboxEmailPage />} />
+              <Route path="/management/reset-password" element={<ResetPasswordPage />} />
               <Route path="/management/dashboard" element={
                 <ProtectedRoute>
                   <DashboardLayout>

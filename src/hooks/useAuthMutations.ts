@@ -1,3 +1,4 @@
+
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
 import { useToast } from '@/hooks/use-toast';
@@ -19,11 +20,21 @@ export interface ResetPasswordRequest {
   email: string;
 }
 
+export interface ResetPasswordConfirmRequest {
+  token: string;
+  newPassword: string;
+}
+
 export interface AuthResponse {
   email: string;
   invisiboxEmail: string;
   companyName: string;
   token: string;
+}
+
+export interface ResetPasswordConfirmResponse {
+  companyName: string;
+  invisiboxEmail: string;
 }
 
 // Auth API functions
@@ -40,6 +51,11 @@ export const authAPI = {
 
   resetPassword: async (data: ResetPasswordRequest): Promise<void> => {
     await axiosInstance.post('/auth/reset-password', data);
+  },
+
+  resetPasswordConfirm: async (data: ResetPasswordConfirmRequest): Promise<ResetPasswordConfirmResponse> => {
+    const response = await axiosInstance.post('/auth/reset-password-confirm', data);
+    return response.data;
   },
 };
 
@@ -113,6 +129,27 @@ export const useResetPasswordMutation = () => {
       toast({
         title: "Reset failed",
         description: error.response?.data?.message || "There was an error sending the reset email. Please try again.",
+        variant: "destructive",
+      });
+    },
+  });
+};
+
+export const useResetPasswordConfirmMutation = () => {
+  const { toast } = useToast();
+
+  return useMutation({
+    mutationFn: (data: ResetPasswordConfirmRequest) => authAPI.resetPasswordConfirm(data),
+    onSuccess: () => {
+      toast({
+        title: "Password reset successful",
+        description: "Your password has been updated successfully.",
+      });
+    },
+    onError: (error: any) => {
+      toast({
+        title: "Password reset failed",
+        description: error.response?.data?.message || "There was an error resetting your password. Please try again.",
         variant: "destructive",
       });
     },
