@@ -165,8 +165,8 @@ export default function EmployeeSubscribePage() {
             </div>
 
             <div className="text-center text-sm text-muted-foreground">
-              <Link to="/employee/unsubscribe" className="text-green-700 dark:text-green-200 hover:underline">
-                Want to unsubscribe from company channel instead?
+              <Link to="/employee/unsubscribe" className="text-red-700 dark:text-red-400 hover:underline">
+                Unsubscribe from company channel
               </Link>
             </div>
           </CardContent>

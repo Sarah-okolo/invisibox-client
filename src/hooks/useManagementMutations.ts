@@ -55,7 +55,7 @@ export const useWarnSubscriberMutation = () => {
       console.log('Warn subscriber response:', response);
       toast({
         title: "Subscriber warned",
-        description: `${response.warnedEmail} has been warned successfully.`,
+        description: `The subscriber has been successfully warned.`,
       });
       // Invalidate subscribers query to refresh the list
       queryClient.invalidateQueries({ queryKey: ['subscribers'] });
@@ -81,7 +81,7 @@ export const useBanSubscriberMutation = () => {
       console.log('Ban subscriber response:', response);
       toast({
         title: "Subscriber banned",
-        description: `${response.bannedEmail} has been banned and can no longer send messages.`,
+        description: `Subscriber has been banned and can no longer send messages or receive messages on the company's channel.`,
       });
       // Invalidate subscribers query to refresh the list
       queryClient.invalidateQueries({ queryKey: ['subscribers'] });

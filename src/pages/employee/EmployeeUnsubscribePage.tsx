@@ -142,7 +142,7 @@ export default function EmployeeUnsubscribePage() {
             </Button>
             <div className="text-center text-sm text-muted-foreground">
               <Link to="/employee/subscribe" className="text-purple-700 dark:text-purple-400 hover:underline">
-                Want to subscribe instead?
+                Subscribe to a company channel
               </Link>
             </div>
           </CardContent>

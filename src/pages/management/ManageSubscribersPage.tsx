@@ -88,19 +88,25 @@ export default function ManageSubscribersPage() {
                 key={subscriber._id} 
                 className="flex flex-col sm:flex-row sm:items-center justify-between p-3 border rounded-lg hover:bg-muted/50 gap-2 sm:gap-4"
               >
-                <span className="font-medium text-sm sm:text-base break-all sm:break-normal">
-                  {subscriber?.employeeInvisiboxEmail}
-                </span>
+                <div>
+                  <p className="font-medium text-sm sm:text-base break-all sm:break-normal">
+                    {subscriber?.employeeInvisiboxEmail}
+                  </p>
+                  <p className='text-muted-foreground text-xs mt-2 sm:text-sm'>Has been warned <span className='font-bold'>{subscriber.warned}</span> time{subscriber.warned !== 1 && 's'}</p>
+                </div>
                 <div className="flex flex-col sm:flex-row gap-2 sm:gap-2">
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={() => handleWarnClick(subscriber)}
-                    className="flex items-center space-x-1 w-full sm:w-auto justify-center sm:justify-start border-yellow-600 text-yellow-600 hover:bg-yellow-50 dark:hover:bg-yellow-950"
-                  >
-                    <AlertTriangle className="w-4 h-4" />
-                    <span>Warn</span>
-                  </Button>
+                  { subscriber.warned < 3 && (
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => handleWarnClick(subscriber)}
+                      className="flex items-center space-x-1 w-full sm:w-auto justify-center sm:justify-start border-yellow-600 text-yellow-600 hover:bg-yellow-50 dark:hover:bg-yellow-950"
+                    >
+                      <AlertTriangle className="w-4 h-4" />
+                      <span>Warn</span>
+                    </Button>
+                  )}
+                  
                   <Button
                     variant="destructive"
                     size="sm"
