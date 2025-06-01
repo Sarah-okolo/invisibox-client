@@ -95,7 +95,7 @@ export default function VoteOnPollPage() {
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
-              <Vote className="w-5 w-5" />
+              <Vote className="w-5" />
               {poll.title}
             </CardTitle>
             <CardDescription>

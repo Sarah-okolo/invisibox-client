@@ -258,7 +258,7 @@ export default function SendAnonymousMessagePage() {
   );
 
   return (
-    <div className="min-h-screen flex items-center justify-center px-4 pt-9 pb-12 bg-gradient-to-br from-slate-50 to-blue-50 dark:from-black dark:to-slate-900">
+    <div className="min-h-screen flex items-center justify-center px-4 pt-3 sm:pt-9 pb-12 bg-gradient-to-br from-slate-50 to-blue-50 dark:from-black dark:to-slate-900">
       <Card className="w-full max-w-xl">
         {!submitted && (
           <CardHeader className="text-center">

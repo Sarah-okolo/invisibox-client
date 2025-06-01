@@ -101,7 +101,7 @@ export default function ManageSubscribersPage() {
           
           {filteredSubscribers?.length === 0 && (
             <div className="text-center py-8">
-              <p className="text-muted-foreground">No subscribers found matching your search.</p>
+              <p className="text-muted-foreground">No subscribers found.</p>
             </div>
           )}
         </CardContent>

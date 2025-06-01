@@ -21,7 +21,6 @@ import SettingsPage from "@/pages/management/SettingsPage";
 import ManageSubscribersPage from "@/pages/management/ManageSubscribersPage";
 import EmployeeSubscribePage from "@/pages/employee/EmployeeSubscribePage";
 import EmployeeUnsubscribePage from "@/pages/employee/EmployeeUnsubscribePage";
-import ReplyToMessagePage from "@/pages/employee/ReplyToMessagePage";
 import VoteOnPollPage from "@/pages/employee/VoteOnPollPage";
 import SendAnonymousMessagePage from "@/pages/employee/SendAnonymousMessagePage";
 import NotFoundPage from "@/pages/NotFoundPage";
@@ -119,7 +118,6 @@ const App = () => {
               {/* Employee Routes */}
               <Route path="/employee/subscribe" element={<EmployeeSubscribePage />} />
               <Route path="/employee/unsubscribe" element={<EmployeeUnsubscribePage />} />
-              <Route path="/employee/reply/:messageId" element={<ReplyToMessagePage />} />
               <Route path="/employee/vote/:pollId" element={<VoteOnPollPage />} />
               <Route path="/employee/send-message" element={<SendAnonymousMessagePage />} />
               

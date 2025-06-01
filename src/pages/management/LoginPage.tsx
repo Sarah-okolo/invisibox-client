@@ -38,8 +38,8 @@ export default function LoginPage() {
 
   if (showForgotPassword) {
     return (
-      <div className="min-h-screen flex items-center justify-center p-4 py-12 bg-gradient-to-br from-slate-50 to-blue-50 dark:from-black dark:to-slate-900 overflow-x-hidden">
-        <Card className="w-full max-w-md overflow-hidden">
+      <div className="min-h-screen flex items-center justify-center px-4 pt-3 sm:pt-9 pb-12 bg-gradient-to-br from-slate-50 to-blue-50 dark:from-black dark:to-slate-900 overflow-x-hidden">
+        <Card className="w-full max-w-xl overflow-hidden">
           <CardHeader className="text-center p-4 sm:p-6">
             <Link to='/'>
               <div className="w-12 h-12 sm:w-16 sm:h-16 bg-gradient-to-br from-purple-600 to-pink-600 rounded-3xl flex items-center justify-center mx-auto mb-3 sm:mb-4">
@@ -86,8 +86,8 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-4 py-12 bg-gradient-to-br from-slate-50 to-blue-50 dark:from-black dark:to-slate-900 overflow-x-hidden">
-      <Card className="w-full max-w-md overflow-hidden">
+    <div className="min-h-screen flex items-center justify-center px-4 pt-3 sm:pt-9 pb-12 bg-gradient-to-br from-slate-50 to-blue-50 dark:from-black dark:to-slate-900 overflow-x-hidden">
+      <Card className="w-full max-w-xl overflow-hidden">
         <CardHeader className="text-center p-4 sm:p-6">
           <Link to='/'>
             <div className="w-12 h-12 sm:w-16 sm:h-16 bg-gradient-to-br from-purple-600 to-pink-600 rounded-3xl flex items-center justify-center mx-auto mb-3 sm:mb-4">
