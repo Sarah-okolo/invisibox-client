@@ -47,16 +47,8 @@ const App = () => {
       <TooltipProvider>
         <BrowserRouter>
           <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 dark:from-black dark:to-slate-900">
-            {
-              /* Header is conditionally rendered based on the current route */
-              window.location.pathname !== '/management/login' &&
-              window.location.pathname !== '/management/signup' &&
-              window.location.pathname !== '/management/forgot-invisibox-email' &&
-              window.location.pathname !== '/management/reset-password' &&
-              !window.location.pathname.includes('dashboard')
-                ? <Header />
-                : null
-            }
+             <Header />
+             
             <Routes>
               <Route path="/" element={<LandingPage />} />
               <Route path="/anonymity-guide" element={<AnonymityGuidePage />} />
