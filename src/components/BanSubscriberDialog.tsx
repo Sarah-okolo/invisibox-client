@@ -30,7 +30,7 @@ export function BanSubscriberDialog({ isOpen, onClose, subscriber }: BanSubscrib
   const banMutation = useBanSubscriberMutation();
 
   const handleBan = () => {
-    if (!subscriber || !reason.trim()) return;
+    if (!subscriber || !reason.trim() || !details.trim()) return;
 
     banMutation.mutate(
       {
@@ -78,7 +78,7 @@ export function BanSubscriberDialog({ isOpen, onClose, subscriber }: BanSubscrib
           </div>
           
           <div className="space-y-2">
-            <Label htmlFor="details">Details (optional)</Label>
+            <Label htmlFor="details">Details *</Label>
             <Textarea
               id="details"
               placeholder="Enter additional details about the ban..."
@@ -96,7 +96,7 @@ export function BanSubscriberDialog({ isOpen, onClose, subscriber }: BanSubscrib
           </AlertDialogCancel>
           <AlertDialogAction
             onClick={handleBan}
-            disabled={!reason.trim() || banMutation.isPending}
+            disabled={!reason.trim() || !details.trim() || banMutation.isPending}
             className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
           >
             {banMutation.isPending ? 'Banning...' : 'Ban Subscriber'}
