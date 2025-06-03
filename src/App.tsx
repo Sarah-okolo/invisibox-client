@@ -1,3 +1,4 @@
+
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
@@ -23,7 +24,6 @@ import EmployeeUnsubscribePage from "@/pages/employee/EmployeeUnsubscribePage";
 import VoteOnPollPage from "@/pages/employee/VoteOnPollPage";
 import SendAnonymousMessagePage from "@/pages/employee/SendAnonymousMessagePage";
 import NotFoundPage from "@/pages/NotFoundPage";
-import PublicVoteOnPollPage from "@/pages/employee/PublicVoteOnPollPage";
 // Components
 import ProtectedRoute from "@/components/ProtectedRoute";
 import DashboardLayout from "@/components/DashboardLayout";
@@ -38,7 +38,6 @@ const queryClient = new QueryClient({
     },
   },
 });
-
 
 const App = () => {
 
@@ -111,11 +110,10 @@ const App = () => {
               {/* Employee Routes */}
               <Route path="/employee/subscribe" element={<EmployeeSubscribePage />} />
               <Route path="/employee/unsubscribe" element={<EmployeeUnsubscribePage />} />
-              <Route path="/employee/vote/:pollId" element={<VoteOnPollPage />} />
               <Route path="/employee/send-message" element={<SendAnonymousMessagePage />} />
               
-              {/* Public Poll Voting Route */}
-              <Route path="/vote/:pollId" element={<PublicVoteOnPollPage />} />
+              {/* Poll Voting Route */}
+              <Route path="/vote/:pollId" element={<VoteOnPollPage />} />
               
               <Route path="*" element={<NotFoundPage />} />
             </Routes>

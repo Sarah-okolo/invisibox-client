@@ -7,28 +7,37 @@ import { Label } from '@/components/ui/label';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useToast } from '@/hooks/use-toast';
 import { Shield, Vote, CheckCircle } from 'lucide-react';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useParams, useSearchParams } from 'react-router-dom';
 import { useQuery, useMutation } from '@tanstack/react-query';
 import axiosInstance from '@/lib/axiosInstance';
 
-export default function VoteOnPollPage() {
+export default function PublicVoteOnPollPage() {
   const { pollId } = useParams();
+  const [searchParams] = useSearchParams();
+  const compId = searchParams.get('compid');
+  const empId = searchParams.get('empid');
+  
   const [selectedOption, setSelectedOption] = useState('');
   const [hasVoted, setHasVoted] = useState(false);
   const { toast } = useToast();
 
   const { data: poll, isLoading } = useQuery({
-    queryKey: ['poll', pollId],
+    queryKey: ['public-poll', pollId, compId],
     queryFn: async () => {
-      const response = await axiosInstance.get(`/polls/${pollId}`);
+      const response = await axiosInstance.get(`/public/polls/${pollId}?compid=${compId}`);
       return response.data.poll;
     },
-    enabled: !!pollId,
+    enabled: !!pollId && !!compId,
   });
 
   const voteMutation = useMutation({
-    mutationFn: async (voteData: { pollId: string; selectedOptionId: string }) => {
-      const response = await axiosInstance.post(`/polls/${pollId}/vote`, voteData);
+    mutationFn: async (voteData: { 
+      pollId: string; 
+      selectedOptionId: string; 
+      companyId: string; 
+      employeeId: string; 
+    }) => {
+      const response = await axiosInstance.post(`/public/polls/${pollId}/vote`, voteData);
       return response.data;
     },
     onSuccess: () => {
@@ -60,10 +69,10 @@ export default function VoteOnPollPage() {
       return;
     }
 
-    if (!pollId) {
+    if (!pollId || !compId || !empId) {
       toast({
-        title: "Invalid poll",
-        description: "Poll ID is missing.",
+        title: "Invalid poll link",
+        description: "Some required information is missing from the poll link.",
         variant: "destructive",
       });
       return;
@@ -72,10 +81,30 @@ export default function VoteOnPollPage() {
     const voteData = {
       pollId,
       selectedOptionId: selectedOption,
+      companyId: compId,
+      employeeId: empId,
     };
     
     voteMutation.mutate(voteData);
   };
+
+  if (!compId || !empId || !pollId) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 dark:from-black dark:to-slate-900 flex items-center justify-center p-4 py-16">
+        <Card className="w-full max-w-md text-center">
+          <CardContent className="pt-6">
+            <h2 className="text-2xl font-bold mb-2">Invalid Poll Link</h2>
+            <p className="text-muted-foreground mb-4">
+              The poll link you followed is invalid or incomplete. Please check the link and try again.
+            </p>
+            <Link to="/">
+              <Button>Return to Home</Button>
+            </Link>
+          </CardContent>
+        </Card>
+      </div>
+    );
+  }
 
   if (isLoading) {
     return (
@@ -120,7 +149,7 @@ export default function VoteOnPollPage() {
           <CardContent className="pt-6">
             <h2 className="text-2xl font-bold mb-2">Poll Not Found</h2>
             <p className="text-muted-foreground mb-4">
-              The poll you're looking for doesn't exist or has been removed.
+              The poll you're looking for doesn't exist, has expired, or has been removed.
             </p>
             <Link to="/">
               <Button>Return to Home</Button>
