@@ -2,59 +2,23 @@
 import React, { useState } from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Skeleton } from '@/components/ui/skeleton';
 import { Clock } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
+import { useQuery } from '@tanstack/react-query';
+import axiosInstance from '@/lib/axiosInstance';
 import { PollResultsModal } from '@/components/PollResultsModal';
 
-// Mock data for polls
-const mockPolls = [
-  {
-    id: '1',
-    title: 'Office Location Preference',
-    question: 'Which office location would you prefer for our annual team retreat?',
-    createdAt: '2023-05-01T10:00:00Z',
-    isActive: true,
-    isResultsVisible: true,
-    options: [
-      { text: 'Mountain Resort', votes: 45 },
-      { text: 'Beach House', votes: 60 },
-      { text: 'City Center', votes: 20 },
-      { text: 'Forest Cabin', votes: 35 },
-    ]
-  },
-  {
-    id: '2',
-    title: 'New Benefits Package',
-    question: 'Which benefit would you prioritize in the upcoming benefits package?',
-    createdAt: '2023-04-15T14:30:00Z',
-    isActive: true,
-    isResultsVisible: false,
-    options: [
-      { text: 'Additional Health Insurance Coverage', votes: 80 },
-      { text: 'More Vacation Days', votes: 65 },
-      { text: 'Remote Work Allowance', votes: 55 },
-      { text: 'Education Budget', votes: 40 },
-    ]
-  },
-  {
-    id: '3',
-    title: 'Company Event Theme',
-    question: 'What theme would you prefer for our next company event?',
-    createdAt: '2023-03-20T09:15:00Z',
-    isActive: false,
-    isResultsVisible: true,
-    options: [
-      { text: 'Casino Night', votes: 30 },
-      { text: 'Movie Marathon', votes: 25 },
-      { text: 'Outdoor Adventure', votes: 50 },
-      { text: 'Game Competition', votes: 40 },
-    ]
-  }
-];
-
 interface PollCardProps {
-  poll: typeof mockPolls[0];
-  onSelect: (poll: typeof mockPolls[0]) => void;
+  poll: {
+    id: string;
+    title: string;
+    question: string;
+    createdAt: string;
+    isActive: boolean;
+    options: Array<{ text: string; votes: number }>;
+  };
+  onSelect: (poll: any) => void;
 }
 
 function PollCard({ poll, onSelect }: PollCardProps) {
@@ -78,12 +42,24 @@ function PollCard({ poll, onSelect }: PollCardProps) {
           <span className={`text-sm ${poll.isActive ? 'text-green-500' : 'text-orange-500'}`}>
             {poll.isActive ? 'Active' : 'Closed'}
           </span>
-          
-          <div className="flex items-center">
-            <span className="text-sm text-muted-foreground">
-              Results {poll.isResultsVisible ? 'Visible' : 'Hidden'}
-            </span>
-          </div>
+        </div>
+      </CardContent>
+    </Card>
+  );
+}
+
+function PollCardSkeleton() {
+  return (
+    <Card className="mb-4">
+      <CardContent className="pt-6">
+        <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start mb-2 gap-2">
+          <Skeleton className="h-6 w-3/4" />
+          <Skeleton className="h-4 w-24" />
+        </div>
+        <Skeleton className="h-4 w-full mb-2" />
+        <Skeleton className="h-4 w-2/3 mb-4" />
+        <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2">
+          <Skeleton className="h-4 w-16" />
         </div>
       </CardContent>
     </Card>
@@ -91,37 +67,63 @@ function PollCard({ poll, onSelect }: PollCardProps) {
 }
 
 export default function ViewPollsPage() {
-  const [selectedPoll, setSelectedPoll] = useState<typeof mockPolls[0] | null>(null);
+  const [selectedPoll, setSelectedPoll] = useState<any>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [polls, setPolls] = useState(mockPolls);
   const { toast } = useToast();
   
-  const handlePollSelect = (poll: typeof mockPolls[0]) => {
+  const { data: polls = [], isLoading } = useQuery({
+    queryKey: ['polls'],
+    queryFn: async () => {
+      const response = await axiosInstance.get('/polls');
+      return response.data.polls || [];
+    },
+  });
+  
+  const handlePollSelect = (poll: any) => {
     setSelectedPoll(poll);
     setIsModalOpen(true);
   };
 
-  const toggleResultsVisibility = (poll: typeof mockPolls[0]) => {
-    toast({
-      title: `Results ${poll.isResultsVisible ? 'hidden' : 'visible'}`,
-      description: `Poll results are now ${poll.isResultsVisible ? 'hidden from' : 'visible to'} employees.`,
-    });
-    
-    // Update the poll in the state
-    setPolls(prevPolls => 
-      prevPolls.map(p => 
-        p.id === poll.id ? { ...p, isResultsVisible: !p.isResultsVisible } : p
-      )
+  const activePolls = polls.filter((poll: any) => poll.isActive);
+  const closedPolls = polls.filter((poll: any) => !poll.isActive);
+  
+  if (isLoading) {
+    return (
+      <div className="container mx-auto p-2 sm:p-4 py-4 sm:py-8">
+        <h1 className="text-2xl sm:text-3xl font-bold mb-6 sm:mb-8">Polls & Results</h1>
+        
+        <div className="w-full">
+          <div className="mb-4">
+            <Tabs defaultValue="all">
+              <TabsList className="w-full sm:w-auto">
+                <TabsTrigger value="all" className="flex-1 sm:flex-none">All</TabsTrigger>
+                <TabsTrigger value="active" className="flex-1 sm:flex-none">Active</TabsTrigger>
+                <TabsTrigger value="closed" className="flex-1 sm:flex-none">Closed</TabsTrigger>
+              </TabsList>
+              
+              <TabsContent value="all" className="mt-4">
+                {[...Array(3)].map((_, i) => (
+                  <PollCardSkeleton key={i} />
+                ))}
+              </TabsContent>
+              
+              <TabsContent value="active" className="mt-4">
+                {[...Array(2)].map((_, i) => (
+                  <PollCardSkeleton key={i} />
+                ))}
+              </TabsContent>
+              
+              <TabsContent value="closed" className="mt-4">
+                {[...Array(1)].map((_, i) => (
+                  <PollCardSkeleton key={i} />
+                ))}
+              </TabsContent>
+            </Tabs>
+          </div>
+        </div>
+      </div>
     );
-
-    // Update the selected poll if it's the same one
-    if (selectedPoll && selectedPoll.id === poll.id) {
-      setSelectedPoll({ ...selectedPoll, isResultsVisible: !selectedPoll.isResultsVisible });
-    }
-  };
-
-  const activePolls = polls.filter(poll => poll.isActive);
-  const closedPolls = polls.filter(poll => !poll.isActive);
+  }
   
   return (
     <div className="container mx-auto p-2 sm:p-4 py-4 sm:py-8">
@@ -137,7 +139,7 @@ export default function ViewPollsPage() {
             </TabsList>
             
             <TabsContent value="all" className="mt-4">
-              {polls.map(poll => (
+              {polls.map((poll: any) => (
                 <PollCard 
                   key={poll.id}
                   poll={poll}
@@ -147,7 +149,7 @@ export default function ViewPollsPage() {
             </TabsContent>
             
             <TabsContent value="active" className="mt-4">
-              {activePolls.map(poll => (
+              {activePolls.map((poll: any) => (
                 <PollCard 
                   key={poll.id}
                   poll={poll}
@@ -157,7 +159,7 @@ export default function ViewPollsPage() {
             </TabsContent>
             
             <TabsContent value="closed" className="mt-4">
-              {closedPolls.map(poll => (
+              {closedPolls.map((poll: any) => (
                 <PollCard 
                   key={poll.id}
                   poll={poll}
@@ -183,7 +185,6 @@ export default function ViewPollsPage() {
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
         poll={selectedPoll}
-        onToggleVisibility={toggleResultsVisibility}
       />
     </div>
   );

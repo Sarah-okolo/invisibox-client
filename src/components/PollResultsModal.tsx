@@ -7,8 +7,6 @@ import {
   DialogTitle,
 } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
-import { Switch } from '@/components/ui/switch';
-import { Label } from '@/components/ui/label';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, Cell, PieChart, Pie, Legend } from 'recharts';
 import { Share, Download } from 'lucide-react';
@@ -26,13 +24,11 @@ interface PollResultsModalProps {
     question: string;
     createdAt: string;
     isActive: boolean;
-    isResultsVisible: boolean;
     options: Array<{ text: string; votes: number }>;
   } | null;
-  onToggleVisibility: (poll: any) => void;
 }
 
-export function PollResultsModal({ isOpen, onClose, poll, onToggleVisibility }: PollResultsModalProps) {
+export function PollResultsModal({ isOpen, onClose, poll }: PollResultsModalProps) {
   const [chartType, setChartType] = React.useState('bar');
   const { toast } = useToast();
 
@@ -44,6 +40,7 @@ export function PollResultsModal({ isOpen, onClose, poll, onToggleVisibility }: 
     toast({
       title: "Results shared",
       description: "Poll results have been shared with all subscribers.",
+      className: "bg-green-50 border-green-200 text-green-800",
     });
   };
 
@@ -51,6 +48,7 @@ export function PollResultsModal({ isOpen, onClose, poll, onToggleVisibility }: 
     toast({
       title: "Download started",
       description: "Your poll results will download shortly.",
+      className: "bg-green-50 border-green-200 text-green-800",
     });
   };
 
@@ -70,39 +68,38 @@ export function PollResultsModal({ isOpen, onClose, poll, onToggleVisibility }: 
           <h3 className="text-base sm:text-lg font-medium">{poll.question}</h3>
 
           <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4">
-            <div className="flex items-center space-x-2">
-              <Switch
-                id="results-visibility"
-                checked={poll.isResultsVisible}
-                onCheckedChange={() => onToggleVisibility(poll)}
-              />
-              <Label htmlFor="results-visibility" className="text-sm">
-                {poll.isResultsVisible ? 'Results visible to employees' : 'Results hidden from employees'}
-              </Label>
-            </div>
             <div className="text-sm">
               Total votes: <strong>{totalVotes}</strong>
             </div>
           </div>
 
           <Tabs value={chartType} onValueChange={setChartType}>
-            <TabsList className="mb-4">
-              <TabsTrigger value="bar">Bar Chart</TabsTrigger>
-              <TabsTrigger value="pie">Pie Chart</TabsTrigger>
+            <TabsList className="mb-4 w-full sm:w-auto">
+              <TabsTrigger value="bar" className="flex-1 sm:flex-none">Bar Chart</TabsTrigger>
+              <TabsTrigger value="pie" className="flex-1 sm:flex-none">Pie Chart</TabsTrigger>
             </TabsList>
             <TabsContent value="bar">
               <div className="w-full h-[250px] sm:h-[300px]">
-                <ResponsiveContainer>
-                  <BarChart data={poll.options}>
+                <ResponsiveContainer width="100%" height="100%">
+                  <BarChart data={poll.options} margin={{ top: 20, right: 30, left: 20, bottom: 80 }}>
                     <XAxis 
                       dataKey="text" 
                       angle={-45}
                       textAnchor="end"
                       height={80}
-                      fontSize={12}
+                      fontSize={10}
+                      interval={0}
                     />
-                    <YAxis fontSize={12} />
-                    <Tooltip />
+                    <YAxis fontSize={10} />
+                    <Tooltip 
+                      contentStyle={{
+                        fontSize: '12px',
+                        padding: '8px',
+                        backgroundColor: 'rgba(255, 255, 255, 0.95)',
+                        border: '1px solid #ccc',
+                        borderRadius: '4px'
+                      }}
+                    />
                     <Bar dataKey="votes">
                       {poll.options.map((_, index) => (
                         <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
@@ -114,7 +111,7 @@ export function PollResultsModal({ isOpen, onClose, poll, onToggleVisibility }: 
             </TabsContent>
             <TabsContent value="pie">
               <div className="w-full h-[250px] sm:h-[300px]">
-                <ResponsiveContainer>
+                <ResponsiveContainer width="100%" height="100%">
                   <PieChart>
                     <Pie
                       data={poll.options}
@@ -122,16 +119,29 @@ export function PollResultsModal({ isOpen, onClose, poll, onToggleVisibility }: 
                       nameKey="text"
                       cx="50%"
                       cy="50%"
-                      outerRadius={80}
+                      outerRadius="70%"
                       fill="#8884d8"
-                      label
+                      label={({ percent }) => `${(percent * 100).toFixed(0)}%`}
+                      labelLine={false}
+                      fontSize={10}
                     >
                       {poll.options.map((_, index) => (
                         <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
                       ))}
                     </Pie>
-                    <Tooltip />
-                    <Legend />
+                    <Tooltip 
+                      contentStyle={{
+                        fontSize: '12px',
+                        padding: '8px',
+                        backgroundColor: 'rgba(255, 255, 255, 0.95)',
+                        border: '1px solid #ccc',
+                        borderRadius: '4px'
+                      }}
+                    />
+                    <Legend 
+                      wrapperStyle={{ fontSize: '10px' }}
+                      iconSize={8}
+                    />
                   </PieChart>
                 </ResponsiveContainer>
               </div>

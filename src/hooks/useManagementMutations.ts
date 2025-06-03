@@ -1,4 +1,3 @@
-
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useToast } from '@/hooks/use-toast';
 import axiosInstance from '@/lib/axiosInstance';
@@ -46,25 +45,29 @@ export const managementAPI = {
 };
 
 export const useWarnSubscriberMutation = () => {
-  const { toast } = useToast();
   const queryClient = useQueryClient();
+  const { toast } = useToast();
 
   return useMutation({
-    mutationFn: (data: WarnSubscriberRequest) => managementAPI.warnSubscriber(data),
-    onSuccess: (response: WarnSubscriberResponse) => {
-      console.log('Warn subscriber response:', response);
-      toast({
-        title: "Subscriber warned",
-        description: `The subscriber has been successfully warned.`,
+    mutationFn: async ({ subscriberId, reason, details }: { subscriberId: string; reason: string; details: string }) => {
+      const response = await axiosInstance.post(`/subscribers/${subscriberId}/warn`, {
+        reason,
+        details,
       });
-      // Invalidate subscribers query to refresh the list
+      return response.data;
+    },
+    onSuccess: () => {
+      toast({
+        title: "Subscriber warned successfully",
+        description: "The warning has been sent to the subscriber.",
+        className: "bg-green-50 border-green-200 text-green-800",
+      });
       queryClient.invalidateQueries({ queryKey: ['subscribers'] });
     },
     onError: (error: any) => {
-      console.error('Warn subscriber error:', error);
       toast({
-        title: "Failed to warn subscriber",
-        description: error.response?.data?.message || "There was an error warning the subscriber.",
+        title: "Error warning subscriber",
+        description: error.response?.data?.message || "Failed to warn subscriber. Please try again.",
         variant: "destructive",
       });
     },
@@ -72,25 +75,29 @@ export const useWarnSubscriberMutation = () => {
 };
 
 export const useBanSubscriberMutation = () => {
-  const { toast } = useToast();
   const queryClient = useQueryClient();
+  const { toast } = useToast();
 
   return useMutation({
-    mutationFn: (data: BanSubscriberRequest) => managementAPI.banSubscriber(data),
-    onSuccess: (response: BanSubscriberResponse) => {
-      console.log('Ban subscriber response:', response);
-      toast({
-        title: "Subscriber banned",
-        description: `Subscriber has been banned and can no longer send messages or receive messages on the company's channel.`,
+    mutationFn: async ({ subscriberId, reason, details }: { subscriberId: string; reason: string; details: string }) => {
+      const response = await axiosInstance.post(`/subscribers/${subscriberId}/ban`, {
+        reason,
+        details,
       });
-      // Invalidate subscribers query to refresh the list
+      return response.data;
+    },
+    onSuccess: () => {
+      toast({
+        title: "Subscriber banned successfully",
+        description: "The subscriber has been banned from your system.",
+        className: "bg-green-50 border-green-200 text-green-800",
+      });
       queryClient.invalidateQueries({ queryKey: ['subscribers'] });
     },
     onError: (error: any) => {
-      console.error('Ban subscriber error:', error);
       toast({
-        title: "Failed to ban subscriber",
-        description: error.response?.data?.message || "There was an error banning the subscriber.",
+        title: "Error banning subscriber",
+        description: error.response?.data?.message || "Failed to ban subscriber. Please try again.",
         variant: "destructive",
       });
     },

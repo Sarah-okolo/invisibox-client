@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
+import { Skeleton } from '@/components/ui/skeleton';
 import { Search, Ban, AlertTriangle } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { useQuery } from '@tanstack/react-query';
@@ -11,6 +12,21 @@ import { useAuth } from '@/hooks/useAuth';
 import { useEffect } from 'react';
 import { BanSubscriberDialog } from '@/components/BanSubscriberDialog';
 import { WarnSubscriberDialog } from '@/components/WarnSubscriberDialog';
+
+function SubscriberSkeleton() {
+  return (
+    <div className="flex flex-col sm:flex-row sm:items-center justify-between p-3 border rounded-lg gap-2 sm:gap-4">
+      <div className="flex-1">
+        <Skeleton className="h-5 w-3/4 mb-2" />
+        <Skeleton className="h-4 w-1/2" />
+      </div>
+      <div className="flex flex-col sm:flex-row gap-2 sm:gap-2">
+        <Skeleton className="h-8 w-20" />
+        <Skeleton className="h-8 w-16" />
+      </div>
+    </div>
+  );
+}
 
 export default function ManageSubscribersPage() {
   const [searchTerm, setSearchTerm] = useState('');
@@ -58,6 +74,41 @@ export default function ManageSubscribersPage() {
     setSelectedSubscriber(subscriber);
     setBanDialogOpen(true);
   };
+
+  if (subscribers.isLoading) {
+    return (
+      <div className="container mx-auto p-2 sm:p-4 py-4 sm:py-8">
+        <h1 className="text-2xl sm:text-3xl font-bold mb-6 sm:mb-8">Manage Subscribers</h1>
+        
+        <div className="mb-4 sm:mb-6">
+          <div className="relative w-full sm:max-w-md">
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+            <Input
+              placeholder="Search subscribers by email..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="pl-10"
+            />
+          </div>
+        </div>
+
+        <Card>
+          <CardHeader className="pb-3 sm:pb-6">
+            <CardTitle className="text-lg sm:text-xl">
+              <Skeleton className="h-6 w-32" />
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-2">
+              {[...Array(5)].map((_, i) => (
+                <SubscriberSkeleton key={i} />
+              ))}
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+    );
+  }
 
   return (
     <div className="container mx-auto p-2 sm:p-4 py-4 sm:py-8">

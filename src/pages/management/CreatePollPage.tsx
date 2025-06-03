@@ -7,13 +7,44 @@ import { Textarea } from '@/components/ui/textarea';
 import { Button } from '@/components/ui/button';
 import { Plus, Trash2 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import axiosInstance from '@/lib/axiosInstance';
 
 export default function CreatePollPage() {
   const [title, setTitle] = useState('');
   const [question, setQuestion] = useState('');
   const [options, setOptions] = useState(['', '']);
-  const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
+  const queryClient = useQueryClient();
+
+  const createPollMutation = useMutation({
+    mutationFn: async (pollData: { title: string; question: string; options: string[] }) => {
+      const response = await axiosInstance.post('/polls', pollData);
+      return response.data;
+    },
+    onSuccess: () => {
+      toast({
+        title: "Poll created",
+        description: "Your poll has been created and is now available to employees.",
+        className: "bg-green-50 border-green-200 text-green-800",
+      });
+      
+      // Reset form
+      setTitle('');
+      setQuestion('');
+      setOptions(['', '']);
+      
+      // Invalidate polls query
+      queryClient.invalidateQueries({ queryKey: ['polls'] });
+    },
+    onError: (error: any) => {
+      toast({
+        title: "Error creating poll",
+        description: error.response?.data?.message || "Failed to create poll. Please try again.",
+        variant: "destructive",
+      });
+    },
+  });
 
   const addOption = () => {
     if (options.length < 6) {
@@ -60,30 +91,13 @@ export default function CreatePollPage() {
       return;
     }
     
-    setIsLoading(true);
-    
-    // Prepare data for backend
     const pollData = {
       title,
       question,
       options: filledOptions
     };
     
-    console.log('Poll data ready for backend:', pollData);
-    
-    // Simulate API call
-    setTimeout(() => {
-      toast({
-        title: "Poll created",
-        description: "Your poll has been created and is now available to employees.",
-      });
-      
-      // Reset form
-      setTitle('');
-      setQuestion('');
-      setOptions(['', '']);
-      setIsLoading(false);
-    }, 1500);
+    createPollMutation.mutate(pollData);
   };
 
   return (
@@ -161,10 +175,10 @@ export default function CreatePollPage() {
             <CardFooter>
               <Button 
                 type="submit" 
-                disabled={isLoading || !title || !question || options.some(opt => !opt.trim())}
+                disabled={createPollMutation.isPending || !title || !question || options.some(opt => !opt.trim())}
                 className="w-full"
               >
-                {isLoading ? 'Creating Poll...' : 'Create Poll'}
+                {createPollMutation.isPending ? 'Creating Poll...' : 'Create Poll'}
               </Button>
             </CardFooter>
           </form>
