@@ -1,27 +1,27 @@
-
 import React, { useState } from 'react';
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Button } from '@/components/ui/button';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Plus, Trash2 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
 import axiosInstance from '@/lib/axiosInstance';
 
-
 export default function CreatePollPage() {
   const [title, setTitle] = useState('');
   const [question, setQuestion] = useState('');
   const [options, setOptions] = useState(['', '']);
+  const [activeTime, setActiveTime] = useState('7'); // Default to 7 days
   const { toast } = useToast();
   const navigate = useNavigate();
   const queryClient = useQueryClient();
 
   const createPollMutation = useMutation({
-    mutationFn: async (pollData: { title: string; question: string; options: string[] }) => {
+    mutationFn: async (pollData: { title: string; question: string; options: string[]; activeTime: number }) => {
       const response = await axiosInstance.post('/polls', pollData);
       return response.data;
     },
@@ -36,6 +36,7 @@ export default function CreatePollPage() {
       setTitle('');
       setQuestion('');
       setOptions(['', '']);
+      setActiveTime('7');
 
       navigate('/management/polls');
       
@@ -99,7 +100,8 @@ export default function CreatePollPage() {
     const pollData = {
       title,
       question,
-      options: filledOptions
+      options: filledOptions,
+      activeTime: parseInt(activeTime)
     };
     
     createPollMutation.mutate(pollData);
@@ -136,6 +138,24 @@ export default function CreatePollPage() {
                   placeholder="What do you want to ask your employees?"
                   required
                 />
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="activeTime">Poll Active Duration</Label>
+                <Select value={activeTime} onValueChange={setActiveTime}>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select duration" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="1">1 Day</SelectItem>
+                    <SelectItem value="3">3 Days</SelectItem>
+                    <SelectItem value="7">1 Week</SelectItem>
+                    <SelectItem value="14">2 Weeks</SelectItem>
+                    <SelectItem value="30">1 Month</SelectItem>
+                    <SelectItem value="60">2 Months</SelectItem>
+                    <SelectItem value="90">3 Months</SelectItem>
+                  </SelectContent>
+                </Select>
               </div>
 
               <div className="space-y-4">
