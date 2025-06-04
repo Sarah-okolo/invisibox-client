@@ -171,8 +171,16 @@ export default function CreatePollPage() {
 
                 {options.map((option, index) => (
                   <div key={index} className="space-y-2">
-                    <div className="flex items-center justify-between">
-                      <span className="text-sm text-muted-foreground">Option {index + 1}</span>
+                    <div className=" items-center flex gap-1">
+                      <div className='w-full'>
+                        <Input 
+                          value={option}
+                          onChange={(e) => updateOption(index, e.target.value)}
+                          placeholder={`Option ${index + 1}`}
+                          required
+                        />
+                      </div>
+
                       <Button 
                         type="button" 
                         variant="ghost" 
@@ -183,13 +191,6 @@ export default function CreatePollPage() {
                         <Trash2 className="h-4 w-4" />
                       </Button>
                     </div>
-                    <Input 
-                      value={option}
-                      onChange={(e) => updateOption(index, e.target.value)}
-                      placeholder={`Enter option ${index + 1}`}
-                      required
-                      className="w-full"
-                    />
                   </div>
                 ))}
 
