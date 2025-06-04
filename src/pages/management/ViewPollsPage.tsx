@@ -15,7 +15,7 @@ import { useDeletePollMutation } from '@/hooks/useManagementMutations';
 
 interface PollCardProps {
   poll: {
-    id: string;
+    _id: string;
     title: string;
     question: string;
     createdAt: string;
@@ -39,7 +39,7 @@ function PollCard({ poll, onSelect, onDelete }: PollCardProps) {
           >
             {poll.title}
           </h3>
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 justify-between">
             <div className="flex items-center text-sm text-muted-foreground">
               <Clock className="w-4 h-4 mr-1" />
               {new Date(poll.createdAt).toLocaleDateString()}
@@ -54,13 +54,13 @@ function PollCard({ poll, onSelect, onDelete }: PollCardProps) {
                 <AlertDialogHeader>
                   <AlertDialogTitle>Delete Poll</AlertDialogTitle>
                   <AlertDialogDescription>
-                    Are you sure you want to delete "{poll.title}"? This action cannot be undone and all votes will be permanently lost.
+                    Are you sure you want to delete the poll: <span className='font-bold'>{poll.title}</span>? This action cannot be undone and all votes will be permanently lost.
                   </AlertDialogDescription>
                 </AlertDialogHeader>
                 <AlertDialogFooter>
                   <AlertDialogCancel>Cancel</AlertDialogCancel>
                   <AlertDialogAction 
-                    onClick={() => onDelete(poll.id)}
+                    onClick={() => onDelete(poll._id)}
                     className="bg-red-500 hover:bg-red-600"
                   >
                     Delete
