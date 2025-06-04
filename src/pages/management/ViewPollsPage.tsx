@@ -42,6 +42,10 @@ function PollCard({ poll, onSelect }: PollCardProps) {
           <span className={`text-sm ${poll.isActive ? 'text-green-500' : 'text-orange-500'}`}>
             {poll.isActive ? 'Active' : 'Closed'}
           </span>
+
+          <span className="text-sm text-muted-foreground font-bold">
+            {poll.options.reduce((sum, option) => sum + option.votes, 0)} votes
+          </span>
         </div>
       </CardContent>
     </Card>
@@ -75,6 +79,7 @@ export default function ViewPollsPage() {
     queryKey: ['polls'],
     queryFn: async () => {
       const response = await axiosInstance.get('/polls');
+      console.log(response)
       return response.data.polls || [];
     },
   });
@@ -139,9 +144,9 @@ export default function ViewPollsPage() {
             </TabsList>
             
             <TabsContent value="all" className="mt-4">
-              {polls.map((poll: any) => (
+              {polls.map((poll: any, index: number) => (
                 <PollCard 
-                  key={poll.id}
+                  key={index}
                   poll={poll}
                   onSelect={handlePollSelect}
                 />
@@ -149,9 +154,9 @@ export default function ViewPollsPage() {
             </TabsContent>
             
             <TabsContent value="active" className="mt-4">
-              {activePolls.map((poll: any) => (
+              {activePolls.map((poll: any, index: number) => (
                 <PollCard 
-                  key={poll.id}
+                  key={index}
                   poll={poll}
                   onSelect={handlePollSelect}
                 />
@@ -159,9 +164,9 @@ export default function ViewPollsPage() {
             </TabsContent>
             
             <TabsContent value="closed" className="mt-4">
-              {closedPolls.map((poll: any) => (
+              {closedPolls.map((poll: any, index: number) => (
                 <PollCard 
-                  key={poll.id}
+                  key={index}
                   poll={poll}
                   onSelect={handlePollSelect}
                 />

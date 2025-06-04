@@ -8,13 +8,16 @@ import { Button } from '@/components/ui/button';
 import { Plus, Trash2 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useNavigate } from 'react-router-dom';
 import axiosInstance from '@/lib/axiosInstance';
+
 
 export default function CreatePollPage() {
   const [title, setTitle] = useState('');
   const [question, setQuestion] = useState('');
   const [options, setOptions] = useState(['', '']);
   const { toast } = useToast();
+  const navigate = useNavigate();
   const queryClient = useQueryClient();
 
   const createPollMutation = useMutation({
@@ -33,6 +36,8 @@ export default function CreatePollPage() {
       setTitle('');
       setQuestion('');
       setOptions(['', '']);
+
+      navigate('/management/polls');
       
       // Invalidate polls query
       queryClient.invalidateQueries({ queryKey: ['polls'] });

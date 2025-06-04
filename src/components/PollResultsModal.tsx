@@ -34,7 +34,8 @@ export function PollResultsModal({ isOpen, onClose, poll }: PollResultsModalProp
 
   if (!poll) return null;
 
-  const totalVotes = poll.options.reduce((sum, option) => sum + option.votes, 0);
+  const totalVotes = poll.options.reduce((sum, option) => sum + option.votes, 0) || 0;
+  console.log('polls options:', poll.options);
 
   const sharePollResults = () => {
     toast({
@@ -56,10 +57,14 @@ export function PollResultsModal({ isOpen, onClose, poll }: PollResultsModalProp
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
-          <DialogTitle className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-2">
+          <DialogTitle className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-2 sm:mr-10">
             <span className="text-lg sm:text-xl">{poll.title}</span>
             <span className="text-sm text-muted-foreground">
-              {new Date(poll.createdAt).toLocaleString()}
+              {new Date(poll.createdAt).toLocaleString('en-US', {
+                month: 'short',
+                day: 'numeric',
+                year: 'numeric'
+              })}
             </span>
           </DialogTitle>
         </DialogHeader>
@@ -84,9 +89,9 @@ export function PollResultsModal({ isOpen, onClose, poll }: PollResultsModalProp
                   <BarChart data={poll.options} margin={{ top: 20, right: 30, left: 20, bottom: 80 }}>
                     <XAxis 
                       dataKey="text" 
-                      angle={-45}
+                      angle={-35}
                       textAnchor="end"
-                      height={80}
+                      height={20}
                       fontSize={10}
                       interval={0}
                     />
@@ -95,6 +100,7 @@ export function PollResultsModal({ isOpen, onClose, poll }: PollResultsModalProp
                       contentStyle={{
                         fontSize: '12px',
                         padding: '8px',
+                        color: '#333',
                         backgroundColor: 'rgba(255, 255, 255, 0.95)',
                         border: '1px solid #ccc',
                         borderRadius: '4px'
@@ -148,16 +154,22 @@ export function PollResultsModal({ isOpen, onClose, poll }: PollResultsModalProp
             </TabsContent>
           </Tabs>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <Button onClick={sharePollResults} className="w-full">
-              <Share className="h-4 w-4 mr-2" />
-              Share Results with Employees
-            </Button>
-            <Button variant="outline" onClick={downloadPollResults} className="w-full">
-              <Download className="h-4 w-4 mr-2" />
-              Download Results
-            </Button>
-          </div>
+          { totalVotes === 0 ? (
+            <div className="text-center relative bottom-7 text-sm text-muted-foreground">
+              No votes have been cast for this poll yet.
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <Button onClick={sharePollResults} className="w-full">
+                <Share className="h-4 w-4 mr-2" />
+                Share Results with Employees
+              </Button>
+              <Button variant="outline" onClick={downloadPollResults} className="w-full">
+                <Download className="h-4 w-4 mr-2" />
+                Download Results
+              </Button>
+            </div>
+          )}
         </div>
       </DialogContent>
     </Dialog>
