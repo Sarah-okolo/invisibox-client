@@ -150,6 +150,7 @@ export default function CreatePollPage() {
                   </SelectTrigger>
                   <SelectContent>
                     <SelectItem value="1">1 Day</SelectItem>
+                    <SelectItem value="2">2 Days</SelectItem>
                     <SelectItem value="3">3 Days</SelectItem>
                     <SelectItem value="7">1 Week</SelectItem>
                     <SelectItem value="14">2 Weeks</SelectItem>

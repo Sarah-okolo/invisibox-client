@@ -8,6 +8,7 @@ import { useToast } from '@/hooks/use-toast';
 import { useQuery } from '@tanstack/react-query';
 import axiosInstance from '@/lib/axiosInstance';
 import { PollResultsModal } from '@/components/PollResultsModal';
+import { formatDistanceToNow } from 'date-fns';
 
 interface PollCardProps {
   poll: {
@@ -16,6 +17,8 @@ interface PollCardProps {
     question: string;
     createdAt: string;
     isActive: boolean;
+    expiresAt: string; // ISO date string
+    activeTime: number; // in days
     options: Array<{ text: string; votes: number }>;
   };
   onSelect: (poll: any) => void;
@@ -39,13 +42,20 @@ function PollCard({ poll, onSelect }: PollCardProps) {
         <p className="text-muted-foreground mb-4 line-clamp-2">{poll.question}</p>
         
         <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2">
-          <span className={`text-sm ${poll.isActive ? 'text-green-500' : 'text-orange-500'}`}>
-            {poll.isActive ? 'Active' : 'Closed'}
-          </span>
+          <div className='flex items-center gap-3'>
+            <span className={`text-sm font-medium ${poll.isActive ? 'text-green-500' : 'text-orange-500'}`}>
+              {poll.isActive ? 'Active' : 'Closed'}
+            </span>
 
-          <span className="text-sm text-muted-foreground font-bold">
-            {poll.options.reduce((sum, option) => sum + option.votes, 0)} votes
-          </span>
+            <span className="text-sm text-muted-foreground font-bold">
+              <span className='text-purple-500 dark:text-purple-300'>{poll.options.reduce((sum, option) => sum + option.votes, 0)}</span> votes
+            </span>
+          </div>
+          { poll.isActive &&
+            <p className='font-medium text-sm text-muted-foreground'>
+              Ends in: <span className='text-orange-500'>{formatDistanceToNow(new Date(poll.expiresAt), {addSuffix: false})}</span>
+            </p>
+          }
         </div>
       </CardContent>
     </Card>
