@@ -170,21 +170,26 @@ export default function CreatePollPage() {
                 </div>
 
                 {options.map((option, index) => (
-                  <div key={index} className="flex items-center space-x-2">
+                  <div key={index} className="space-y-2">
+                    <div className="flex items-center justify-between">
+                      <span className="text-sm text-muted-foreground">Option {index + 1}</span>
+                      <Button 
+                        type="button" 
+                        variant="ghost" 
+                        size="sm" 
+                        onClick={() => removeOption(index)}
+                        className="text-red-500 hover:text-red-700"
+                      >
+                        <Trash2 className="h-4 w-4" />
+                      </Button>
+                    </div>
                     <Input 
                       value={option}
                       onChange={(e) => updateOption(index, e.target.value)}
-                      placeholder={`Option ${index + 1}`}
+                      placeholder={`Enter option ${index + 1}`}
                       required
+                      className="w-full"
                     />
-                    <Button 
-                      type="button" 
-                      variant="ghost" 
-                      size="icon" 
-                      onClick={() => removeOption(index)}
-                    >
-                      <Trash2 className="h-4 w-4" />
-                    </Button>
                   </div>
                 ))}
 
