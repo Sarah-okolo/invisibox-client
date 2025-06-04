@@ -103,6 +103,8 @@ export default function CreatePollPage() {
       options: filledOptions,
       activeTime: parseInt(activeTime)
     };
+
+    console.log('Creating poll with data:', pollData);
     
     createPollMutation.mutate(pollData);
   };
