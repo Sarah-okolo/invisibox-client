@@ -3,12 +3,15 @@ import React, { useState } from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Skeleton } from '@/components/ui/skeleton';
-import { Clock } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '@/components/ui/alert-dialog';
+import { Clock, Trash2 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { useQuery } from '@tanstack/react-query';
 import axiosInstance from '@/lib/axiosInstance';
 import { PollResultsModal } from '@/components/PollResultsModal';
 import { formatDistanceToNow } from 'date-fns';
+import { useDeletePollMutation } from '@/hooks/useManagementMutations';
 
 interface PollCardProps {
   poll: {
@@ -22,24 +25,58 @@ interface PollCardProps {
     options: Array<{ text: string; votes: number }>;
   };
   onSelect: (poll: any) => void;
+  onDelete: (pollId: string) => void;
 }
 
-function PollCard({ poll, onSelect }: PollCardProps) {
+function PollCard({ poll, onSelect, onDelete }: PollCardProps) {
   return (
-    <Card 
-      className="mb-4 cursor-pointer hover:shadow-md transition-shadow"
-      onClick={() => onSelect(poll)}
-    >
+    <Card className="mb-4">
       <CardContent className="pt-6">
         <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start mb-2 gap-2">
-          <h3 className="font-semibold text-lg">{poll.title}</h3>
-          <div className="flex items-center text-sm text-muted-foreground">
-            <Clock className="w-4 h-4 mr-1" />
-            {new Date(poll.createdAt).toLocaleDateString()}
+          <h3 
+            className="font-semibold text-lg cursor-pointer hover:text-primary"
+            onClick={() => onSelect(poll)}
+          >
+            {poll.title}
+          </h3>
+          <div className="flex items-center gap-2">
+            <div className="flex items-center text-sm text-muted-foreground">
+              <Clock className="w-4 h-4 mr-1" />
+              {new Date(poll.createdAt).toLocaleDateString()}
+            </div>
+            <AlertDialog>
+              <AlertDialogTrigger asChild>
+                <Button variant="ghost" size="sm" className="text-red-500 hover:text-red-700 hover:bg-red-50">
+                  <Trash2 className="w-4 h-4" />
+                </Button>
+              </AlertDialogTrigger>
+              <AlertDialogContent>
+                <AlertDialogHeader>
+                  <AlertDialogTitle>Delete Poll</AlertDialogTitle>
+                  <AlertDialogDescription>
+                    Are you sure you want to delete "{poll.title}"? This action cannot be undone and all votes will be permanently lost.
+                  </AlertDialogDescription>
+                </AlertDialogHeader>
+                <AlertDialogFooter>
+                  <AlertDialogCancel>Cancel</AlertDialogCancel>
+                  <AlertDialogAction 
+                    onClick={() => onDelete(poll.id)}
+                    className="bg-red-500 hover:bg-red-600"
+                  >
+                    Delete
+                  </AlertDialogAction>
+                </AlertDialogFooter>
+              </AlertDialogContent>
+            </AlertDialog>
           </div>
         </div>
         
-        <p className="text-muted-foreground mb-4 line-clamp-2">{poll.question}</p>
+        <p 
+          className="text-muted-foreground mb-4 line-clamp-2 cursor-pointer"
+          onClick={() => onSelect(poll)}
+        >
+          {poll.question}
+        </p>
         
         <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2">
           <div className='flex items-center gap-3'>
@@ -84,6 +121,7 @@ export default function ViewPollsPage() {
   const [selectedPoll, setSelectedPoll] = useState<any>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const { toast } = useToast();
+  const deletePollMutation = useDeletePollMutation();
   
   const { data: polls = [], isLoading } = useQuery({
     queryKey: ['polls'],
@@ -97,6 +135,10 @@ export default function ViewPollsPage() {
   const handlePollSelect = (poll: any) => {
     setSelectedPoll(poll);
     setIsModalOpen(true);
+  };
+
+  const handleDeletePoll = (pollId: string) => {
+    deletePollMutation.mutate(pollId);
   };
 
   const activePolls = polls.filter((poll: any) => poll.isActive);
@@ -159,6 +201,7 @@ export default function ViewPollsPage() {
                   key={index}
                   poll={poll}
                   onSelect={handlePollSelect}
+                  onDelete={handleDeletePoll}
                 />
               ))}
             </TabsContent>
@@ -169,6 +212,7 @@ export default function ViewPollsPage() {
                   key={index}
                   poll={poll}
                   onSelect={handlePollSelect}
+                  onDelete={handleDeletePoll}
                 />
               ))}
             </TabsContent>
@@ -179,6 +223,7 @@ export default function ViewPollsPage() {
                   key={index}
                   poll={poll}
                   onSelect={handlePollSelect}
+                  onDelete={handleDeletePoll}
                 />
               ))}
             </TabsContent>

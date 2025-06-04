@@ -1,3 +1,4 @@
+
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useToast } from '@/hooks/use-toast';
 import axiosInstance from '@/lib/axiosInstance';
@@ -98,6 +99,33 @@ export const useBanSubscriberMutation = () => {
       toast({
         title: "Error banning subscriber",
         description: error.response?.data?.message || "Failed to ban subscriber. Please try again.",
+        variant: "destructive",
+      });
+    },
+  });
+};
+
+export const useDeletePollMutation = () => {
+  const queryClient = useQueryClient();
+  const { toast } = useToast();
+
+  return useMutation({
+    mutationFn: async (pollId: string) => {
+      const response = await axiosInstance.delete(`/polls/${pollId}`);
+      return response.data;
+    },
+    onSuccess: () => {
+      toast({
+        title: "Poll deleted successfully",
+        description: "The poll has been permanently removed.",
+        className: "bg-green-50 border-green-200 text-green-800",
+      });
+      queryClient.invalidateQueries({ queryKey: ['polls'] });
+    },
+    onError: (error: any) => {
+      toast({
+        title: "Error deleting poll",
+        description: error.response?.data?.message || "Failed to delete poll. Please try again.",
         variant: "destructive",
       });
     },
