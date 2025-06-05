@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
@@ -23,7 +23,7 @@ export default function VoteOnPollPage() {
   const { toast } = useToast();
 
   // Fetch the poll data using the pollId and compId
-  const { data: poll, isLoading } = useQuery({
+  const { data: poll, isLoading, isSuccess } = useQuery({
     queryKey: ['public-poll', pollId, compId],
     queryFn: async () => {
       const response = await axiosInstance.get(`/polls/${pollId}?compid=${compId}`);
@@ -32,12 +32,18 @@ export default function VoteOnPollPage() {
     enabled: !!pollId && !!compId,
   });
 
+  useEffect(() => {
+    if (poll) {
+      console.log('Fetched Poll:', poll);
+    }
+  }, [isSuccess]);
+
   const voteMutation = useMutation({
     mutationFn: async (voteData: { 
-      pollId: string; 
-      selectedOptionId: string; 
-      companyId: string; 
-      employeeId: string; 
+      pollid: string; 
+      option: string; 
+      compid: string; 
+      empid: string; 
     }) => {
       const response = await axiosInstance.post(`/polls/vote`, voteData);
       return response.data;
@@ -81,10 +87,10 @@ export default function VoteOnPollPage() {
     }
     
     const voteData = {
-      pollId,
-      selectedOptionId: selectedOption,
-      companyId: compId,
-      employeeId: empId,
+      pollid: pollId,
+      option: selectedOption,
+      compid: compId,
+      empid: empId,
     };
     
     voteMutation.mutate(voteData);
@@ -201,11 +207,11 @@ export default function VoteOnPollPage() {
               <RadioGroup value={selectedOption} onValueChange={setSelectedOption}>
                 {poll.options.map((option: any, index: number) => (
                   <Label 
-                    key={option.id} 
-                    htmlFor={option.id} 
+                    key={index} 
+                    htmlFor={option.text} 
                     className="flex items-center space-x-3 p-4 mb-2 rounded-lg border hover:bg-muted/50 cursor-pointer transition-colors"
                   >
-                    <RadioGroupItem value={option.id} id={option.id} />
+                    <RadioGroupItem value={option.text} id={option.text} />
                     <span className="flex-1">
                       {option.text}
                     </span>

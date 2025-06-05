@@ -28,6 +28,18 @@ interface PollCardProps {
   onDelete: (pollId: string) => void;
 }
 
+// Function to check if a poll is active based on its expiration date
+const pollIsActive = (expires: string) => {
+  if (!expires) return false;
+  const now = new Date();
+  return new Date(expires) > now;
+}
+
+// Function to remove "about" prefix from a string
+const removeAbout = (str: string) => {
+  return str.replace(/^about\s/, '');
+}
+
 function PollCard({ poll, onSelect, onDelete }: PollCardProps) {
   return (
     <Card className="mb-4">
@@ -41,8 +53,7 @@ function PollCard({ poll, onSelect, onDelete }: PollCardProps) {
           </h3>
           <div className="flex items-center gap-2 justify-between">
             <div className="flex items-center text-sm text-muted-foreground">
-              <Clock className="w-4 h-4 mr-1" />
-              {new Date(poll.createdAt).toLocaleDateString()}
+              {removeAbout(formatDistanceToNow(new Date(poll.createdAt), { addSuffix: true }))}
             </div>
             <AlertDialog>
               <AlertDialogTrigger asChild>
@@ -80,15 +91,15 @@ function PollCard({ poll, onSelect, onDelete }: PollCardProps) {
         
         <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2">
           <div className='flex items-center gap-3'>
-            <span className={`text-sm font-medium ${poll.isActive ? 'text-green-500' : 'text-orange-500'}`}>
-              {poll.isActive ? 'Active' : 'Closed'}
+            <span className={`text-sm font-medium ${pollIsActive(poll.expiresAt) ? 'text-green-500' : 'text-orange-500'}`}>
+              {pollIsActive(poll.expiresAt) ? 'Active' : 'Closed'}
             </span>
 
             <span className="text-sm text-muted-foreground font-bold">
               <span className='text-purple-500 dark:text-purple-300'>{poll.options.reduce((sum, option) => sum + option.votes, 0)}</span> votes
             </span>
           </div>
-          { poll.isActive &&
+          { pollIsActive(poll.expiresAt) &&
             <p className='font-medium text-sm text-muted-foreground'>
               Ends in: <span className='text-orange-500'>{formatDistanceToNow(new Date(poll.expiresAt), {addSuffix: false})}</span>
             </p>
@@ -120,7 +131,6 @@ function PollCardSkeleton() {
 export default function ViewPollsPage() {
   const [selectedPoll, setSelectedPoll] = useState<any>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const { toast } = useToast();
   const deletePollMutation = useDeletePollMutation();
   
   const { data: polls = [], isLoading } = useQuery({
@@ -141,8 +151,8 @@ export default function ViewPollsPage() {
     deletePollMutation.mutate(pollId);
   };
 
-  const activePolls = polls.filter((poll: any) => poll.isActive);
-  const closedPolls = polls.filter((poll: any) => !poll.isActive);
+  const activePolls = polls.filter((poll: any) => pollIsActive(poll.expiresAt));
+  const closedPolls = polls.filter((poll: any) => !pollIsActive(poll.expiresAt));
   
   if (isLoading) {
     return (
