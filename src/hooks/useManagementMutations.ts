@@ -131,3 +131,37 @@ export const useDeletePollMutation = () => {
     },
   });
 };
+
+export const useSharePollResultsMutation = () => {
+  const { toast } = useToast();
+
+  return useMutation({
+    mutationFn: async ({ pollData, imageBlob }: { pollData: any; imageBlob: Blob }) => {
+      const formData = new FormData();
+      formData.append('pollTitle', pollData.title);
+      formData.append('pollQuestion', pollData.question);
+      formData.append('resultImage', imageBlob, `poll-results-${pollData.id}.png`);
+
+      const response = await axiosInstance.post('/polls/share', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+      return response.data;
+    },
+    onSuccess: () => {
+      toast({
+        title: "Results shared successfully",
+        description: "Poll results have been shared with all employees.",
+        className: "bg-green-50 border-green-200 text-green-800",
+      });
+    },
+    onError: (error: any) => {
+      toast({
+        title: "Error sharing results",
+        description: error.response?.data?.message || "Failed to share poll results. Please try again.",
+        variant: "destructive",
+      });
+    },
+  });
+};

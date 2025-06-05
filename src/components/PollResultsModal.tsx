@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
@@ -5,9 +6,9 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, Cell, PieChart, Pie, Legend } from 'recharts';
 import { Share, Download } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
-import { downloadPollResults } from '@/utils/downloadUtils';
+import { downloadPollResults, sharePollResults } from '@/utils/downloadUtils';
 import { pollIsActive } from '@/utils/pollIsActive';
-
+import { useSharePollResultsMutation } from '@/hooks/useManagementMutations';
 
 // Colors for the charts
 const COLORS = ['#8884d8', '#82ca9d', '#ffc658', '#ff8042', '#0088FE', '#00C49F'];
@@ -32,17 +33,26 @@ export function PollResultsModal({ isOpen, onClose, poll }: PollResultsModalProp
   const [chartType, setChartType] = React.useState('bar');
   const chartRef = React.useRef<HTMLDivElement>(null);
   const { toast } = useToast();
+  const sharePollMutation = useSharePollResultsMutation();
 
   if (!poll) return null;
 
   const totalVotes = poll.options.reduce((sum, option) => sum + option.votes, 0) || 0;
 
-  const sharePollResults = () => {
-    toast({
-      title: "Results shared",
-      description: "Poll results have been shared with all subscribers.",
-      className: "bg-green-50 border-green-200 text-green-800",
-    });
+  const handleSharePollResults = async () => {
+    try {
+      const imageBlob = await sharePollResults(poll, chartRef.current);
+      await sharePollMutation.mutateAsync({
+        pollData: poll,
+        imageBlob
+      });
+    } catch (error) {
+      toast({
+        title: "Share failed",
+        description: "There was an error sharing the poll results.",
+        variant: "destructive",
+      });
+    }
   };
 
   const handleDownloadPollResults = async () => {
@@ -172,9 +182,13 @@ export function PollResultsModal({ isOpen, onClose, poll }: PollResultsModalProp
           ) : 
            !pollIsActive(poll.expiresAt) ? (
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <Button onClick={sharePollResults} className="w-full">
+              <Button 
+                onClick={handleSharePollResults} 
+                className="w-full"
+                disabled={sharePollMutation.isPending}
+              >
                 <Share className="h-4 w-4 mr-2" />
-                Share Results with Employees
+                {sharePollMutation.isPending ? 'Sharing...' : 'Share Results with Employees'}
               </Button>
               <Button variant="outline" onClick={handleDownloadPollResults} className="w-full">
                 <Download className="h-4 w-4 mr-2" />
