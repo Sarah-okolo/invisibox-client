@@ -1,4 +1,3 @@
-
 import React from 'react';
 import {
   Dialog,
@@ -11,6 +10,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, Cell, PieChart, Pie, Legend } from 'recharts';
 import { Share, Download } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
+import { downloadPollResults } from '@/utils/downloadUtils';
 
 // Colors for the charts
 const COLORS = ['#8884d8', '#82ca9d', '#ffc658', '#ff8042', '#0088FE', '#00C49F'];
@@ -45,12 +45,21 @@ export function PollResultsModal({ isOpen, onClose, poll }: PollResultsModalProp
     });
   };
 
-  const downloadPollResults = () => {
-    toast({
-      title: "Download started",
-      description: "Your poll results will download shortly.",
-      className: "bg-green-50 border-green-200 text-green-800",
-    });
+  const handleDownloadPollResults = () => {
+    try {
+      downloadPollResults(poll);
+      toast({
+        title: "Download successful",
+        description: "Poll results have been downloaded as CSV.",
+        className: "bg-green-50 border-green-200 text-green-800",
+      });
+    } catch (error) {
+      toast({
+        title: "Download failed",
+        description: "There was an error downloading the poll results.",
+        variant: "destructive",
+      });
+    }
   };
 
   return (
@@ -164,7 +173,7 @@ export function PollResultsModal({ isOpen, onClose, poll }: PollResultsModalProp
                 <Share className="h-4 w-4 mr-2" />
                 Share Results with Employees
               </Button>
-              <Button variant="outline" onClick={downloadPollResults} className="w-full">
+              <Button variant="outline" onClick={handleDownloadPollResults} className="w-full">
                 <Download className="h-4 w-4 mr-2" />
                 Download Results
               </Button>
