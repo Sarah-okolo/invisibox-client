@@ -150,7 +150,7 @@ export default function LoginPage() {
               <Input 
                 id="email"
                 type="email" 
-                placeholder="yourcompany@invisibox.email" 
+                placeholder="e.g. company123@invisibox.email" 
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required

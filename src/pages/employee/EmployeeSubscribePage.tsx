@@ -132,7 +132,7 @@ export default function EmployeeSubscribePage() {
               <Input
                 id="email"
                 type="email"
-                placeholder="your.email@company.com"
+                placeholder="Enter your email address"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
@@ -146,7 +146,7 @@ export default function EmployeeSubscribePage() {
               <Input
                 id="companyEmail"
                 type="email"
-                placeholder="yourcompany123@invisibox.email"
+                placeholder="e.g. company123@invisibox.email"
                 value={companyEmail}
                 onChange={(e) => setCompanyEmail(e.target.value)}
                 required

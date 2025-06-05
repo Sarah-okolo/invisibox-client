@@ -108,7 +108,9 @@ export default function SettingsPage() {
             <div className="space-y-2">
               <Label>InvisiBox Email</Label>
               <div className="flex items-center space-x-2">
-                <Input value={user?.invisiboxEmail || ''} disabled className="font-mono" />
+                <div className='w-full'>
+                  <Input value={user?.invisiboxEmail || ''} disabled className="font-mono" />
+                </div>
                 <Button
                   variant="outline"
                   size="sm"
@@ -122,7 +124,7 @@ export default function SettingsPage() {
                   )}
                 </Button>
               </div>
-              <p className="text-sm text-orange-700 sm:text-orange-400">
+              <p className="text-sm text-orange-700 dark:text-orange-400">
                 Use this email to log in to your management dashboard and share to your employees.
               </p>
             </div>

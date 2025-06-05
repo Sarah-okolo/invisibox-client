@@ -119,7 +119,7 @@ export default function EmployeeUnsubscribePage() {
         <form onSubmit={handleSubmit}>
           <CardContent className="space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="email">Your Invisibox Address </Label>
+              <Label htmlFor="email">Your Invisibox email Address </Label>
               <Input
                 id="email"
                 type="email"
