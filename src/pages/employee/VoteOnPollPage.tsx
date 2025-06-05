@@ -200,12 +200,16 @@ export default function VoteOnPollPage() {
             <CardContent className="space-y-6 mt-4">
               <RadioGroup value={selectedOption} onValueChange={setSelectedOption}>
                 {poll.options.map((option: any, index: number) => (
-                  <div key={index} className="flex items-center space-x-3 p-4 mb-2 rounded-lg border hover:bg-muted/50">
-                    <RadioGroupItem value={option.id} id={option.id} key={option.id}/>
-                    <Label htmlFor={option.id} className="flex-1 cursor-pointer">
+                  <Label 
+                    key={option.id} 
+                    htmlFor={option.id} 
+                    className="flex items-center space-x-3 p-4 mb-2 rounded-lg border hover:bg-muted/50 cursor-pointer transition-colors"
+                  >
+                    <RadioGroupItem value={option.id} id={option.id} />
+                    <span className="flex-1">
                       {option.text}
-                    </Label>
-                  </div>
+                    </span>
+                  </Label>
                 ))}
               </RadioGroup>
 
