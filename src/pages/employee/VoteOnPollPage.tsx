@@ -10,8 +10,9 @@ import { Shield, Vote, CheckCircle } from 'lucide-react';
 import { Link, useParams, useSearchParams } from 'react-router-dom';
 import { useQuery, useMutation } from '@tanstack/react-query';
 import axiosInstance from '@/lib/axiosInstance';
+import { formatDistanceToNow } from 'date-fns';
 
-export default function PublicVoteOnPollPage() {
+export default function VoteOnPollPage() {
   const { pollId } = useParams();
   const [searchParams] = useSearchParams();
   const compId = searchParams.get('compid');
@@ -21,10 +22,11 @@ export default function PublicVoteOnPollPage() {
   const [hasVoted, setHasVoted] = useState(false);
   const { toast } = useToast();
 
+  // Fetch the poll data using the pollId and compId
   const { data: poll, isLoading } = useQuery({
     queryKey: ['public-poll', pollId, compId],
     queryFn: async () => {
-      const response = await axiosInstance.get(`/public/polls/${pollId}?compid=${compId}`);
+      const response = await axiosInstance.get(`/polls/${pollId}?compid=${compId}`);
       return response.data.poll;
     },
     enabled: !!pollId && !!compId,
@@ -37,7 +39,7 @@ export default function PublicVoteOnPollPage() {
       companyId: string; 
       employeeId: string; 
     }) => {
-      const response = await axiosInstance.post(`/public/polls/${pollId}/vote`, voteData);
+      const response = await axiosInstance.post(`/polls/vote`, voteData);
       return response.data;
     },
     onSuccess: () => {
@@ -90,7 +92,7 @@ export default function PublicVoteOnPollPage() {
 
   if (!compId || !empId || !pollId) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 dark:from-black dark:to-slate-900 flex items-center justify-center p-4 py-16">
+      <div className="min-h-[85vh] bg-gradient-to-br from-slate-50 to-blue-50 dark:from-black dark:to-slate-900 flex items-center justify-center p-4 py-4">
         <Card className="w-full max-w-md text-center">
           <CardContent className="pt-6">
             <h2 className="text-2xl font-bold mb-2">Invalid Poll Link</h2>
@@ -108,7 +110,7 @@ export default function PublicVoteOnPollPage() {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 dark:from-black dark:to-slate-900 p-4 py-16">
+      <div className="min-h-[85vh] bg-gradient-to-br from-slate-50 to-blue-50 dark:from-black dark:to-slate-900 p-4 py-4">
         <div className="container mx-auto max-w-2xl">
           <Link to="/" className="flex items-center mb-8">
             <div className="w-8 h-8 bg-gradient-to-br from-purple-600 to-pink-600 rounded-lg flex items-center justify-center mr-3">
@@ -144,7 +146,7 @@ export default function PublicVoteOnPollPage() {
 
   if (!poll) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 dark:from-black dark:to-slate-900 flex items-center justify-center p-4 py-16">
+      <div className="min-h-[85vh] bg-gradient-to-br from-slate-50 to-blue-50 dark:from-black dark:to-slate-900 flex items-center justify-center p-4 py-4">
         <Card className="w-full max-w-md text-center">
           <CardContent className="pt-6">
             <h2 className="text-2xl font-bold mb-2">Poll Not Found</h2>
@@ -162,7 +164,7 @@ export default function PublicVoteOnPollPage() {
 
   if (hasVoted) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 dark:from-black dark:to-slate-900 flex items-center justify-center p-4 py-16">
+      <div className="min-h-[85vh] bg-gradient-to-br from-slate-50 to-blue-50 dark:from-black dark:to-slate-900 flex items-center justify-center p-4 py-4">
         <Card className="w-full max-w-md text-center">
           <CardContent className="pt-6">
             <CheckCircle className="w-16 h-16 text-green-500 mx-auto mb-4" />
@@ -180,57 +182,50 @@ export default function PublicVoteOnPollPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 dark:from-black dark:to-slate-900 p-4 py-16">
+    <div className="min-h-[85vh] bg-gradient-to-br from-slate-50 to-blue-50 dark:from-black dark:to-slate-900 p-4 py-4">
       <div className="container mx-auto max-w-2xl">
-        <Link to="/" className="flex items-center mb-8">
-          <div className="w-8 h-8 bg-gradient-to-br from-purple-600 to-pink-600 rounded-lg flex items-center justify-center mr-3">
-            <Shield className="w-5 h-5 text-white" />
-          </div>
-          <span className="text-xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
-            InvisiBox
-          </span>
-        </Link>
+        <h1 className='font-bold text-green-400 my-4 text-2xl'>🟢 Active Poll</h1>
 
         <Card>
           <CardHeader>
-            <CardTitle className="flex items-center gap-2">
+            <CardTitle className="flex items-center gap-2 mb-5">
               <Vote className="w-5" />
               {poll.title}
             </CardTitle>
-            <CardDescription>
+            <CardDescription className='text-base'>
               {poll.question}
-              {poll.expiresAt && (
-                <>
-                  <br />
-                  <span className="text-sm">
-                    Poll expires: {new Date(poll.expiresAt).toLocaleDateString()}
-                  </span>
-                </>
-              )}
             </CardDescription>
           </CardHeader>
           <form onSubmit={handleSubmit}>
-            <CardContent className="space-y-6">
+            <CardContent className="space-y-6 mt-4">
               <RadioGroup value={selectedOption} onValueChange={setSelectedOption}>
-                {poll.options.map((option: any) => (
-                  <div key={option.id} className="flex items-center space-x-2 p-3 rounded-lg border hover:bg-muted/50">
-                    <RadioGroupItem value={option.id} id={option.id} />
+                {poll.options.map((option: any, index: number) => (
+                  <div key={index} className="flex items-center space-x-3 p-4 mb-2 rounded-lg border hover:bg-muted/50">
+                    <RadioGroupItem value={option.id} id={option.id} key={option.id}/>
                     <Label htmlFor={option.id} className="flex-1 cursor-pointer">
                       {option.text}
                     </Label>
                   </div>
                 ))}
               </RadioGroup>
+
+              {poll.expiresAt && (
+                <>
+                  <br />
+                  <span className="text-sm">
+                    Poll expires in: <span className='text-orange-500'>{formatDistanceToNow(new Date(poll.expiresAt))}</span>
+                  </span>
+                </>
+              )}
               
               <div className="bg-blue-50 dark:bg-blue-900/20 p-4 rounded-lg">
                 <p className="text-sm text-blue-800 dark:text-blue-200">
                   <strong>Anonymous Voting:</strong> Your vote is completely anonymous. 
-                  No one can trace this vote back to you.
                 </p>
               </div>
 
               <Button type="submit" className="w-full" disabled={voteMutation.isPending || !selectedOption}>
-                {voteMutation.isPending ? 'Submitting Vote...' : 'Submit Anonymous Vote'}
+                {voteMutation.isPending ? 'Submitting Vote...' : 'Submit Vote'}
               </Button>
             </CardContent>
           </form>
