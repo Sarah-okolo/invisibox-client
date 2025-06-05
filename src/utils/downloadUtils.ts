@@ -1,4 +1,3 @@
-
 export const downloadPollResults = async (poll: {
   id: string;
   title: string;
@@ -15,8 +14,7 @@ export const downloadPollResults = async (poll: {
     const { default: html2canvas } = await import('html2canvas');
     
     const canvas = await html2canvas(chartElement, {
-      backgroundColor: '#ffffff',
-      scale: 2, // Higher resolution
+      background: 'null',
       useCORS: true,
       allowTaint: true,
     });

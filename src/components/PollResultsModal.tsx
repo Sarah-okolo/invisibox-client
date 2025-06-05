@@ -1,17 +1,13 @@
-
 import React from 'react';
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-} from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, Cell, PieChart, Pie, Legend } from 'recharts';
 import { Share, Download } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { downloadPollResults } from '@/utils/downloadUtils';
+import { pollIsActive } from '@/utils/pollIsActive';
+
 
 // Colors for the charts
 const COLORS = ['#8884d8', '#82ca9d', '#ffc658', '#ff8042', '#0088FE', '#00C49F'];
@@ -25,6 +21,9 @@ interface PollResultsModalProps {
     question: string;
     createdAt: string;
     isActive: boolean;
+    expiresAt: string; // ISO date string
+    activeTime: number; // in days
+    voters: any;
     options: Array<{ text: string; votes: number }>;
   } | null;
 }
@@ -37,7 +36,6 @@ export function PollResultsModal({ isOpen, onClose, poll }: PollResultsModalProp
   if (!poll) return null;
 
   const totalVotes = poll.options.reduce((sum, option) => sum + option.votes, 0) || 0;
-  console.log('polls options:', poll.options);
 
   const sharePollResults = () => {
     toast({
@@ -89,14 +87,14 @@ export function PollResultsModal({ isOpen, onClose, poll }: PollResultsModalProp
             </div>
           </div>
 
-          <div ref={chartRef} className="bg-white p-4 rounded-lg">
+          <div className="p-4 rounded-lg">
             <Tabs value={chartType} onValueChange={setChartType}>
               <TabsList className="mb-4 w-full sm:w-auto">
                 <TabsTrigger value="bar" className="flex-1 sm:flex-none">Bar Chart</TabsTrigger>
                 <TabsTrigger value="pie" className="flex-1 sm:flex-none">Pie Chart</TabsTrigger>
               </TabsList>
               <TabsContent value="bar">
-                <div className="w-full h-[250px] sm:h-[300px]">
+                <div className="w-full h-[250px] sm:h-[300px] pt-10"  ref={chartRef}>
                   <ResponsiveContainer width="100%" height="100%">
                     <BarChart data={poll.options} margin={{ top: 20, right: 30, left: 20, bottom: 80 }}>
                       <XAxis 
@@ -128,7 +126,7 @@ export function PollResultsModal({ isOpen, onClose, poll }: PollResultsModalProp
                 </div>
               </TabsContent>
               <TabsContent value="pie">
-                <div className="w-full h-[250px] sm:h-[300px]">
+                <div className="w-full h-[250px] sm:h-[300px] pb-10"  ref={chartRef}>
                   <ResponsiveContainer width="100%" height="100%">
                     <PieChart>
                       <Pie
@@ -171,7 +169,8 @@ export function PollResultsModal({ isOpen, onClose, poll }: PollResultsModalProp
             <div className="text-center relative bottom-7 text-sm text-muted-foreground">
               No votes have been cast for this poll yet.
             </div>
-          ) : (
+          ) : 
+           !pollIsActive(poll.expiresAt) ? (
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <Button onClick={sharePollResults} className="w-full">
                 <Share className="h-4 w-4 mr-2" />
@@ -182,7 +181,9 @@ export function PollResultsModal({ isOpen, onClose, poll }: PollResultsModalProp
                 Download Chart
               </Button>
             </div>
-          )}
+          ):
+          null
+          }
         </div>
       </DialogContent>
     </Dialog>

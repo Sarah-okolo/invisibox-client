@@ -12,6 +12,7 @@ import axiosInstance from '@/lib/axiosInstance';
 import { PollResultsModal } from '@/components/PollResultsModal';
 import { formatDistanceToNow } from 'date-fns';
 import { useDeletePollMutation } from '@/hooks/useManagementMutations';
+import { pollIsActive } from '@/utils/pollIsActive';
 
 interface PollCardProps {
   poll: {
@@ -28,12 +29,6 @@ interface PollCardProps {
   onDelete: (pollId: string) => void;
 }
 
-// Function to check if a poll is active based on its expiration date
-const pollIsActive = (expires: string) => {
-  if (!expires) return false;
-  const now = new Date();
-  return new Date(expires) > now;
-}
 
 // Function to remove "about" prefix from a string
 const removeAbout = (str: string) => {
