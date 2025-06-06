@@ -180,7 +180,7 @@ export function PollResultsModal({ isOpen, onClose, poll }: PollResultsModalProp
               No votes have been cast for this poll yet.
             </div>
           ) : 
-           !pollIsActive(poll.expiresAt) ? (
+           pollIsActive(poll.expiresAt) ? (
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <Button 
                 onClick={handleSharePollResults} 

@@ -1,7 +1,7 @@
-
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useToast } from '@/hooks/use-toast';
 import axiosInstance from '@/lib/axiosInstance';
+import { useNavigate } from 'react-router-dom';
 
 export interface WarnSubscriberRequest {
   subscriberId: string;
@@ -134,17 +134,18 @@ export const useDeletePollMutation = () => {
 
 export const useSharePollResultsMutation = () => {
   const { toast } = useToast();
+  const navigate = useNavigate();
 
   return useMutation({
     mutationFn: async ({ pollData, imageBlob }: { pollData: any; imageBlob: Blob }) => {
       const formData = new FormData();
-      formData.append('pollTitle', pollData.title);
-      formData.append('pollQuestion', pollData.question);
+      formData.append('title', pollData.title);
+      formData.append('question', pollData.question);
       formData.append('resultImage', imageBlob, `poll-results-${pollData.id}.png`);
 
-      const response = await axiosInstance.post('/polls/share', formData, {
+      const response = await axiosInstance.post('/polls/share-result', formData, {
         headers: {
-          'Content-Type': 'multipart/form-data',
+          'Content-Type': 'undefined', // Let axios set the correct boundary
         },
       });
       return response.data;
@@ -155,6 +156,7 @@ export const useSharePollResultsMutation = () => {
         description: "Poll results have been shared with all employees.",
         className: "bg-green-50 border-green-200 text-green-800",
       });
+      navigate('/management/polls');
     },
     onError: (error: any) => {
       toast({
