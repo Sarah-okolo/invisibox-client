@@ -28,6 +28,15 @@ export default function SignupPage() {
       });
       return;
     }
+
+    if (email.includes('@invisibox.email')) {
+      toast({
+        title: "Invalid Email",
+        description: "Please use a different email address that is not from InvisiBox.",
+        variant: "destructive",
+      });
+      return;
+    }
     
     signupMutation.mutate({
       companyName,
