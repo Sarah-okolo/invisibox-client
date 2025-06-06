@@ -84,6 +84,8 @@ export default function SendMessagePage() {
                   value={title} 
                   onChange={(e) => setTitle(e.target.value)} 
                   placeholder="Enter message title"
+                  maxLength={100}
+                  className='h-12'
                   required
                 />
               </div>
@@ -95,6 +97,7 @@ export default function SendMessagePage() {
                   value={message} 
                   onChange={(e) => setMessage(e.target.value)} 
                   placeholder="Write your message here..."
+                  maxLength={3000}
                   className="min-h-[200px]"
                   required
                 />

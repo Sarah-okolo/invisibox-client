@@ -70,6 +70,7 @@ export const managementAPI = {
   },
 };
 
+// This mutation is used to warn a subscriber
 export const useWarnSubscriberMutation = () => {
   const queryClient = useQueryClient();
   const { toast } = useToast();
@@ -100,6 +101,7 @@ export const useWarnSubscriberMutation = () => {
   });
 };
 
+// This mutation is used to ban a subscriber from the system
 export const useBanSubscriberMutation = () => {
   const queryClient = useQueryClient();
   const { toast } = useToast();
@@ -130,6 +132,7 @@ export const useBanSubscriberMutation = () => {
   });
 };
 
+// This mutation is used to create a new poll
 export const useDeletePollMutation = () => {
   const queryClient = useQueryClient();
   const { toast } = useToast();
@@ -157,6 +160,8 @@ export const useDeletePollMutation = () => {
   });
 };
 
+
+// This mutation is used to share poll results with all employees
 export const useSharePollResultsMutation = () => {
   const { toast } = useToast();
   const navigate = useNavigate();
@@ -193,9 +198,11 @@ export const useSharePollResultsMutation = () => {
   });
 };
 
+// This mutation is used to send a message to all subscribers
 export const useSendMessageMutation = () => {
   const queryClient = useQueryClient();
   const { toast } = useToast();
+  const navigate = useNavigate();
 
   return useMutation({
     mutationFn: async (data: SendMessageRequest) => {
@@ -208,6 +215,7 @@ export const useSendMessageMutation = () => {
         className: "bg-green-50 border-green-200 text-green-800",
       });
       queryClient.invalidateQueries({ queryKey: ['messages'] });
+      navigate('/management/messages'); // Redirect to messages page after sending
     },
     onError: (error: any) => {
       toast({
