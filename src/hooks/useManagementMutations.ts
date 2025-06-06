@@ -62,12 +62,6 @@ export const managementAPI = {
     const response = await axiosInstance.post('/messages', data);
     return response.data;
   },
-
-  getMessages: async () => {
-    console.log('Fetching messages');
-    const response = await axiosInstance.get('/messages');
-    return response.data;
-  },
 };
 
 // This mutation is used to warn a subscriber

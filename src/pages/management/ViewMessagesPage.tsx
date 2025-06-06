@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 // import { Badge } from '@/components/ui/badge'; // MVP v2 feature - commented out
 import { Button } from '@/components/ui/button';
@@ -10,21 +10,23 @@ import { MessageSquare, Clock, ArrowLeft } from 'lucide-react';
 // import { Tag, ThumbsUp } from 'lucide-react';
 import { useMessagesQuery } from '@/hooks/useMessagesQuery';
 import { formatDistanceToNow } from 'date-fns';
+import { useToast } from '@/hooks/use-toast';
 
 interface Message {
   id: string;
+  companyId: string;
   title: string;
   content: string;
-  sentAt: string;
+  createdAt: string;
+  replies: Reply[];
   // MVP v2 features - commented out for now
   // tags?: string[];
-  replies?: Reply[];
 }
 
 interface Reply {
   id: string;
+  employeeInvisiboxEmail: string;
   content: string;
-  sentAt: string;
 }
 
 interface MessageCardProps {
@@ -43,7 +45,7 @@ function MessageCard({ message, onSelect }: MessageCardProps) {
           <h3 className="font-semibold text-lg">{message.title}</h3>
           <div className="flex items-center text-sm text-muted-foreground">
             <Clock className="w-4 h-4 mr-1" />
-            {formatDistanceToNow(new Date(message.sentAt), { addSuffix: true })}
+            {formatDistanceToNow(new Date(message.createdAt), { addSuffix: true })}
           </div>
         </div>
         
@@ -89,7 +91,8 @@ function MessageCardSkeleton() {
 
 export default function ViewMessagesPage() {
   const [selectedMessage, setSelectedMessage] = useState<Message | null>(null);
-  const { data: messages = [], isLoading, error } = useMessagesQuery();
+  const { data: messages, isLoading, error } = useMessagesQuery();
+  const { toast } = useToast();
   
   if (selectedMessage) {
     return (
@@ -110,7 +113,7 @@ export default function ViewMessagesPage() {
             <div className="flex justify-between items-start">
               <CardTitle>{selectedMessage.title}</CardTitle>
               <div className="text-sm text-muted-foreground">
-                {formatDistanceToNow(new Date(selectedMessage.sentAt), { addSuffix: true })}
+                {formatDistanceToNow(new Date(selectedMessage.createdAt), { addSuffix: true })}
               </div>
             </div>
             {/* MVP v2 features - commented out for now */}
@@ -141,10 +144,7 @@ export default function ViewMessagesPage() {
                   {selectedMessage.replies.map(reply => (
                     <div key={reply.id} className="bg-gray-50 dark:bg-gray-800 p-4 rounded-lg">
                       <div className="flex justify-between items-center mb-2">
-                        <div className="font-medium">Anonymous Employee</div>
-                        <div className="text-xs text-muted-foreground">
-                          {formatDistanceToNow(new Date(reply.sentAt), { addSuffix: true })}
-                        </div>
+                        <div className="font-medium">{reply.employeeInvisiboxEmail}</div>
                       </div>
                       <p>{reply.content}</p>
                       {/* MVP v2 features - commented out for now */}
@@ -203,26 +203,25 @@ export default function ViewMessagesPage() {
   }
 
   if (error) {
-    return (
-      <div className="container mx-auto p-2 sm:p-4 py-4 sm:py-8">
-        <h1 className="text-2xl sm:text-3xl font-bold mb-6 sm:mb-8">Messages & Responses</h1>
-        
-        <div className="text-center py-8">
-          <MessageSquare className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
-          <h3 className="font-semibold text-lg mb-2">Error Loading Messages</h3>
-          <p className="text-muted-foreground">
-            There was an error loading your messages. Please try again later.
-          </p>
-        </div>
-      </div>
-    );
+    toast({
+      description: "There was an issue fetching your messages. Please try again later.",
+      variant: "destructive",
+    })
   }
 
-  const messagesWithReplies = messages.filter((message: Message) => message.replies && message.replies.length > 0);
 
-  return (
+  useEffect(() => {
+    console.log("Messages fetched:", messages);
+  }, [messages]);
+
+    const messagesWithReplies = messages.filter((message: Message) => message.replies && message.replies.length > 0);
+
+    return (
     <div className="container mx-auto p-2 sm:p-4 py-4 sm:py-8">
       <h1 className="text-2xl sm:text-3xl font-bold mb-6 sm:mb-8">Messages & Responses</h1>
+      <p className="text-muted-foreground mb-6">
+        View and manage messages sent to employees. Click on a message to see its details and replies.
+      </p>
       
       <div className="w-full">
         <div className="mb-4">
@@ -233,7 +232,7 @@ export default function ViewMessagesPage() {
             </TabsList>
             
             <TabsContent value="all" className="mt-4">
-              {messages.length === 0 ? (
+              {messages.length === 0  && !isLoading ? (
                 <div className="text-center py-8">
                   <MessageSquare className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
                   <h3 className="font-semibold text-lg mb-2">No Messages Found</h3>
@@ -242,9 +241,9 @@ export default function ViewMessagesPage() {
                   </p>
                 </div>
               ) : (
-                messages.map((message: Message) => (
+                messages.map((message: Message, index: number) => (
                   <MessageCard 
-                    key={message.id}
+                    key={index}
                     message={message}
                     onSelect={setSelectedMessage}
                   />
@@ -262,9 +261,9 @@ export default function ViewMessagesPage() {
                   </p>
                 </div>
               ) : (
-                messagesWithReplies.map((message: Message) => (
+                messagesWithReplies.map((message: Message, index: number) => (
                   <MessageCard 
-                    key={message.id}
+                    key={index}
                     message={message}
                     onSelect={setSelectedMessage}
                   />

@@ -1,10 +1,12 @@
-
 import { useQuery } from '@tanstack/react-query';
-import { managementAPI } from './useManagementMutations';
+import axiosInstance from '@/lib/axiosInstance';
 
 export const useMessagesQuery = () => {
   return useQuery({
     queryKey: ['messages'],
-    queryFn: managementAPI.getMessages,
+    queryFn:  async () => {
+      const response = await axiosInstance.get('/messages');
+      return response.data;
+    }
   });
 };
