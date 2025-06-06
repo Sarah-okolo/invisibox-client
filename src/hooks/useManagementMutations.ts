@@ -1,3 +1,4 @@
+
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useToast } from '@/hooks/use-toast';
 import axiosInstance from '@/lib/axiosInstance';
@@ -25,6 +26,18 @@ export interface BanSubscriberResponse {
   bannedEmail: string;
 }
 
+export interface SendMessageRequest {
+  title: string;
+  content: string;
+  // tags: string[]; // MVP v2 feature
+  // attachment?: File; // MVP v2 feature
+}
+
+export interface SendMessageResponse {
+  message: string;
+  messageId: string;
+}
+
 export const managementAPI = {
   warnSubscriber: async (data: WarnSubscriberRequest): Promise<WarnSubscriberResponse> => {
     console.log('Warning subscriber:', data);
@@ -41,6 +54,18 @@ export const managementAPI = {
       reason: data.reason,
       details: data.details
     });
+    return response.data;
+  },
+
+  sendMessage: async (data: SendMessageRequest): Promise<SendMessageResponse> => {
+    console.log('Sending message:', data);
+    const response = await axiosInstance.post('/messages', data);
+    return response.data;
+  },
+
+  getMessages: async () => {
+    console.log('Fetching messages');
+    const response = await axiosInstance.get('/messages');
     return response.data;
   },
 };
@@ -162,6 +187,32 @@ export const useSharePollResultsMutation = () => {
       toast({
         title: "Error sharing results",
         description: error.response?.data?.message || "Failed to share poll results. Please try again.",
+        variant: "destructive",
+      });
+    },
+  });
+};
+
+export const useSendMessageMutation = () => {
+  const queryClient = useQueryClient();
+  const { toast } = useToast();
+
+  return useMutation({
+    mutationFn: async (data: SendMessageRequest) => {
+      return managementAPI.sendMessage(data);
+    },
+    onSuccess: () => {
+      toast({
+        title: "Message sent successfully",
+        description: "Your message has been sent to all subscribers.",
+        className: "bg-green-50 border-green-200 text-green-800",
+      });
+      queryClient.invalidateQueries({ queryKey: ['messages'] });
+    },
+    onError: (error: any) => {
+      toast({
+        title: "Error sending message",
+        description: error.response?.data?.message || "Failed to send message. Please try again.",
         variant: "destructive",
       });
     },

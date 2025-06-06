@@ -1,73 +1,70 @@
 
 import React, { useState } from 'react';
-import { useToast } from '@/hooks/use-toast';
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { X } from 'lucide-react';
+// MVP v2 features - commented out for now
+// import { Badge } from '@/components/ui/badge';
+// import { X } from 'lucide-react';
+import { useSendMessageMutation } from '@/hooks/useManagementMutations';
 
 export default function SendMessagePage() {
   const [title, setTitle] = useState('');
   const [message, setMessage] = useState('');
-  const [tagInput, setTagInput] = useState('');
-  const [tags, setTags] = useState<string[]>([]);
-  const [file, setFile] = useState<File | null>(null);
-  const [isLoading, setIsLoading] = useState(false);
-  const { toast } = useToast();
+  // MVP v2 features - commented out for now
+  // const [tagInput, setTagInput] = useState('');
+  // const [tags, setTags] = useState<string[]>([]);
+  // const [file, setFile] = useState<File | null>(null);
+  
+  const sendMessageMutation = useSendMessageMutation();
 
-  const addTag = () => {
-    if (tagInput.trim() && !tags.includes(tagInput.trim())) {
-      setTags([...tags, tagInput.trim()]);
-      setTagInput('');
-    }
-  };
+  // MVP v2 features - commented out for now
+  // const addTag = () => {
+  //   if (tagInput.trim() && !tags.includes(tagInput.trim())) {
+  //     setTags([...tags, tagInput.trim()]);
+  //     setTagInput('');
+  //   }
+  // };
 
-  const removeTag = (tagToRemove: string) => {
-    setTags(tags.filter(tag => tag !== tagToRemove));
-  };
+  // const removeTag = (tagToRemove: string) => {
+  //   setTags(tags.filter(tag => tag !== tagToRemove));
+  // };
 
-  const handleTagKeyDown = (e: React.KeyboardEvent) => {
-    if (e.key === 'Enter') {
-      e.preventDefault();
-      addTag();
-    }
-  };
+  // const handleTagKeyDown = (e: React.KeyboardEvent) => {
+  //   if (e.key === 'Enter') {
+  //     e.preventDefault();
+  //     addTag();
+  //   }
+  // };
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files[0]) {
-      setFile(e.target.files[0]);
-    }
-  };
+  // const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  //   if (e.target.files && e.target.files[0]) {
+  //     setFile(e.target.files[0]);
+  //   }
+  // };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setIsLoading(true);
     
-    // Prepare data for backend
     const messageData = {
       title,
       content: message,
-      tags,
-      attachment: file
+      // MVP v2 features - commented out for now
+      // tags,
+      // attachment: file
     };
     
-    console.log('Message data ready for backend:', messageData);
-    
-    // Simulate API call
-    setTimeout(() => {
-      toast({
-        title: "Message sent",
-        description: "Your message has been sent to all subscribers.",
-      });
-      setIsLoading(false);
-      setTitle('');
-      setMessage('');
-      setTags([]);
-      setFile(null);
-    }, 1500);
+    await sendMessageMutation.mutateAsync(messageData, {
+      onSuccess: () => {
+        setTitle('');
+        setMessage('');
+        // MVP v2 features - reset would go here
+        // setTags([]);
+        // setFile(null);
+      }
+    });
   };
 
   return (
@@ -104,7 +101,8 @@ export default function SendMessagePage() {
                 />
               </div>
 
-              <div className="space-y-2">
+              {/* MVP v2 features - commented out for now */}
+              {/* <div className="space-y-2">
                 <Label htmlFor="tags">Tags</Label>
                 <div className="flex items-center space-x-2">
                   <Input 
@@ -131,9 +129,10 @@ export default function SendMessagePage() {
                     ))}
                   </div>
                 )}
-              </div>
+              </div> */}
 
-              <div className="space-y-2">
+              {/* MVP v2 features - commented out for now */}
+              {/* <div className="space-y-2">
                 <Label htmlFor="attachment">Attachment (optional)</Label>
                 <Input 
                   id="attachment" 
@@ -145,11 +144,15 @@ export default function SendMessagePage() {
                     {file.name} ({(file.size / 1024).toFixed(1)} KB)
                   </p>
                 )}
-              </div>
+              </div> */}
             </CardContent>
             <CardFooter>
-              <Button type="submit" disabled={isLoading || !title || !message} className="w-full">
-                {isLoading ? 'Sending...' : 'Send to All Subscribers'}
+              <Button 
+                type="submit" 
+                disabled={sendMessageMutation.isPending || !title || !message} 
+                className="w-full"
+              >
+                {sendMessageMutation.isPending ? 'Sending...' : 'Send to All Subscribers'}
               </Button>
             </CardFooter>
           </form>
