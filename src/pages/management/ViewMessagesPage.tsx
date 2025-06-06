@@ -1,18 +1,14 @@
+
 import React, { useEffect, useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-// import { Badge } from '@/components/ui/badge'; // MVP v2 feature - commented out
 import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Skeleton } from '@/components/ui/skeleton';
-import { MessageSquare, Clock, ArrowLeft } from 'lucide-react';
-// MVP v2 features - commented out for now
-// import { Tag, ThumbsUp } from 'lucide-react';
+import { MessageSquare, Clock, ArrowLeft, Search } from 'lucide-react';
 import { useMessagesQuery } from '@/hooks/useMessagesQuery';
 import { formatDistanceToNow } from 'date-fns';
 import { useToast } from '@/hooks/use-toast';
-import { useQuery } from '@tanstack/react-query';
-import axiosInstance from '@/lib/axiosInstance';
-
 
 interface Message {
   _id: string;
@@ -21,8 +17,6 @@ interface Message {
   content: string;
   createdAt: string;
   replies: Reply[];
-  // MVP v2 features - commented out for now
-  // tags?: string[];
 }
 
 interface Reply {
@@ -54,17 +48,10 @@ function MessageCard({ message, onSelect }: MessageCardProps) {
         <p className="text-muted-foreground mb-4 line-clamp-2">{message.content}</p>
         
         <div className="flex justify-between items-center">
-          {/* MVP v2 features - commented out for now */}
-          {/* <div className="flex flex-wrap gap-2">
-            {message.tags?.map((tag, idx) => (
-              <Badge key={idx} variant="outline">{tag}</Badge>
-            ))}
-          </div> */}
           <div></div>
-          
           <div className="flex items-center text-orange-500">
             <MessageSquare className="w-4 h-4 mr-1 mt-1" />
-            <span className="text-base">{message.replies?.length}</span>
+            <span className="text-base">{message.replies?.length || 0}</span>
           </div>
         </div>
       </CardContent>
@@ -93,18 +80,10 @@ function MessageCardSkeleton() {
 
 export default function ViewMessagesPage() {
   const [selectedMessage, setSelectedMessage] = useState<Message | null>(null);
+  const [searchQuery, setSearchQuery] = useState('');
   const { toast } = useToast();
+  const { data: messages = [], error, isLoading } = useMessagesQuery();
 
-  // Fetch all messages using useQuery
-  const {data: messages, error, isLoading, isSuccess} = useQuery({
-    queryKey: ['messages'],
-    queryFn:  async () => {
-      const response = await axiosInstance.get('/messages');
-      return response.data.messages;
-    }
-  });
-  
-  // Handle error state with useEffect to avoid calling toast during render
   useEffect(() => {
     if (error) {
       toast({
@@ -114,6 +93,15 @@ export default function ViewMessagesPage() {
     }
   }, [error, toast]);
 
+  // Filter messages based on search query
+  const filteredMessages = messages.filter((message: Message) =>
+    message.title.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
+  // Calculate messages with replies from filtered results
+  const messagesWithReplies = filteredMessages.filter((message: Message) => 
+    message.replies && message.replies.length > 0
+  );
 
   // Show selected message view
   if (selectedMessage) {
@@ -138,12 +126,6 @@ export default function ViewMessagesPage() {
                 {formatDistanceToNow(new Date(selectedMessage.createdAt), { addSuffix: true })}
               </div>
             </div>
-            {/* MVP v2 features - commented out for now */}
-            {/* <div className="flex flex-wrap gap-2 mt-2">
-              {selectedMessage.tags?.map((tag, idx) => (
-                <Badge key={idx} variant="outline">{tag}</Badge>
-              ))}
-            </div> */}
           </CardHeader>
           
           <CardContent className="pt-6">
@@ -169,19 +151,6 @@ export default function ViewMessagesPage() {
                         <div className="font-medium">{reply.employeeInvisiboxEmail}</div>
                       </div>
                       <p>{reply.content}</p>
-                      {/* MVP v2 features - commented out for now */}
-                      {/* <div className="flex justify-between items-center mt-2">
-                        <div className="flex items-center space-x-2">
-                          <Button variant="ghost" size="sm" className="h-8 px-2">
-                            <Tag className="w-4 h-4 mr-1" />
-                            Tag
-                          </Button>
-                          <Button variant="ghost" size="sm" className="h-8 px-2">
-                            <ThumbsUp className="w-4 h-4 mr-1" />
-                            Helpful
-                          </Button>
-                        </div>
-                      </div> */}
                     </div>
                   ))}
                 </div>
@@ -204,7 +173,7 @@ export default function ViewMessagesPage() {
             <Tabs defaultValue="all">
               <TabsList className="w-full sm:w-auto">
                 <TabsTrigger value="all" className="flex-1 sm:flex-none">All</TabsTrigger>
-                <TabsTrigger value="unread" className="flex-1 sm:flex-none">With Replies</TabsTrigger>
+                <TabsTrigger value="replies" className="flex-1 sm:flex-none">With Replies</TabsTrigger>
               </TabsList>
               
               <TabsContent value="all" className="mt-4">
@@ -213,7 +182,7 @@ export default function ViewMessagesPage() {
                 ))}
               </TabsContent>
               
-              <TabsContent value="unread" className="mt-4">
+              <TabsContent value="replies" className="mt-4">
                 {[...Array(2)].map((_, i) => (
                   <MessageCardSkeleton key={i} />
                 ))}
@@ -254,9 +223,6 @@ export default function ViewMessagesPage() {
     );
   }
 
-  // Calculate messages with replies
-  const messagesWithReplies = messages.filter((message: Message) => message.replies && message.replies.length > 0);
-
   // Show main messages view
   return (
     <div className="container mx-auto p-2 sm:p-4 py-4 sm:py-8">
@@ -265,37 +231,71 @@ export default function ViewMessagesPage() {
         View and manage messages sent to employees. Click on a message to see its details and replies.
       </p>
       
+      {/* Search Input */}
+      <div className="relative mb-6">
+        <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-4 h-4" />
+        <Input
+          type="text"
+          placeholder="Search messages by title..."
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          className="pl-10"
+        />
+      </div>
+      
       <div className="w-full">
         <div className="mb-4">
           <Tabs defaultValue="all">
             <TabsList className="w-full sm:w-auto">
-              <TabsTrigger value="all" className="flex-1 sm:flex-none">All ({messages.length})</TabsTrigger>
-              <TabsTrigger value="unread" className="flex-1 sm:flex-none">With Replies ({messagesWithReplies.length})</TabsTrigger>
+              <TabsTrigger value="all" className="flex-1 sm:flex-none">
+                All ({filteredMessages.length})
+              </TabsTrigger>
+              <TabsTrigger value="replies" className="flex-1 sm:flex-none">
+                With Replies ({messagesWithReplies.length})
+              </TabsTrigger>
             </TabsList>
             
             <TabsContent value="all" className="mt-4">
-              {messages.map((message: Message, index: number) => (
-                <MessageCard 
-                  key={index}
-                  message={message}
-                  onSelect={setSelectedMessage}
-                />
-              ))}
+              {filteredMessages.length === 0 ? (
+                <div className="text-center py-8">
+                  <MessageSquare className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
+                  <h3 className="font-semibold text-lg mb-2">
+                    {searchQuery ? "No Messages Found" : "No Messages Yet"}
+                  </h3>
+                  <p className="text-muted-foreground">
+                    {searchQuery 
+                      ? `No messages found matching "${searchQuery}".`
+                      : "You haven't sent any messages yet."
+                    }
+                  </p>
+                </div>
+              ) : (
+                filteredMessages.map((message: Message) => (
+                  <MessageCard 
+                    key={message._id}
+                    message={message}
+                    onSelect={setSelectedMessage}
+                  />
+                ))
+              )}
             </TabsContent>
             
-            <TabsContent value="unread" className="mt-4">
+            <TabsContent value="replies" className="mt-4">
               {messagesWithReplies.length === 0 ? (
                 <div className="text-center py-8">
                   <MessageSquare className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
                   <h3 className="font-semibold text-lg mb-2">No Messages with Replies</h3>
                   <p className="text-muted-foreground">
-                    None of your messages have received replies yet.
+                    {searchQuery 
+                      ? `No messages with replies found matching "${searchQuery}".`
+                      : "None of your messages have received replies yet."
+                    }
                   </p>
                 </div>
               ) : (
-                messagesWithReplies.map((message: Message, index: number) => (
+                messagesWithReplies.map((message: Message) => (
                   <MessageCard 
-                    key={index}
+                    key={message._id}
                     message={message}
                     onSelect={setSelectedMessage}
                   />

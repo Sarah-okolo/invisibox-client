@@ -1,12 +1,12 @@
 
 import React, { useState } from 'react';
 import { Card, CardContent } from '@/components/ui/card';
+import { Input } from '@/components/ui/input';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Button } from '@/components/ui/button';
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '@/components/ui/alert-dialog';
-import { Clock, Trash2 } from 'lucide-react';
-import { useToast } from '@/hooks/use-toast';
+import { Clock, Trash2, Search } from 'lucide-react';
 import { useQuery } from '@tanstack/react-query';
 import axiosInstance from '@/lib/axiosInstance';
 import { PollResultsModal } from '@/components/PollResultsModal';
@@ -21,16 +21,14 @@ interface PollCardProps {
     question: string;
     createdAt: string;
     isActive: boolean;
-    expiresAt: string; // ISO date string
-    activeTime: number; // in days
+    expiresAt: string;
+    activeTime: number;
     options: Array<{ text: string; votes: number }>;
   };
   onSelect: (poll: any) => void;
   onDelete: (pollId: string) => void;
 }
 
-
-// Function to remove "about" prefix from a string
 const removeAbout = (str: string) => {
   return str.replace(/^about\s/, '');
 }
@@ -126,13 +124,13 @@ function PollCardSkeleton() {
 export default function ViewPollsPage() {
   const [selectedPoll, setSelectedPoll] = useState<any>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
   const deletePollMutation = useDeletePollMutation();
   
   const { data: polls = [], isLoading } = useQuery({
     queryKey: ['polls'],
     queryFn: async () => {
       const response = await axiosInstance.get('/polls');
-      console.log(response)
       return response.data.polls || [];
     },
   });
@@ -146,8 +144,13 @@ export default function ViewPollsPage() {
     deletePollMutation.mutate(pollId);
   };
 
-  const activePolls = polls.filter((poll: any) => pollIsActive(poll.expiresAt));
-  const closedPolls = polls.filter((poll: any) => !pollIsActive(poll.expiresAt));
+  // Filter polls based on search query
+  const filteredPolls = polls.filter((poll: any) =>
+    poll.title.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
+  const activePolls = filteredPolls.filter((poll: any) => pollIsActive(poll.expiresAt));
+  const closedPolls = filteredPolls.filter((poll: any) => !pollIsActive(poll.expiresAt));
   
   if (isLoading) {
     return (
@@ -191,59 +194,102 @@ export default function ViewPollsPage() {
     <div className="container mx-auto p-2 sm:p-4 py-4 sm:py-8">
       <h1 className="text-2xl sm:text-3xl font-bold mb-6 sm:mb-8">Polls & Results</h1>
       
+      {/* Search Input */}
+      <div className="relative mb-6">
+        <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-4 h-4" />
+        <Input
+          type="text"
+          placeholder="Search polls by title..."
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          className="pl-10"
+        />
+      </div>
+      
       <div className="w-full">
         <div className="mb-4">
           <Tabs defaultValue="all">
             <TabsList className="w-full sm:w-auto">
-              <TabsTrigger value="all" className="flex-1 sm:flex-none">All ({polls.length})</TabsTrigger>
+              <TabsTrigger value="all" className="flex-1 sm:flex-none">All ({filteredPolls.length})</TabsTrigger>
               <TabsTrigger value="active" className="flex-1 sm:flex-none">Active ({activePolls.length})</TabsTrigger>
               <TabsTrigger value="closed" className="flex-1 sm:flex-none">Closed ({closedPolls.length})</TabsTrigger>
             </TabsList>
             
             <TabsContent value="all" className="mt-4">
-              {polls.map((poll: any, index: number) => (
-                <PollCard 
-                  key={index}
-                  poll={poll}
-                  onSelect={handlePollSelect}
-                  onDelete={handleDeletePoll}
-                />
-              ))}
+              {filteredPolls.length === 0 ? (
+                <div className="text-center py-8">
+                  <Clock className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
+                  <h3 className="font-semibold text-lg mb-2">
+                    {searchQuery ? "No Polls Found" : "No Polls Found"}
+                  </h3>
+                  <p className="text-muted-foreground">
+                    {searchQuery 
+                      ? `No polls found matching "${searchQuery}".`
+                      : "Create your first poll to get started with employee feedback."
+                    }
+                  </p>
+                </div>
+              ) : (
+                filteredPolls.map((poll: any) => (
+                  <PollCard 
+                    key={poll._id}
+                    poll={poll}
+                    onSelect={handlePollSelect}
+                    onDelete={handleDeletePoll}
+                  />
+                ))
+              )}
             </TabsContent>
             
             <TabsContent value="active" className="mt-4">
-              {activePolls.map((poll: any, index: number) => (
-                <PollCard 
-                  key={index}
-                  poll={poll}
-                  onSelect={handlePollSelect}
-                  onDelete={handleDeletePoll}
-                />
-              ))}
+              {activePolls.length === 0 ? (
+                <div className="text-center py-8">
+                  <Clock className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
+                  <h3 className="font-semibold text-lg mb-2">No Active Polls</h3>
+                  <p className="text-muted-foreground">
+                    {searchQuery 
+                      ? `No active polls found matching "${searchQuery}".`
+                      : "There are no active polls at the moment."
+                    }
+                  </p>
+                </div>
+              ) : (
+                activePolls.map((poll: any) => (
+                  <PollCard 
+                    key={poll._id}
+                    poll={poll}
+                    onSelect={handlePollSelect}
+                    onDelete={handleDeletePoll}
+                  />
+                ))
+              )}
             </TabsContent>
             
             <TabsContent value="closed" className="mt-4">
-              {closedPolls.map((poll: any, index: number) => (
-                <PollCard 
-                  key={index}
-                  poll={poll}
-                  onSelect={handlePollSelect}
-                  onDelete={handleDeletePoll}
-                />
-              ))}
+              {closedPolls.length === 0 ? (
+                <div className="text-center py-8">
+                  <Clock className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
+                  <h3 className="font-semibold text-lg mb-2">No Closed Polls</h3>
+                  <p className="text-muted-foreground">
+                    {searchQuery 
+                      ? `No closed polls found matching "${searchQuery}".`
+                      : "There are no closed polls yet."
+                    }
+                  </p>
+                </div>
+              ) : (
+                closedPolls.map((poll: any) => (
+                  <PollCard 
+                    key={poll._id}
+                    poll={poll}
+                    onSelect={handlePollSelect}
+                    onDelete={handleDeletePoll}
+                  />
+                ))
+              )}
             </TabsContent>
           </Tabs>
         </div>
-        
-        {polls.length === 0 && (
-          <div className="text-center py-8">
-            <Clock className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
-            <h3 className="font-semibold text-lg mb-2">No Polls Found</h3>
-            <p className="text-muted-foreground">
-              Create your first poll to get started with employee feedback.
-            </p>
-          </div>
-        )}
       </div>
 
       <PollResultsModal
