@@ -8,6 +8,7 @@ import { Link } from 'react-router-dom';
 import { useSubscribeMutation, SubscribeResponse } from '@/hooks/useEmployeeMutations';
 import { useToast } from '@/hooks/use-toast';
 
+
 export default function EmployeeSubscribePage() {
   const [email, setEmail] = useState('');
   const [companyEmail, setCompanyEmail] = useState('');
