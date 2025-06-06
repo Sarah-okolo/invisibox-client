@@ -1,58 +1,33 @@
 import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
+// import { Badge } from '@/components/ui/badge'; // MVP v2 feature - commented out
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { MessageSquare, Clock, ArrowLeft, Tag, ThumbsUp } from 'lucide-react';
+import { MessageSquare, Clock, ArrowLeft } from 'lucide-react';
+// MVP v2 features - commented out for now
+// import { Tag, ThumbsUp } from 'lucide-react';
+import { useMessagesQuery } from '@/hooks/useMessagesQuery';
+import { formatDistanceToNow } from 'date-fns';
 
-// Mock data for messages
-const mockMessages = [
-  {
-    id: '1',
-    title: 'Company Update: New Office',
-    content: 'We are excited to announce that we will be moving to a new office location next month...',
-    sentAt: '2023-05-15T14:30:00Z',
-    tags: ['Announcement', 'Important'],
-    replies: [
-      {
-        id: '101',
-        content: 'Great news! Will there be more parking space available?',
-        sentAt: '2023-05-15T15:45:00Z',
-      },
-      {
-        id: '102',
-        content: 'Is the new location accessible by public transportation?',
-        sentAt: '2023-05-16T09:20:00Z',
-      }
-    ]
-  },
-  {
-    id: '2',
-    title: 'Feedback Request: New Benefits Package',
-    content: 'We are reviewing our benefits package and would appreciate your anonymous feedback on the current offerings...',
-    sentAt: '2023-05-10T11:15:00Z',
-    tags: ['Feedback', 'Benefits'],
-    replies: [
-      {
-        id: '201',
-        content: 'I would like to see better healthcare options.',
-        sentAt: '2023-05-10T13:30:00Z',
-      }
-    ]
-  },
-  {
-    id: '3',
-    title: 'Important: System Maintenance',
-    content: 'Our systems will be down for maintenance this weekend...',
-    sentAt: '2023-05-05T09:00:00Z',
-    tags: ['Technical', 'Important'],
-    replies: []
-  }
-];
+interface Message {
+  id: string;
+  title: string;
+  content: string;
+  sentAt: string;
+  // MVP v2 features - commented out for now
+  // tags?: string[];
+  replies?: Reply[];
+}
+
+interface Reply {
+  id: string;
+  content: string;
+  sentAt: string;
+}
 
 interface MessageCardProps {
-  message: typeof mockMessages[0];
-  onSelect: (message: typeof mockMessages[0]) => void;
+  message: Message;
+  onSelect: (message: Message) => void;
 }
 
 function MessageCard({ message, onSelect }: MessageCardProps) {
@@ -66,22 +41,24 @@ function MessageCard({ message, onSelect }: MessageCardProps) {
           <h3 className="font-semibold text-lg">{message.title}</h3>
           <div className="flex items-center text-sm text-muted-foreground">
             <Clock className="w-4 h-4 mr-1" />
-            {new Date(message.sentAt).toLocaleDateString()}
+            {formatDistanceToNow(new Date(message.sentAt), { addSuffix: true })}
           </div>
         </div>
         
         <p className="text-muted-foreground mb-4 line-clamp-2">{message.content}</p>
         
         <div className="flex justify-between items-center">
-          <div className="flex flex-wrap gap-2">
-            {message.tags.map((tag, idx) => (
+          {/* MVP v2 features - commented out for now */}
+          {/* <div className="flex flex-wrap gap-2">
+            {message.tags?.map((tag, idx) => (
               <Badge key={idx} variant="outline">{tag}</Badge>
             ))}
-          </div>
+          </div> */}
+          <div></div>
           
           <div className="flex items-center">
             <MessageSquare className="w-4 h-4 mr-1 text-muted-foreground" />
-            <span className="text-sm text-muted-foreground">{message.replies.length}</span>
+            <span className="text-sm text-muted-foreground">{message.replies?.length || 0}</span>
           </div>
         </div>
       </CardContent>
@@ -90,7 +67,8 @@ function MessageCard({ message, onSelect }: MessageCardProps) {
 }
 
 export default function ViewMessagesPage() {
-  const [selectedMessage, setSelectedMessage] = useState<typeof mockMessages[0] | null>(null);
+  const [selectedMessage, setSelectedMessage] = useState<Message | null>(null);
+  const { data: messages = [], isLoading, error } = useMessagesQuery();
   
   if (selectedMessage) {
     return (
@@ -111,14 +89,15 @@ export default function ViewMessagesPage() {
             <div className="flex justify-between items-start">
               <CardTitle>{selectedMessage.title}</CardTitle>
               <div className="text-sm text-muted-foreground">
-                {new Date(selectedMessage.sentAt).toLocaleString()}
+                {formatDistanceToNow(new Date(selectedMessage.sentAt), { addSuffix: true })}
               </div>
             </div>
-            <div className="flex flex-wrap gap-2 mt-2">
-              {selectedMessage.tags.map((tag, idx) => (
+            {/* MVP v2 features - commented out for now */}
+            {/* <div className="flex flex-wrap gap-2 mt-2">
+              {selectedMessage.tags?.map((tag, idx) => (
                 <Badge key={idx} variant="outline">{tag}</Badge>
               ))}
-            </div>
+            </div> */}
           </CardHeader>
           
           <CardContent className="pt-6">
@@ -129,10 +108,10 @@ export default function ViewMessagesPage() {
             <div className="border-t pt-6">
               <h3 className="font-semibold flex items-center mb-6">
                 <MessageSquare className="w-5 h-5 mr-2" />
-                Replies ({selectedMessage.replies.length})
+                Replies ({selectedMessage.replies?.length || 0})
               </h3>
               
-              {selectedMessage.replies.length === 0 ? (
+              {!selectedMessage.replies || selectedMessage.replies.length === 0 ? (
                 <div className="text-center py-8 text-muted-foreground">
                   No replies yet
                 </div>
@@ -143,11 +122,12 @@ export default function ViewMessagesPage() {
                       <div className="flex justify-between items-center mb-2">
                         <div className="font-medium">Anonymous Employee</div>
                         <div className="text-xs text-muted-foreground">
-                          {new Date(reply.sentAt).toLocaleString()}
+                          {formatDistanceToNow(new Date(reply.sentAt), { addSuffix: true })}
                         </div>
                       </div>
                       <p>{reply.content}</p>
-                      <div className="flex justify-between items-center mt-2">
+                      {/* MVP v2 features - commented out for now */}
+                      {/* <div className="flex justify-between items-center mt-2">
                         <div className="flex items-center space-x-2">
                           <Button variant="ghost" size="sm" className="h-8 px-2">
                             <Tag className="w-4 h-4 mr-1" />
@@ -158,7 +138,7 @@ export default function ViewMessagesPage() {
                             Helpful
                           </Button>
                         </div>
-                      </div>
+                      </div> */}
                     </div>
                   ))}
                 </div>
@@ -166,6 +146,22 @@ export default function ViewMessagesPage() {
             </div>
           </CardContent>
         </Card>
+      </div>
+    );
+  }
+
+  if (isLoading) {
+    return (
+      <div className="container mx-auto p-4 py-8">
+        <div className="text-center">Loading messages...</div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="container mx-auto p-4 py-8">
+        <div className="text-center text-red-500">Error loading messages</div>
       </div>
     );
   }
@@ -179,18 +175,25 @@ export default function ViewMessagesPage() {
           <TabsList className="w-full max-w-md">
             <TabsTrigger value="all" className="flex-1">All</TabsTrigger>
             <TabsTrigger value="unread" className="flex-1">With Replies</TabsTrigger>
-            <TabsTrigger value="important" className="flex-1">Important</TabsTrigger>
+            {/* MVP v2 feature - commented out for now */}
+            {/* <TabsTrigger value="important" className="flex-1">Important</TabsTrigger> */}
           </TabsList>
         </Tabs>
       </div>
       
-      {mockMessages.map(message => (
-        <MessageCard 
-          key={message.id}
-          message={message}
-          onSelect={setSelectedMessage}
-        />
-      ))}
+      {messages.length === 0 ? (
+        <div className="text-center py-8 text-muted-foreground">
+          No messages sent yet
+        </div>
+      ) : (
+        messages.map((message: Message) => (
+          <MessageCard 
+            key={message.id}
+            message={message}
+            onSelect={setSelectedMessage}
+          />
+        ))
+      )}
     </div>
   );
 }
