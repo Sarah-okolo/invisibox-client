@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 // import { Badge } from '@/components/ui/badge'; // MVP v2 feature - commented out
@@ -11,9 +10,12 @@ import { MessageSquare, Clock, ArrowLeft } from 'lucide-react';
 import { useMessagesQuery } from '@/hooks/useMessagesQuery';
 import { formatDistanceToNow } from 'date-fns';
 import { useToast } from '@/hooks/use-toast';
+import { useQuery } from '@tanstack/react-query';
+import axiosInstance from '@/lib/axiosInstance';
+
 
 interface Message {
-  id: string;
+  _id: string;
   companyId: string;
   title: string;
   content: string;
@@ -40,9 +42,9 @@ function MessageCard({ message, onSelect }: MessageCardProps) {
       className="mb-4 cursor-pointer hover:shadow-md transition-shadow"
       onClick={() => onSelect(message)}
     >
-      <CardContent className="pt-6">
+      <CardContent className="pt-6 border hover:border-purple-500 rounded-lg">
         <div className="flex justify-between items-start mb-2">
-          <h3 className="font-semibold text-lg">{message.title}</h3>
+          <h3 className="font-semibold text-lg hover:text-purple-500">{message.title}</h3>
           <div className="flex items-center text-sm text-muted-foreground">
             <Clock className="w-4 h-4 mr-1" />
             {formatDistanceToNow(new Date(message.createdAt), { addSuffix: true })}
@@ -60,9 +62,9 @@ function MessageCard({ message, onSelect }: MessageCardProps) {
           </div> */}
           <div></div>
           
-          <div className="flex items-center">
-            <MessageSquare className="w-4 h-4 mr-1 text-muted-foreground" />
-            <span className="text-sm text-muted-foreground">{message.replies?.length || 0}</span>
+          <div className="flex items-center text-orange-500">
+            <MessageSquare className="w-4 h-4 mr-1 mt-1" />
+            <span className="text-base">{message.replies?.length}</span>
           </div>
         </div>
       </CardContent>
@@ -91,8 +93,16 @@ function MessageCardSkeleton() {
 
 export default function ViewMessagesPage() {
   const [selectedMessage, setSelectedMessage] = useState<Message | null>(null);
-  const { data: messages = [], isLoading, error } = useMessagesQuery();
   const { toast } = useToast();
+
+  // Fetch all messages using useQuery
+  const {data: messages, error, isLoading, isSuccess} = useQuery({
+    queryKey: ['messages'],
+    queryFn:  async () => {
+      const response = await axiosInstance.get('/messages');
+      return response.data.messages;
+    }
+  });
   
   // Handle error state with useEffect to avoid calling toast during render
   useEffect(() => {
@@ -104,11 +114,6 @@ export default function ViewMessagesPage() {
     }
   }, [error, toast]);
 
-  useEffect(() => {
-    if (messages) {
-      console.log("Messages fetched:", messages);
-    }
-  }, [messages]);
 
   // Show selected message view
   if (selectedMessage) {
@@ -147,7 +152,7 @@ export default function ViewMessagesPage() {
             </div>
             
             <div className="border-t pt-6">
-              <h3 className="font-semibold flex items-center mb-6">
+              <h3 className="font-semibold flex items-center mb-6 text-orange-500">
                 <MessageSquare className="w-5 h-5 mr-2" />
                 Replies ({selectedMessage.replies?.length || 0})
               </h3>
@@ -255,8 +260,8 @@ export default function ViewMessagesPage() {
   // Show main messages view
   return (
     <div className="container mx-auto p-2 sm:p-4 py-4 sm:py-8">
-      <h1 className="text-2xl sm:text-3xl font-bold mb-6 sm:mb-8">Messages & Responses</h1>
-      <p className="text-muted-foreground mb-6">
+      <h1 className="text-2xl sm:text-3xl font-bold">Messages & Responses</h1>
+      <p className="text-muted-foreground mb-6 sm:mb-8 mt-2">
         View and manage messages sent to employees. Click on a message to see its details and replies.
       </p>
       
@@ -269,9 +274,9 @@ export default function ViewMessagesPage() {
             </TabsList>
             
             <TabsContent value="all" className="mt-4">
-              {messages.map((message: Message) => (
+              {messages.map((message: Message, index: number) => (
                 <MessageCard 
-                  key={message.id}
+                  key={index}
                   message={message}
                   onSelect={setSelectedMessage}
                 />
@@ -288,9 +293,9 @@ export default function ViewMessagesPage() {
                   </p>
                 </div>
               ) : (
-                messagesWithReplies.map((message: Message) => (
+                messagesWithReplies.map((message: Message, index: number) => (
                   <MessageCard 
-                    key={message.id}
+                    key={index}
                     message={message}
                     onSelect={setSelectedMessage}
                   />
