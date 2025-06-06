@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Skeleton } from '@/components/ui/skeleton';
-import { MessageSquare, Clock, ArrowLeft, Search } from 'lucide-react';
+import { MessageSquareText, Clock, ArrowLeft, Search } from 'lucide-react';
 import { useMessagesQuery } from '@/hooks/useMessagesQuery';
 import { formatDistanceToNow } from 'date-fns';
 import { useToast } from '@/hooks/use-toast';
@@ -50,7 +50,7 @@ function MessageCard({ message, onSelect }: MessageCardProps) {
         <div className="flex justify-between items-center">
           <div></div>
           <div className="flex items-center text-orange-500">
-            <MessageSquare className="w-4 h-4 mr-1 mt-1" />
+            <MessageSquareText className="w-4 h-4 mr-1 mt-1" />
             <span className="text-base">{message.replies?.length || 0}</span>
           </div>
         </div>
@@ -135,7 +135,7 @@ export default function ViewMessagesPage() {
             
             <div className="border-t pt-6">
               <h3 className="font-semibold flex items-center mb-6 text-orange-500">
-                <MessageSquare className="w-5 h-5 mr-2" />
+                <MessageSquareText className="w-5 h-5 mr-2" />
                 Replies ({selectedMessage.replies?.length || 0})
               </h3>
               
@@ -200,16 +200,16 @@ export default function ViewMessagesPage() {
       <div className="container mx-auto p-2 sm:p-4 py-4 sm:py-8">
         <h1 className="text-2xl sm:text-3xl font-bold mb-6 sm:mb-8">Messages & Responses</h1>
         
-        <Card className="text-center py-12">
+        <Card className="text-center py-12 bg-transparent border-none">
           <CardContent>
-            <MessageSquare className="w-16 h-16 text-muted-foreground mx-auto mb-4" />
+            <MessageSquareText strokeWidth={1} className="w-14 h-14 text-muted-foreground mx-auto mb-4" />
             <h3 className="font-semibold text-xl mb-2">
               {error ? "Error Loading Messages" : "No Messages Found"}
             </h3>
             <p className="text-muted-foreground mb-6">
               {error 
                 ? "There was an issue fetching your messages. Please try again later." 
-                : "You haven't sent any messages yet. Create your first message to start communicating with employees."
+                : "You haven't sent any messages yet. Send your first message to start communicating with employees."
               }
             </p>
             {error && (
@@ -258,7 +258,7 @@ export default function ViewMessagesPage() {
             <TabsContent value="all" className="mt-4">
               {filteredMessages.length === 0 ? (
                 <div className="text-center py-8">
-                  <MessageSquare className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
+                  <MessageSquareText className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
                   <h3 className="font-semibold text-lg mb-2">
                     {searchQuery ? "No Messages Found" : "No Messages Yet"}
                   </h3>
@@ -283,7 +283,7 @@ export default function ViewMessagesPage() {
             <TabsContent value="replies" className="mt-4">
               {messagesWithReplies.length === 0 ? (
                 <div className="text-center py-8">
-                  <MessageSquare className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
+                  <MessageSquareText className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
                   <h3 className="font-semibold text-lg mb-2">No Messages with Replies</h3>
                   <p className="text-muted-foreground">
                     {searchQuery 
