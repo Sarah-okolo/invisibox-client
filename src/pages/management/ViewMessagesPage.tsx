@@ -169,6 +169,7 @@ export default function ViewMessagesPage() {
   return (
     <div className="container mx-auto p-4 py-8">
       <h1 className="text-3xl font-bold mb-8">Messages & Responses</h1>
+      <p className='text-xs text-gray-500'>View all broadcast messages sent to employees and their responses.</p>
       
       <div className="mb-4">
         <Tabs defaultValue="all">
