@@ -1,8 +1,10 @@
+
 import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 // import { Badge } from '@/components/ui/badge'; // MVP v2 feature - commented out
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Skeleton } from '@/components/ui/skeleton';
 import { MessageSquare, Clock, ArrowLeft } from 'lucide-react';
 // MVP v2 features - commented out for now
 // import { Tag, ThumbsUp } from 'lucide-react';
@@ -60,6 +62,25 @@ function MessageCard({ message, onSelect }: MessageCardProps) {
             <MessageSquare className="w-4 h-4 mr-1 text-muted-foreground" />
             <span className="text-sm text-muted-foreground">{message.replies?.length || 0}</span>
           </div>
+        </div>
+      </CardContent>
+    </Card>
+  );
+}
+
+function MessageCardSkeleton() {
+  return (
+    <Card className="mb-4">
+      <CardContent className="pt-6">
+        <div className="flex justify-between items-start mb-2">
+          <Skeleton className="h-6 w-3/4" />
+          <Skeleton className="h-4 w-24" />
+        </div>
+        <Skeleton className="h-4 w-full mb-2" />
+        <Skeleton className="h-4 w-2/3 mb-4" />
+        <div className="flex justify-between items-center">
+          <div></div>
+          <Skeleton className="h-4 w-16" />
         </div>
       </CardContent>
     </Card>
@@ -152,49 +173,107 @@ export default function ViewMessagesPage() {
 
   if (isLoading) {
     return (
-      <div className="container mx-auto p-4 py-8">
-        <div className="text-center">Loading messages...</div>
+      <div className="container mx-auto p-2 sm:p-4 py-4 sm:py-8">
+        <h1 className="text-2xl sm:text-3xl font-bold mb-6 sm:mb-8">Messages & Responses</h1>
+        
+        <div className="w-full">
+          <div className="mb-4">
+            <Tabs defaultValue="all">
+              <TabsList className="w-full sm:w-auto">
+                <TabsTrigger value="all" className="flex-1 sm:flex-none">All</TabsTrigger>
+                <TabsTrigger value="unread" className="flex-1 sm:flex-none">With Replies</TabsTrigger>
+              </TabsList>
+              
+              <TabsContent value="all" className="mt-4">
+                {[...Array(3)].map((_, i) => (
+                  <MessageCardSkeleton key={i} />
+                ))}
+              </TabsContent>
+              
+              <TabsContent value="unread" className="mt-4">
+                {[...Array(2)].map((_, i) => (
+                  <MessageCardSkeleton key={i} />
+                ))}
+              </TabsContent>
+            </Tabs>
+          </div>
+        </div>
       </div>
     );
   }
 
   if (error) {
     return (
-      <div className="container mx-auto p-4 py-8">
-        <div className="text-center text-red-500">Error loading messages</div>
+      <div className="container mx-auto p-2 sm:p-4 py-4 sm:py-8">
+        <h1 className="text-2xl sm:text-3xl font-bold mb-6 sm:mb-8">Messages & Responses</h1>
+        
+        <div className="text-center py-8">
+          <MessageSquare className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
+          <h3 className="font-semibold text-lg mb-2">Error Loading Messages</h3>
+          <p className="text-muted-foreground">
+            There was an error loading your messages. Please try again later.
+          </p>
+        </div>
       </div>
     );
   }
 
+  const messagesWithReplies = messages.filter((message: Message) => message.replies && message.replies.length > 0);
+
   return (
-    <div className="container mx-auto p-4 py-8">
-      <h1 className="text-3xl font-bold mb-8">Messages & Responses</h1>
-      <p className='text-xs text-gray-500'>View all broadcast messages sent to employees and their responses.</p>
+    <div className="container mx-auto p-2 sm:p-4 py-4 sm:py-8">
+      <h1 className="text-2xl sm:text-3xl font-bold mb-6 sm:mb-8">Messages & Responses</h1>
       
-      <div className="mb-4">
-        <Tabs defaultValue="all">
-          <TabsList className="w-full max-w-md">
-            <TabsTrigger value="all" className="flex-1">All</TabsTrigger>
-            <TabsTrigger value="unread" className="flex-1">With Replies</TabsTrigger>
-            {/* MVP v2 feature - commented out for now */}
-            {/* <TabsTrigger value="important" className="flex-1">Important</TabsTrigger> */}
-          </TabsList>
-        </Tabs>
-      </div>
-      
-      {messages.length === 0 ? (
-        <div className="text-center py-8 text-muted-foreground">
-          No messages sent yet
+      <div className="w-full">
+        <div className="mb-4">
+          <Tabs defaultValue="all">
+            <TabsList className="w-full sm:w-auto">
+              <TabsTrigger value="all" className="flex-1 sm:flex-none">All ({messages.length})</TabsTrigger>
+              <TabsTrigger value="unread" className="flex-1 sm:flex-none">With Replies ({messagesWithReplies.length})</TabsTrigger>
+            </TabsList>
+            
+            <TabsContent value="all" className="mt-4">
+              {messages.length === 0 ? (
+                <div className="text-center py-8">
+                  <MessageSquare className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
+                  <h3 className="font-semibold text-lg mb-2">No Messages Found</h3>
+                  <p className="text-muted-foreground">
+                    You haven't sent any messages yet. Create your first message to start communicating with employees.
+                  </p>
+                </div>
+              ) : (
+                messages.map((message: Message) => (
+                  <MessageCard 
+                    key={message.id}
+                    message={message}
+                    onSelect={setSelectedMessage}
+                  />
+                ))
+              )}
+            </TabsContent>
+            
+            <TabsContent value="unread" className="mt-4">
+              {messagesWithReplies.length === 0 ? (
+                <div className="text-center py-8">
+                  <MessageSquare className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
+                  <h3 className="font-semibold text-lg mb-2">No Messages with Replies</h3>
+                  <p className="text-muted-foreground">
+                    None of your messages have received replies yet.
+                  </p>
+                </div>
+              ) : (
+                messagesWithReplies.map((message: Message) => (
+                  <MessageCard 
+                    key={message.id}
+                    message={message}
+                    onSelect={setSelectedMessage}
+                  />
+                ))
+              )}
+            </TabsContent>
+          </Tabs>
         </div>
-      ) : (
-        messages.map((message: Message) => (
-          <MessageCard 
-            key={message.id}
-            message={message}
-            onSelect={setSelectedMessage}
-          />
-        ))
-      )}
+      </div>
     </div>
   );
 }
