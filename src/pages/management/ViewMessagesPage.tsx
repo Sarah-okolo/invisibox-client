@@ -91,9 +91,26 @@ function MessageCardSkeleton() {
 
 export default function ViewMessagesPage() {
   const [selectedMessage, setSelectedMessage] = useState<Message | null>(null);
-  const { data: messages, isLoading, error } = useMessagesQuery();
+  const { data: messages = [], isLoading, error } = useMessagesQuery();
   const { toast } = useToast();
   
+  // Handle error state with useEffect to avoid calling toast during render
+  useEffect(() => {
+    if (error) {
+      toast({
+        description: "There was an issue fetching your messages. Please try again later.",
+        variant: "destructive",
+      });
+    }
+  }, [error, toast]);
+
+  useEffect(() => {
+    if (messages) {
+      console.log("Messages fetched:", messages);
+    }
+  }, [messages]);
+
+  // Show selected message view
   if (selectedMessage) {
     return (
       <div className="container mx-auto p-4 py-8">
@@ -171,6 +188,7 @@ export default function ViewMessagesPage() {
     );
   }
 
+  // Show loading state
   if (isLoading) {
     return (
       <div className="container mx-auto p-2 sm:p-4 py-4 sm:py-8">
@@ -202,21 +220,40 @@ export default function ViewMessagesPage() {
     );
   }
 
-  if (error) {
-    toast({
-      description: "There was an issue fetching your messages. Please try again later.",
-      variant: "destructive",
-    })
+  // Show error or empty state
+  if (error || !messages || messages.length === 0) {
+    return (
+      <div className="container mx-auto p-2 sm:p-4 py-4 sm:py-8">
+        <h1 className="text-2xl sm:text-3xl font-bold mb-6 sm:mb-8">Messages & Responses</h1>
+        
+        <Card className="text-center py-12">
+          <CardContent>
+            <MessageSquare className="w-16 h-16 text-muted-foreground mx-auto mb-4" />
+            <h3 className="font-semibold text-xl mb-2">
+              {error ? "Error Loading Messages" : "No Messages Found"}
+            </h3>
+            <p className="text-muted-foreground mb-6">
+              {error 
+                ? "There was an issue fetching your messages. Please try again later." 
+                : "You haven't sent any messages yet. Create your first message to start communicating with employees."
+              }
+            </p>
+            {error && (
+              <Button onClick={() => window.location.reload()}>
+                Try Again
+              </Button>
+            )}
+          </CardContent>
+        </Card>
+      </div>
+    );
   }
 
+  // Calculate messages with replies
+  const messagesWithReplies = messages.filter((message: Message) => message.replies && message.replies.length > 0);
 
-  useEffect(() => {
-    console.log("Messages fetched:", messages);
-  }, [messages]);
-
-    const messagesWithReplies = messages.filter((message: Message) => message.replies && message.replies.length > 0);
-
-    return (
+  // Show main messages view
+  return (
     <div className="container mx-auto p-2 sm:p-4 py-4 sm:py-8">
       <h1 className="text-2xl sm:text-3xl font-bold mb-6 sm:mb-8">Messages & Responses</h1>
       <p className="text-muted-foreground mb-6">
@@ -232,23 +269,13 @@ export default function ViewMessagesPage() {
             </TabsList>
             
             <TabsContent value="all" className="mt-4">
-              {messages.length === 0  && !isLoading ? (
-                <div className="text-center py-8">
-                  <MessageSquare className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
-                  <h3 className="font-semibold text-lg mb-2">No Messages Found</h3>
-                  <p className="text-muted-foreground">
-                    You haven't sent any messages yet. Create your first message to start communicating with employees.
-                  </p>
-                </div>
-              ) : (
-                messages.map((message: Message, index: number) => (
-                  <MessageCard 
-                    key={index}
-                    message={message}
-                    onSelect={setSelectedMessage}
-                  />
-                ))
-              )}
+              {messages.map((message: Message) => (
+                <MessageCard 
+                  key={message.id}
+                  message={message}
+                  onSelect={setSelectedMessage}
+                />
+              ))}
             </TabsContent>
             
             <TabsContent value="unread" className="mt-4">
@@ -261,9 +288,9 @@ export default function ViewMessagesPage() {
                   </p>
                 </div>
               ) : (
-                messagesWithReplies.map((message: Message, index: number) => (
+                messagesWithReplies.map((message: Message) => (
                   <MessageCard 
-                    key={index}
+                    key={message.id}
                     message={message}
                     onSelect={setSelectedMessage}
                   />
