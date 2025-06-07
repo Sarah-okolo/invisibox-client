@@ -3,14 +3,24 @@
 
 InvisiBox is a privacy-first anonymous communication platform that bridges the gap between employees and management. It enables secure, two-way communication without requiring employees to create accounts or reveal their identities.
 
+![Invisibox hero section](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/u99vwk3wf04s3s45x4or.png)
+
 ## 🌟 Key Features
 
-- **Account-Free Employee Access**: Employees can participate without creating accounts or passwords
+- **Account-Free Employee Access**: Employees can participate without creating accounts or passwords; they are only required to subscribe to their company's Invisibox channel.
+  ![Employee subscription page](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/9n8kzy2r9uh526dxjxk2.png)
 - **Anonymous Identity Protection**: Employees receive unique proxy email addresses that completely mask their real identity
-- **Two-Way Communication**: Management can send messages and polls; employees can reply and participate anonymously
-- **Real-Time Messaging**: Instant communication through email integration
-- **Poll & Survey System**: Create polls and share results with employees
+  ![Employee subscription page](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/9n8kzy2r9uh526dxjxk2.png)
+- **Two-Way Anonymous Communication and Real-time Messaging**: Management can create and send messages to all employees; employees can reply and participate anonymously. Employees can also send anonymous messages to their management and receive replies. Instant communication through email integration and identity masking through Invisibox's proxy emails
+  ![Employee send message page](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/laor7p3ap0sn53s6o2s1.png)
+  ![2 way email communication](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/kb0ngxu9ofg617e09cuc.png)
+ 
+- **Poll & Survey System**: Create polls, employees can vote anonymously, and poll results can be shared to all subscribed employees
+   ![Create poll page](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/v4b2fs1lsmtb54amz1v2.png)
+  ![Poll email](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/9jz9drt2dsw889klo6xp.png)
+  ![Poll page](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/1tfg125hjo2d2iu04qqi.png)
 - **Subscriber Management**: Warn or ban problematic users while maintaining anonymity
+  ![Manage subscribers page](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/0bz6iigfusxskez502jd.png)
 - **Search Functionality**: Search messages and polls by title
 - **Responsive Design**: Works seamlessly across all devices
 
@@ -43,12 +53,6 @@ InvisiBox is a privacy-first anonymous communication platform that bridges the g
 3. Check your email for your unique proxy address
 4. Start sending anonymous messages using your proxy email
 
-## 🛠️ Development
-
-### Prerequisites:
-- Node.js & npm
-- Postmark account for email services
-- Backend API server
 
 ### Installation:
 ```bash
