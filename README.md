@@ -8,7 +8,9 @@ InvisiBox is a privacy-first anonymous communication platform that bridges the g
 ## 🌟 Key Features
 
 - **Account-Free Employee Access**: Employees can participate without creating accounts or passwords; they are only required to subscribe to their company's Invisibox channel.
+
   ![Employee subscription page](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/9n8kzy2r9uh526dxjxk2.png)
+
 - **Anonymous Identity Protection**: Employees receive unique proxy email addresses that completely mask their real identity
   ![Employee subscription page](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/9n8kzy2r9uh526dxjxk2.png)
 - **Two-Way Anonymous Communication and Real-time Messaging**: Management can create and send messages to all employees; employees can reply and participate anonymously. Employees can also send anonymous messages to their management and receive replies. Instant communication through email integration and identity masking through Invisibox's proxy emails
